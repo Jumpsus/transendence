@@ -1,0 +1,46 @@
+html {
+    height: 100%;
+}
+
+body {
+    height: 100%;
+    margin: 0;
+    font-family: 'Audiowide';
+    font-size: 20px;
+    line-height: 2.2;
+    color:black;
+    display: flex;
+    align-items: center;
+}
+
+.container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.background {
+    height: 100%;
+    width: 100%;
+    background-image: url(../files/web_background.gif);
+    background-size: cover;
+}
+
+button {
+    color: black;
+    display: block;
+    width: 300px;
+    margin: 10px;
+    padding: 7px 35px;
+    background: white;
+    border: 3px solid silver;
+    cursor: pointer;
+}
+
+button:hover {
+    background: gray;
+    border: 1px solid silver;
+}
