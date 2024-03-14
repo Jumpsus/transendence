@@ -1,0 +1,27 @@
+services:
+  pg_db:
+    image: postgres
+    container_name: postgres-docker
+    restart: always
+    env_file:
+      .env-postgres
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+      - ./postgres/conf/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - pong_network
+    ports:
+      - 5432:5432
+
+volumes:
+  pg_data:
+    name: pg_data
+    driver: local
+    driver_opts:
+      type: none
+      device: ./postgres/pgdata
+      o: bind
+
+networks:
+  pong_network:
+    driver: bridge
