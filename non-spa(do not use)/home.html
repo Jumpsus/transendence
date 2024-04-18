@@ -1,0 +1,24 @@
+<!-- home.html -->
+{% extends 'blog/base.html' %}
+{% block title %}Home{% endblock %}
+{% block content %}
+<div class="container"><br>
+    <h1>Hello, Django MU</h1>
+    <p>I love to learn Django framework</p>
+    <div class="row">
+        {% for post in all_posts %}
+        <div class="col-sm-4">
+          <div class="card">
+            <div class="card-body">
+              <img src="{{ post.feature_image.url }}" alt="{{ post.title }}" class="img-fluid"><br><br>
+              <h5 class="card-title">{{ post.title }}</h5>
+              <p class="card-text text-secondary">{{ post.short_description }}</p>
+              <p class="card-text text-secondary">Last update: {{ post.date_updated | date }}</p>
+              <a href="{% url 'post-detail' post.id %}" class="btn btn-primary">Read more</a>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+    </div>
+  </div>
+{% endblock %}

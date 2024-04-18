@@ -1,0 +1,61 @@
+html {
+    height: 100%;
+}
+
+body {
+    height: 100%;
+    margin: 0;
+    font-family: 'Audiowide';
+    font-size: 20px;
+    line-height: 2.2;
+    color:black;
+    display: flex;
+    align-items: center;
+}
+
+.aside {
+    border-right: 5px solid gray;
+    background-color: black;
+    padding: 2rem;
+    height: 100%;
+    width: 10%;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    overflow-x: hidden;
+}
+
+.container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.background {
+    height: 100%;
+    width: 100%;
+    background-image: url(../files/web_background.gif);
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+button {
+    color: black;
+    display: block;
+    width: 300px;
+    margin: 10px;
+    padding: 7px 35px;
+    background: white;
+    border: 3px solid silver;
+    cursor: pointer;
+}
+
+button:hover {
+    background: gray;
+    border: 1px solid silver;
+}
