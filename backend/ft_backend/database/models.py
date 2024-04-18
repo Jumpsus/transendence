@@ -9,4 +9,7 @@ def rename_avatar(instance, filename):
 
 class Account(AbstractUser):
     bio = models.TextField(max_length=200, blank=True)
+    game_played = models.IntegerField(default=0)
+    game_won = models.IntegerField(default=0)
+    game_lost = models.IntegerField(default=0)
     avatar = models.ImageField(upload_to=rename_avatar, null=True, blank=True)
