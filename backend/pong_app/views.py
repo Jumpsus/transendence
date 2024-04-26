@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-from pong_app import utils
+from pong_project import utils
 
 # Create your views here.
 

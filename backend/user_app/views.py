@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from user_app.models import UserManagement
-from pong_app import utils
+from pong_project import utils
 import json
 
 # Create your views here.
@@ -43,7 +43,7 @@ def register(req):
         new_user = UserManagement(username = user, password = passwd)
         new_user.save()
     except:
-        return utils.reponseJsonErrorMessage(400, "20", "Internal error")
+        return utils.reponseJsonErrorMessage(500, "20", "Internal error")
     
     return utils.reponseJsonErrorMessage(400, "00", "Success")
 
