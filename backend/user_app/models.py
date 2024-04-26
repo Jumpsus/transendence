@@ -19,22 +19,22 @@ class UserManagement(models.Model):
 
 class MatchHistory(models.Model):
     _id = models.BigAutoField(primary_key=True)
-    user_w = models.ForeignKey(UserManagement)
-    user_l = models.ForeignKey(UserManagement)
+    user_w = models.ForeignKey(UserManagement,on_delete=models.CASCADE,related_name='user_w')
+    user_l = models.ForeignKey(UserManagement,on_delete=models.CASCADE,related_name='user_l')
     score_w = models.IntegerField()
     score_l = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
 
 class ChatHistory(models.Model):
     _id = models.BigAutoField(primary_key=True)
-    sender_id = models.ForeignKey(UserManagement)
-    receiver_id = models.ForeignKey(UserManagement)
+    sender_id = models.ForeignKey(UserManagement,on_delete=models.CASCADE,related_name='sender_id')
+    receiver_id = models.ForeignKey(UserManagement,on_delete=models.CASCADE,related_name='receiver_id')
     message = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
 class FriendManagement(models.Model):
     _id = models.BigAutoField(primary_key=True)
-    user_a = models.ForeignKey(UserManagement)
-    user_b = models.ForeignKey(UserManagement)
+    user_a = models.ForeignKey(UserManagement,on_delete=models.CASCADE,related_name='user_a')
+    user_b = models.ForeignKey(UserManagement,on_delete=models.CASCADE,related_name='user_b')
     action = models.CharField(max_length=50)
     created_at = models.DateTimeField(auto_now_add=True)
