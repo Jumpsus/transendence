@@ -26,3 +26,6 @@ def test(req):
     except:
         return HttpResponse("not expect req")
     return HttpResponse("ok")
+
+def room(req, room_name):
+    return render(req, "pong/room.html", {"room_name": room_name})
