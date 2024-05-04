@@ -1,7 +1,22 @@
+
 services:
+  nginx-docker:
+    build: ./nginx/
+    container_name: nginx-docker
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - pong_network
+    depends_on:
+      - backend-docker
+      - postgres-docker
+
   backend-docker:
     build: ./backend/
-    command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+    container_name: backend-docker
+    command: sh -c "python manage.py makemigrations && python manage.py migrate --noinput && python manage.py runserver 0.0.0.0:8000"
     restart: always
     volumes:
       - ./backend/:/app
