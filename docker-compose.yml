@@ -4,6 +4,8 @@ services:
     build: ./nginx/
     container_name: nginx-docker
     restart: always
+    volumes:
+      - frontend_data:/usr/share/nginx/html
     ports:
       - "80:80"
       - "443:443"
@@ -73,6 +75,13 @@ volumes:
     driver_opts:
       type: none
       device: ./vault/data
+      o: bind
+  frontend_data:
+    name: frontend_data
+    driver: local
+    driver_opts:
+      type: none
+      device: ./frontend
       o: bind
 
 networks:
