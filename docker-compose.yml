@@ -24,6 +24,7 @@ services:
       - "8000:8000"
     depends_on:
       - postgres-docker
+      - vault-docker
     networks:
       - pong_network
 
@@ -32,13 +33,31 @@ services:
     container_name: postgres-docker
     restart: always
     env_file:
-      .env-postgres
+      - ./postgres/.env-postgres
     volumes:
       - pg_data:/var/lib/postgresql/data
     networks:
       - pong_network
     ports:
       - 5432:5432
+
+  vault-docker:
+    image: hashicorp/vault
+    container_name: vault-docker
+    restart: on-failure:10
+    ports:
+      - "8201:8201"
+    env_file:
+      - ./vault/.env-vault
+    cap_add:
+      - IPC_LOCK
+    volumes:
+      - vault_data:/data
+    healthcheck:
+      retries: 5
+    command: server -dev -dev-root-token-id="00000000-0000-0000-0000-000000000000"
+    networks:
+      - pong_network
 
 volumes:
   pg_data:
@@ -47,6 +66,13 @@ volumes:
     driver_opts:
       type: none
       device: ./postgres/pgdata
+      o: bind
+  vault_data:
+    name: vault_data
+    driver: local
+    driver_opts:
+      type: none
+      device: ./vault/data
       o: bind
 
 networks:
