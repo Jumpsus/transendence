@@ -5,7 +5,7 @@ export class Nav extends Component {
   constructor() {
     super(document.getElementById("navigation-wrapper"));
     this.view = `
-		<div class="container-lg d-flex flex-nowrap" style="min-height: 70px;">
+		<div class="container-lg d-flex flex-nowrap bg-body" style="min-height: 70px;">
 			<a href="" class="navbar-brand w-100">Ping Pong</a>
 			<button class="navbar-toggler border-0" type="button" data-bs-toggle="offcanvas"
 				data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">

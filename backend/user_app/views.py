@@ -23,7 +23,7 @@ def login(req):
     if len(u) == 0:
         return utils.reponseJsonErrorMessage(400, "11", "Mismatch username or password")
 
-    return utils.reponseJsonErrorMessage(400, "00", "Success")
+    return utils.reponseJsonErrorMessage(200, "00", "Success")
 
 @csrf_exempt
 def register(req):
@@ -45,7 +45,7 @@ def register(req):
     except:
         return utils.reponseJsonErrorMessage(500, "20", "Internal error")
     
-    return utils.reponseJsonErrorMessage(400, "00", "Success")
+    return utils.reponseJsonErrorMessage(200, "00", "Success")
 
 #TODO: delete after test
 def loginlist(req):

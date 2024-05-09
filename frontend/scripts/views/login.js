@@ -2,9 +2,7 @@ import { Component } from "../library/component.js";
 import { isLoggedIn } from "../../index.js";
 import { replaceHistoryAndGoTo } from "../utils/router.js";
 import { Nav } from "./nav.js";
-import {
-  setupDarkModeToggle,
-} from "../utils/darkmode.js";
+import { setupDarkModeToggle } from "../utils/darkmode.js";
 
 export class Login extends Component {
   constructor() {
@@ -46,7 +44,7 @@ export class Login extends Component {
   }
 
   setupEventListeners() {
-	setupDarkModeToggle();
+    setupDarkModeToggle();
     const loginForm = document.getElementById("loginForm");
     loginForm.addEventListener("submit", async function (event) {
       event.preventDefault();
@@ -66,7 +64,7 @@ export class Login extends Component {
         password: password,
       };
 
-      fetch("http://127.0.0.1:8000/user/login", {
+      fetch("http://localhost/user/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -96,6 +94,4 @@ export class Login extends Component {
         });
     });
   }
-
-  
 }

@@ -232,10 +232,10 @@ export class Settings extends Component {
       );
     });
 
-    // logoutButton.addEventListener("click", () => {
-    //   isLoggedIn.status = false;
-    //   document.querySelector("nav").remove();
-    //   replaceHistoryAndGoTo("/Login");
-    // });
+    logoutButton.addEventListener("click", () => {
+      isLoggedIn.status = false;
+      document.querySelector("nav").innerHTML = "";
+      replaceHistoryAndGoTo("/Login");
+    });
   }
 }
