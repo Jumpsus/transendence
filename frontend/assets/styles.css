@@ -1,1 +1,13 @@
 /* styles on top of Bootstrap */
+
+* {
+  transition: background-color 300ms;
+}
+
+.form-floating > input {
+  transition: background-color 300ms;
+}
+
+#modeSwitch:hover {
+  cursor: pointer;
+}

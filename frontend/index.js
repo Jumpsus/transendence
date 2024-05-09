@@ -1,3 +1,4 @@
+import { setupDarkMode } from "./scripts/utils/darkmode.js";
 import {
   pushHistoryAndGoTo,
   replaceHistoryAndGoTo,
@@ -6,7 +7,7 @@ import {
 import { Nav } from "./scripts/views/nav.js";
 
 async function checkLoginStatus() {
-  return false; // do API magic to check if the user is logged in
+  return true; // do API magic to check if the user is logged in
 }
 
 window.addEventListener("popstate", () => {
@@ -21,6 +22,7 @@ window.addEventListener("popstate", () => {
 export let isLoggedIn = { status: false };
 
 document.addEventListener("DOMContentLoaded", async () => {
+  setupDarkMode();
   setupNavigation();
   isLoggedIn.status = await checkLoginStatus();
   if (!isLoggedIn.status) {
@@ -41,3 +43,7 @@ function setupNavigation() {
     }
   });
 }
+
+window.addEventListener("load", function () {
+  console.log("All resources have finished loading");
+});
