@@ -6,7 +6,7 @@ export class Profile extends Component {
   constructor() {
     super(document.getElementById("content-wrapper"));
     this.view = `
-		<div class="bg-body-tertiary rounded-5  d-flex flex-md-row flex-column">
+		<div class="bg-body-tertiary rounded-5  d-flex flex-md-row flex-column" id="profileHeader">
 			<div class="align-self-center">
 				<img src="assets/profile.png" class="rounded-5 my-3 m-md-3" width="200" height="200" alt="">
 			</div>
