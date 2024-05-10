@@ -1,21 +1,25 @@
 
 services:
   frontend:
+    restart: always
     extends:
       file: frontend/docker/docker-compose.yml
       service: front-nginx
 
   user-db:
+    restart: always
     extends:
       file: user_management/docker/docker-compose.yml
       service: user-db
 
   user-nginx:
+    restart: always
     extends:
       file: user_management/docker/docker-compose.yml
       service: user-nginx
 
   user-management:
+    restart: always
     extends:
       file: user_management/docker/docker-compose.yml
       service: user-management
