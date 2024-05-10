@@ -1,0 +1,13 @@
+services:
+    front-nginx:
+        networks:
+            - transcendence
+        build:
+            context: nginx
+            dockerfile: Dockerfile
+        ports:
+            - "443:443"
+            - "80:80"
+        volumes:
+            - frontend_data:/frontend/
+            - ssl_volume:/etc/nginx/ssl

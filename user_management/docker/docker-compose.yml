@@ -1,0 +1,35 @@
+services:
+  user-management:
+    networks:
+        - user-network
+    build:
+        context: .
+        dockerfile: Dockerfile
+    command: sh -c "python manage.py makemigrations && python manage.py migrate --noinput && python manage.py runserver 0.0.0.0:8000"
+    volumes:
+        - user_srcs:/app
+    depends_on:
+      - user-db
+
+  user-nginx:
+    networks:
+      - transcendence
+      - user-network
+    build:
+      context: nginx
+      dockerfile: Dockerfile
+    ports:
+      - "7000:7000"
+    volumes:
+      - ssl_volume:/etc/nginx/ssl
+
+  user-db:
+    networks:
+      - user-network
+    build:
+      context: postgres
+      dockerfile: Dockerfile
+    env_file:
+      - ./postgres/.env-postgres
+    volumes:
+      - user_pg:/var/lib/postgresql/data

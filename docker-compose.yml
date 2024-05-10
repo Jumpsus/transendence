@@ -1,81 +1,34 @@
 
 services:
-  nginx-docker:
-    build: ./nginx/
-    container_name: nginx-docker
-    restart: always
-    volumes:
-      - frontend_data:/usr/share/nginx/html
-    ports:
-      - "80:80"
-      - "443:443"
-    networks:
-      - pong_network
-    depends_on:
-      - backend-docker
-      - postgres-docker
+  frontend:
+    extends:
+      file: frontend/docker/docker-compose.yml
+      service: front-nginx
 
-  backend-docker:
-    build: ./backend/
-    container_name: backend-docker
-    command: sh -c "python manage.py makemigrations && python manage.py migrate --noinput && python manage.py runserver 0.0.0.0:8000"
-    restart: always
-    volumes:
-      - ./backend/:/app
-    ports:
-      - "8000:8000"
-    depends_on:
-      - postgres-docker
-      - vault-docker
-    networks:
-      - pong_network
+  user-db:
+    extends:
+      file: user_management/docker/docker-compose.yml
+      service: user-db
 
-  postgres-docker:
-    image: postgres
-    container_name: postgres-docker
-    restart: always
-    env_file:
-      - ./postgres/.env-postgres
-    volumes:
-      - pg_data:/var/lib/postgresql/data
-    networks:
-      - pong_network
-    ports:
-      - 5432:5432
+  user-nginx:
+    extends:
+      file: user_management/docker/docker-compose.yml
+      service: user-nginx
 
-  vault-docker:
-    image: hashicorp/vault
-    container_name: vault-docker
-    restart: on-failure:10
-    ports:
-      - "8201:8201"
-    env_file:
-      - ./vault/.env-vault
-    cap_add:
-      - IPC_LOCK
-    volumes:
-      - vault_data:/data
-    healthcheck:
-      retries: 5
-    command: server -dev -dev-root-token-id="00000000-0000-0000-0000-000000000000"
-    networks:
-      - pong_network
+  user-management:
+    extends:
+      file: user_management/docker/docker-compose.yml
+      service: user-management
 
 volumes:
-  pg_data:
-    name: pg_data
+  ssl_volume:
+    name: ssl_volume
     driver: local
     driver_opts:
       type: none
-      device: ./postgres/pgdata
+      device: ./ssl/cert
       o: bind
-  vault_data:
-    name: vault_data
-    driver: local
-    driver_opts:
-      type: none
-      device: ./vault/data
-      o: bind
+
   frontend_data:
     name: frontend_data
     driver: local
@@ -83,7 +36,24 @@ volumes:
       type: none
       device: ./frontend
       o: bind
+      
+  user_pg:
+    name: user_pg
+    driver: local
+    driver_opts:
+      type: none
+      device: ./user_management/docker/postgres/pgdata
+      o: bind
+  user_srcs:
+    name: user_srcs
+    driver: local
+    driver_opts:
+      type: none
+      device: ./user_management/srcs
+      o: bind
 
 networks:
-  pong_network:
+  transcendence:
+    driver: bridge
+  user-network:
     driver: bridge
