@@ -6,4 +6,6 @@ urlpatterns = [
     path('login', views.login, name='login'),
     path('register', views.register, name='register'),
     path('loginlist', views.loginlist, name='loginlist'), #TODO: delete after test
+    path('getinfo', views.getinfo, name='getinfo'),
+    path('updateinfo', views.updateinfo, name='updateinfo'),
 ]
