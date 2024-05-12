@@ -1,0 +1,21 @@
+services:
+    vault-service:
+        networks:
+            - transcendence
+            - user-network
+        build:
+            context: .
+            dockerfile: Dockerfile
+        ports:
+            - "8201:8201"
+        volumes:
+            - ssl_volume:/vault/cert
+        healthcheck:
+            retries: 5
+        env_file:
+            - .env-vault
+        cap_add:
+            - IPC_LOCK
+        # command: bash
+        command: server -dev -dev-root-token-id="00000000-0000-0000-0000-000000000000"
+        

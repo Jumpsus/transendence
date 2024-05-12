@@ -6,6 +6,12 @@ services:
       file: frontend/docker/docker-compose.yml
       service: front-nginx
 
+  vault-service:
+    restart: on-failure:10
+    extends:
+      file: vault/docker/docker-compose.yml
+      service: vault-service
+
   user-db:
     restart: always
     extends:
