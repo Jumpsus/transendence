@@ -1,11 +1,12 @@
 import { Component } from "../library/component.js";
 import { setupDarkModeToggle } from "../utils/darkmode.js";
+import { myUsername } from "../../index.js";
 
 export class Nav extends Component {
   constructor() {
     super(document.getElementById("navigation-wrapper"));
     this.view = `
-		<div class="container-lg d-flex flex-nowrap bg-body" style="min-height: 70px;">
+		<div class="container-lg d-flex flex-nowrap bg-body" style="min-height: 70px;" id="homeNav">
 			<a href="" class="navbar-brand w-100">Ping Pong</a>
 			<button class="navbar-toggler border-0" type="button" data-bs-toggle="offcanvas"
 				data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
@@ -25,7 +26,7 @@ export class Nav extends Component {
 						<li class="nav-item"><a href="/" class="nav-link" data-link>Home</a></li>
 						<li class="nav-item"><a href="/Tournament" class="nav-link" data-link>Tournament</a></li>
 						<li class="nav-item"><a href="/Chat" class="nav-link" data-link>Chat</a></li>
-						<li class="nav-item"><a href="/Profile" class="nav-link" data-link><img src="assets/profile.png"
+						<li class="nav-item"><a href="/${myUsername.username}/Friends" class="nav-link" data-link><img src="/assets/profile.png"
 									alt="profile image" class="rounded-circle" width=40
 									height=40></a></li>
 					</ul>

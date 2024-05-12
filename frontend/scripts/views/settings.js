@@ -2,7 +2,6 @@ import { Component } from "../library/component.js";
 import { makeLinkActive } from "../utils/other.js";
 import { isLoggedIn } from "../../index.js";
 import { replaceHistoryAndGoTo } from "../utils/router.js";
-import { Profile } from "./profile.js";
 
 export class Settings extends Component {
   constructor() {
@@ -95,8 +94,6 @@ export class Settings extends Component {
   }
 
   render() {
-	if (!document.getElementById("profileHeader"))
-		new Profile;
     super.render();
     makeLinkActive(document.getElementById("profileMenu"));
   }

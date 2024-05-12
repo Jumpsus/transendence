@@ -80,7 +80,6 @@ export class Login extends Component {
         .then((data) => {
           console.log(data);
           isLoggedIn.status = true;
-          const navbar = new Nav();
           replaceHistoryAndGoTo("/");
         })
         .catch((error) => {

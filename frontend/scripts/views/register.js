@@ -116,7 +116,6 @@ export class Register extends Component {
           } else {
             console.log(data);
             isLoggedIn.status = true;
-            const navbar = new Nav();
             replaceHistoryAndGoTo("/");
           }
         })

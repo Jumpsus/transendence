@@ -1,6 +1,7 @@
 import { Component } from "../library/component.js";
 import { Friends } from "./friends.js";
 import { makeLinkActive } from "../utils/other.js";
+import { username } from "../utils/router.js";
 
 export class Profile extends Component {
   constructor() {
@@ -8,12 +9,12 @@ export class Profile extends Component {
     this.view = `
 		<div class="bg-body-tertiary rounded-5  d-flex flex-md-row flex-column" id="profileHeader">
 			<div class="align-self-center">
-				<img src="assets/profile.png" class="rounded-5 my-3 m-md-3" width="200" height="200" alt="">
+				<img src="/assets/profile.png" class="rounded-5 my-3 m-md-3" width="200" height="200" alt="">
 			</div>
 			<div class="w-100 p-md-3 pb-3 px-3 h-100 align-self-end d-flex flex-column">
 				<div
 					class="mb-2 d-flex flex-wrap flex-md-row flex-column align-items-md-end align-items-center justify-content-between">
-					<div class="fs-3">@pelmeshkaa</div>
+					<div class="fs-3">@${username.username}</div>
 					<div class="d-flex gap-1 my-md-0 my-2">
 						<div class="fs-3 border border-1 rounded-3 d-flex align-items-center p-2 gap-2">
 							<div>Lvl</div>
@@ -43,14 +44,14 @@ export class Profile extends Component {
 		</div>
 		<ul class="nav nav-pills d-flex justify-content-center py-3" id="profileMenu">
 			<li class="nav-item">
-				<a href="/Profile" class="nav-link active bg-body-tertiary text-body" aria-current="page"
+				<a href="/${username.username}/Friends" class="nav-link active bg-body-tertiary text-body" aria-current="page"
 					data-link>Friends</a>
 			</li>
 			<li class="nav-item">
-				<a href="/History" class="nav-link text-body-tertiary" data-link>Match History</a>
+				<a href="/${username.username}/History" class="nav-link text-body-tertiary" data-link>Match History</a>
 			</li>
 			<li class="nav-item">
-				<a href="/Settings" class="nav-link text-body-tertiary" data-link>Settings</a>
+				<a href="/${username.username}/Settings" class="nav-link text-body-tertiary" data-link>Settings</a>
 			</li>
 		</ul>
 		<div class="bg-body-tertiary rounded-5 mb-5 px-5 py-4" id="profile-wrapper">
@@ -61,8 +62,7 @@ export class Profile extends Component {
   }
 
   render() {
-	if (!document.getElementById("profileMenu")) 
-    	super.render();
+    if (!document.getElementById("profileMenu")) super.render();
     new Friends();
     makeLinkActive(document.getElementById("profileMenu"));
   }

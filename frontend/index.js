@@ -2,12 +2,16 @@ import { setupDarkMode } from "./scripts/utils/darkmode.js";
 import {
   pushHistoryAndGoTo,
   replaceHistoryAndGoTo,
-  router,
+  goTo,
 } from "./scripts/utils/router.js";
 import { Nav } from "./scripts/views/nav.js";
 
 async function checkLoginStatus() {
-  return false; // do API magic to check if the user is logged in
+  return true; // do API magic to check if the user is logged in
+}
+
+async function getUsername() {
+  return "user2"; // do API magic to get the username
 }
 
 window.addEventListener("popstate", () => {
@@ -16,21 +20,20 @@ window.addEventListener("popstate", () => {
     replaceHistoryAndGoTo("/");
   } else if (!isLoggedIn.status && url != "/Login" && url != "/Register") {
     replaceHistoryAndGoTo("/Login");
-  } else router();
+  } else goTo(url);
 });
 
 export let isLoggedIn = { status: false };
+export let myUsername = { username: "" };
 
 document.addEventListener("DOMContentLoaded", async () => {
   setupDarkMode();
   setupNavigation();
   isLoggedIn.status = await checkLoginStatus();
-  if (!isLoggedIn.status) {
-    replaceHistoryAndGoTo("/Login");
-  } else {
-    const navbar = new Nav();
-    replaceHistoryAndGoTo("/");
+  if (isLoggedIn.status) {
+    myUsername.username = await getUsername();
   }
+  replaceHistoryAndGoTo(window.location.pathname);
 });
 
 function setupNavigation() {
@@ -44,6 +47,6 @@ function setupNavigation() {
   });
 }
 
-window.addEventListener("load", function () {
-  console.log("All resources have finished loading");
-});
+// window.addEventListener("load", function () {
+//   console.log("All resources have finished loading");
+// });

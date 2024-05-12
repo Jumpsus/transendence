@@ -2,6 +2,7 @@ export function makeLinkActive(parent) {
   const currentUrl = window.location.pathname;
   const navLinks = parent.querySelectorAll("[data-link]");
   navLinks.forEach((link) => {
+    console.log(link.getAttribute("href"), " : ", currentUrl);
     if (link.getAttribute("href") === currentUrl) {
       link.classList.add("active");
       link.classList.add("text-body");
