@@ -29,6 +29,8 @@ services:
     extends:
       file: user_management/docker/docker-compose.yml
       service: user-management
+    depends_on:
+      - user-db
 
 volumes:
   ssl_volume:

@@ -1,5 +1,5 @@
 all:
-	bash ssl/generate_cert.sh
+	bash generate_cert.sh
 	@docker-compose build; \
 	docker-compose up;
 
