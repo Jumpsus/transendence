@@ -69,7 +69,7 @@ export class Login extends Component {
         password: password,
       };
 
-      fetch("http://localhost:9000/user/login", {
+      fetch("https://localhost:9000/user/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
