@@ -27,22 +27,41 @@ export function setupDarkMode() {
 }
 
 export function setupDarkModeToggle() {
-    const modeSwitch = document.getElementById("modeSwitch");
-    if (getPreferredTheme() === "dark") modeSwitch.checked = true;
-	else modeSwitch.checked = false;
-
-    modeSwitch.addEventListener("change", () => {
-      const theme = modeSwitch.checked ? "dark" : "light";
-      setStoredTheme(theme);
-      setTheme(theme);
-    });
-
-    window
-      .matchMedia("(prefers-color-scheme: dark)")
-      .addEventListener("change", () => {
-        if (!getStoredTheme()) {
-          if (getPreferredTheme() === "dark") modeSwitch.checked = true;
-		  else modeSwitch.checked = false;
-        }
-      });
+  const modeSwitch = document.getElementById("modeSwitch");
+  const moon = document.getElementById("moonIcon");
+  const sun = document.getElementById("sunIcon");
+  if (getPreferredTheme() === "dark") {
+    moon.style.display = "block";
+    sun.style.display = "none";
+  } else {
+    sun.style.display = "block";
+    moon.style.display = "none";
   }
+
+  modeSwitch.addEventListener("click", () => {
+    const theme = moon.style.display == "block" ? "light" : "dark";
+    if (theme === "dark") {
+      moon.style.display = "block";
+      sun.style.display = "none";
+    } else {
+      sun.style.display = "block";
+      moon.style.display = "none";
+    }
+    setStoredTheme(theme);
+    setTheme(theme);
+  });
+
+  window
+    .matchMedia("(prefers-color-scheme: dark)")
+    .addEventListener("change", () => {
+      if (!getStoredTheme()) {
+        if (getPreferredTheme() === "dark") {
+          moon.style.display = "block";
+          sun.style.display = "none";
+        } else {
+          sun.style.display = "block";
+          moon.style.display = "none";
+        }
+      }
+    });
+}

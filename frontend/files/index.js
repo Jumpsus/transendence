@@ -7,7 +7,7 @@ import {
 import { Nav } from "./scripts/views/nav.js";
 
 async function checkLoginStatus() {
-  return false; // do API magic to check if the user is logged in
+  return true; // do API magic to check if the user is logged in
 }
 
 async function getUsername() {
