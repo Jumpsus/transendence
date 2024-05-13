@@ -17,7 +17,7 @@ services:
       context: nginx
       dockerfile: Dockerfile
     ports:
-      - "7000:7000"
+      - "9000:9000"
     volumes:
       - ssl_volume:/etc/nginx/ssl
 
