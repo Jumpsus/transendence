@@ -1,0 +1,61 @@
+import { Component } from "../library/component.js";
+import { setupDarkModeToggle } from "../utils/darkmode.js";
+import { myUsername } from "../../index.js";
+
+export class Nav extends Component {
+  constructor() {
+    super(document.getElementById("navigation-wrapper"));
+    this.view = `
+			<nav class="d-flex bg-body-tertiary flex-grow-1 rounded-5 me-sm-0 m-2 sticky-md-top sticky-bottom flex-sm-column flex-row pt-lg-3 pt-sm-5 p-3 justify-content-sm-start justify-content-evenly gap-lg-4 gap-5"
+			id="homeNav">
+				<a href="" class="fs-2 text-decoration-none link-body-emphasis mb-3 d-lg-block d-none" id="project-title">ft_transcendence
+				</a>
+				<a href="/" class="nav-link d-flex justify-content-lg-start justify-content-center" data-link>
+					<div class="d-flex align-items-center">
+						<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-joystick" viewBox="0 0 16 16">
+							<path d="M10 2a2 2 0 0 1-1.5 1.937v5.087c.863.083 1.5.377 1.5.726 0 .414-.895.75-2 .75s-2-.336-2-.75c0-.35.637-.643 1.5-.726V3.937A2 2 0 1 1 10 2"/>
+							<path d="M0 9.665v1.717a1 1 0 0 0 .553.894l6.553 3.277a2 2 0 0 0 1.788 0l6.553-3.277a1 1 0 0 0 .553-.894V9.665c0-.1-.06-.19-.152-.23L9.5 6.715v.993l5.227 2.178a.125.125 0 0 1 .001.23l-5.94 2.546a2 2 0 0 1-1.576 0l-5.94-2.546a.125.125 0 0 1 .001-.23L6.5 7.708l-.013-.988L.152 9.435a.25.25 0 0 0-.152.23"/>
+							</svg>
+						<div class="ms-3 fs-6 d-lg-block d-none">Play</div>
+					</div>
+				</a>
+				<a href="/Tournament" class="nav-link d-flex justify-content-lg-start justify-content-center" data-link>
+					<div class="d-flex align-items-center">
+					<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-trophy" viewBox="0 0 16 16">
+					<path d="M2.5.5A.5.5 0 0 1 3 0h10a.5.5 0 0 1 .5.5q0 .807-.034 1.536a3 3 0 1 1-1.133 5.89c-.79 1.865-1.878 2.777-2.833 3.011v2.173l1.425.356c.194.048.377.135.537.255L13.3 15.1a.5.5 0 0 1-.3.9H3a.5.5 0 0 1-.3-.9l1.838-1.379c.16-.12.343-.207.537-.255L6.5 13.11v-2.173c-.955-.234-2.043-1.146-2.833-3.012a3 3 0 1 1-1.132-5.89A33 33 0 0 1 2.5.5m.099 2.54a2 2 0 0 0 .72 3.935c-.333-1.05-.588-2.346-.72-3.935m10.083 3.935a2 2 0 0 0 .72-3.935c-.133 1.59-.388 2.885-.72 3.935M3.504 1q.01.775.056 1.469c.13 2.028.457 3.546.87 4.667C5.294 9.48 6.484 10 7 10a.5.5 0 0 1 .5.5v2.61a1 1 0 0 1-.757.97l-1.426.356a.5.5 0 0 0-.179.085L4.5 15h7l-.638-.479a.5.5 0 0 0-.18-.085l-1.425-.356a1 1 0 0 1-.757-.97V10.5A.5.5 0 0 1 9 10c.516 0 1.706-.52 2.57-2.864.413-1.12.74-2.64.87-4.667q.045-.694.056-1.469z"/>
+				  </svg>
+						<div class="ms-3 fs-6 d-lg-block d-none">Tournament</div>
+					</div>
+				</a>
+				<a href="/Chat" class="nav-link d-flex justify-content-lg-start justify-content-center" data-link>
+					<div class="d-flex align-items-center">
+					<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-chat-left-dots" viewBox="0 0 16 16">
+  <path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H4.414A2 2 0 0 0 3 11.586l-2 2V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/>
+  <path d="M5 6a1 1 0 1 1-2 0 1 1 0 0 1 2 0m4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0m4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
+</svg>
+						<div class="ms-3 fs-6 d-lg-block d-none">Chat</div>
+					</div>
+				</a>
+				<div class="form-check form-switch fs-3 m-0 d-sm-block d-none mt-sm-auto d-flex justify-content-lg-start justify-content-center">
+					<input
+						class="form-check-input bg-body-secondary border-0" type="checkbox" role="switch"
+						id="modeSwitch" data-bs-theme-value>
+				</div>
+				<a href="/${myUsername.username}/Friends" class="nav-link d-flex justify-content-lg-start justify-content-center" data-link>
+					<div class="d-flex align-items-center">
+						<img src="/assets/profile.png"
+						alt="profile image" class="rounded-circle" width=30
+						height=30>
+						<div class="ms-3 fs-6 d-lg-block d-none">My profile</div>
+					</div>
+				</a>
+			</nav>
+	`;
+    this.render();
+    this.setupEventListeners();
+  }
+
+  setupEventListeners() {
+    setupDarkModeToggle();
+  }
+}

@@ -1,0 +1,23 @@
+/* styles on top of Bootstrap */
+
+* {
+  transition: background-color 300ms;
+}
+
+body {
+  height: 100svh;
+}
+
+.form-floating > input {
+  transition: background-color 300ms;
+}
+
+#modeSwitch:hover {
+  cursor: pointer;
+}
+
+#project-title {
+  font-family: "Jersey 10", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
