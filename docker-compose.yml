@@ -46,7 +46,7 @@ volumes:
     driver: local
     driver_opts:
       type: none
-      device: ./frontend
+      device: ./frontend/files
       o: bind
       
   user_pg:
