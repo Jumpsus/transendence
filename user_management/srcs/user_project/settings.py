@@ -53,6 +53,7 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = ['https://*']
 
 ROOT_URLCONF = 'user_project.urls'

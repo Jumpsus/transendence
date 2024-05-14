@@ -75,6 +75,7 @@ export class Login extends Component {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(requestBody),
+		credentials: "include",
       })
         .then((response) => {
           if (!response.ok) {

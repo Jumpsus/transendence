@@ -106,6 +106,7 @@ export class Register extends Component {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(requestBody),
+		credentials: "include",
       })
         .then((response) => {
           return response.json();
