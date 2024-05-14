@@ -3,6 +3,7 @@ import { isLoggedIn } from "../../index.js";
 import { replaceHistoryAndGoTo } from "../utils/router.js";
 import { Nav } from "./nav.js";
 import { setupDarkModeToggle } from "../utils/darkmode.js";
+import { getLoggedInStatus } from "../../index.js";
 
 export class Login extends Component {
   constructor() {
@@ -83,10 +84,13 @@ export class Login extends Component {
           }
           return response.json();
         })
-        .then((data) => {
-          console.log(data);
-          isLoggedIn.status = true;
-          replaceHistoryAndGoTo("/");
+		.then(() => {
+			return getLoggedInStatus();			
+		})
+        .then((resp) => {
+			isLoggedIn.status = resp;
+			if (isLoggedIn.status) replaceHistoryAndGoTo("/");
+			else console.log("login failed");
         })
         .catch((error) => {
           console.log(error);

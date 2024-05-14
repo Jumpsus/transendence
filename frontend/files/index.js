@@ -6,14 +6,6 @@ import {
 } from "./scripts/utils/router.js";
 import { Nav } from "./scripts/views/nav.js";
 
-async function checkLoginStatus() {
-  return false; // do API magic to check if the user is logged in
-}
-
-async function getUsername() {
-  return "user2"; // do API magic to get the username
-}
-
 window.addEventListener("popstate", () => {
   const url = window.location.pathname;
   if (isLoggedIn.status && (url === "/Login" || url === "/Register")) {
@@ -26,14 +18,35 @@ window.addEventListener("popstate", () => {
 export let isLoggedIn = { status: false };
 export let myUsername = { username: "" };
 
+export async function getLoggedInStatus() {
+  return await fetch("https://localhost:9000/user/getinfo", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      if (data.username === undefined) {
+        return false;
+      } else {
+        myUsername.username = data.username;
+        return true;
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
+  isLoggedIn.status = await getLoggedInStatus();
   setupDarkMode();
   setupNavigation();
-  isLoggedIn.status = await checkLoginStatus();
-  console.log(isLoggedIn.status);
-  if (isLoggedIn.status) {
-    myUsername.username = await getUsername();
-  }
+  //   console.log(isLoggedIn.status);
   replaceHistoryAndGoTo(window.location.pathname);
 });
 

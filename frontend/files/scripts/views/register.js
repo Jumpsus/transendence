@@ -3,6 +3,7 @@ import { isLoggedIn } from "../../index.js";
 import { replaceHistoryAndGoTo } from "../utils/router.js";
 import { Nav } from "./nav.js";
 import { setupDarkModeToggle } from "../utils/darkmode.js";
+import { getLoggedInStatus } from "../../index.js";
 
 export class Register extends Component {
   constructor() {
@@ -120,10 +121,13 @@ export class Register extends Component {
             errorAlert.textContent = data.message;
             registerForm.insertAdjacentElement("afterend", errorAlert);
           } else {
-            console.log(data);
-            isLoggedIn.status = true;
-            replaceHistoryAndGoTo("/");
+            return getLoggedInStatus();
           }
+        })
+        .then((resp) => {
+			isLoggedIn.status = resp;
+			if (isLoggedIn.status) replaceHistoryAndGoTo("/");
+			else console.log("register failed");
         })
         .catch((error) => {
           console.error("There was a problem with the fetch operation:", error);

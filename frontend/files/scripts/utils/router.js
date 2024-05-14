@@ -26,8 +26,6 @@ const routesLoggedOut = [
   { path: "/Register", view: Register },
 ];
 
-const usernames = ["user1", "user2", "user3"];
-
 // function checkIfProfileUrl(url) {
 //   const parts = string.split("/");
 //   if (parts.length != 2) return false;
@@ -56,7 +54,25 @@ function arrayFromMultiPath(url) {
 }
 
 async function userExists(username) {
-  return usernames.includes(username);
+  return await fetch(`https://localhost:9000/user/loginlist`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      const userExists = data.user_list.some(
+        (user) => user.username === username
+      );
+	  return userExists;
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 }
 
 async function pathToView(url) {
