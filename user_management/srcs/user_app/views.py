@@ -81,6 +81,7 @@ def getinfo(req):
 
     response_data = {}
     response_data["code"] = "00"
+    response_data["username"] = u[0].username
     response_data["name"] = u[0].name
     response_data["last_name"] = u[0].last_name
     response_data["phone_number"] = u[0].phone_number
