@@ -138,6 +138,38 @@ def updateinfo(req):
 
     return utils.reponseJsonErrorMessage(200, "00", "Success")
 
+@csrf_exempt
+def get_other_info(req):
+
+    try:
+        body = utils.getJsonBody(req.body)
+        user = body["username"]
+    except:
+        return utils.reponseJsonErrorMessage(400, "10", "Invalid request")
+
+    # try:
+    #     user = req.session["username"]
+    # except KeyError:
+    #     print ("No session found")
+    #     return utils.reponseJsonErrorMessage(400, "10", "Invalid Request")
+
+    u = UserManagement.objects.filter(username = user)
+
+    if len(u) == 0:
+        return utils.reponseJsonErrorMessage(400, "13", "User Not Found")
+
+    response_data = {}
+    response_data["code"] = "00"
+    response_data["username"] = u[0].username
+    response_data["name"] = u[0].name
+    response_data["last_name"] = u[0].last_name
+    response_data["phone_number"] = u[0].phone_number
+    response_data["tag"] = u[0].tag
+    response_data["win"] = 0
+    response_data["lose"] = 0
+    response_data["level"] = 0
+    return HttpResponse(json.dumps(response_data), content_type="application/json", status=200)
+
 def logout(req):
     try:
         del req.session["username"]
