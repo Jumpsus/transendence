@@ -18,11 +18,21 @@ services:
       file: user_management/docker/docker-compose.yml
       service: user-db
 
+  user-db-setup:
+    restart: always
+    extends:
+      file: user_management/docker/docker-compose.yml
+      service: user-db-setup
+    depends_on:
+      - user-db
+
   user-nginx:
     restart: always
     extends:
       file: user_management/docker/docker-compose.yml
       service: user-nginx
+    depends_on:
+      - user-management
 
   user-management:
     restart: always
@@ -30,7 +40,7 @@ services:
       file: user_management/docker/docker-compose.yml
       service: user-management
     depends_on:
-      - user-db
+      - user-db-setup
 
 volumes:
   ssl_volume:

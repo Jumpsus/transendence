@@ -31,3 +31,11 @@ services:
       - ./postgres/.env-postgres
     volumes:
       - user_pg:/var/lib/postgresql/data
+
+  user-db-setup:
+    networks:
+      - user-network
+    image: postgres:16.3
+    volumes:
+      - user_pg:/var/lib/postgresql/data
+    entrypoint: [ "bash", "-c", "chmod 755 -R /var/lib/postgresql/data"]
