@@ -4,7 +4,6 @@ import {
   replaceHistoryAndGoTo,
   goTo,
 } from "./scripts/utils/router.js";
-import { Nav } from "./scripts/views/nav.js";
 
 window.addEventListener("popstate", () => {
   const url = window.location.pathname;

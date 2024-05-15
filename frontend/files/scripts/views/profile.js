@@ -18,20 +18,20 @@ export class Profile extends Component {
 					<div class="d-flex gap-1 my-md-0 my-2">
 						<div class="fs-3 border border-1 rounded-3 d-flex align-items-center p-2 gap-2">
 							<div>Lvl</div>
-							<div>10</div>
+							<div id="lvl"></div>
 						</div>
 						<div class="fs-3 border border-1 rounded-3 d-flex p-2 gap-2">
 							<div>👍</div>
 							<div class="d-flex flex-column">
 								<div class="fs-6 text-secondary">Wins</div>
-								<div class="text-success">42</div>
+								<div class="text-success" id="wonNumber"></div>
 							</div>
 						</div>
 						<div class="fs-3 border border-1 rounded-3 d-flex p-2 gap-2">
 							<div>👎</div>
 							<div class="d-flex flex-column">
 								<div class="fs-6 text-secondary">Losses</div>
-								<div class="text-danger">21</div>
+								<div class="text-danger" id="lostNumber"></div>
 							</div>
 						</div>
 					</div>
@@ -64,6 +64,28 @@ export class Profile extends Component {
   render() {
     if (!document.getElementById("profileMenu")) super.render();
     new Friends();
+    const wonNumber = document.getElementById("wonNumber");
+    const lostNumber = document.getElementById("lostNumber");
+	const lvl = document.getElementById("lvl");
+    fetch(`https://${location.host}:9000/user/getinfo`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+		lvl.textContent = data.level;
+        wonNumber.textContent = data.win;
+        lostNumber.textContent = data.lose;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
     makeLinkActive(document.getElementById("profileMenu"));
   }
 }

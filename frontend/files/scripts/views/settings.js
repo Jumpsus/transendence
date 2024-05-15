@@ -13,30 +13,30 @@ export class Settings extends Component {
 				<form class="row g-3">
 					<div class="col-sm-6">
 						<label for="personal-name" class="form-label">First Name</label>
-						<input type="text" class="form-control" id="personal-name" placeholder="John" disabled>
+						<input type="text" class="form-control text-body-tertiary" id="personal-name" disabled>
 					</div>
 					<div class="col-sm-6">
 						<label for="personal-lastname" class="form-label">Last name</label>
-						<input type="text" class="form-control" id="personal-lastname" placeholder="Appleseed"
+						<input type="text" class="form-control text-body-tertiary" id="personal-lastname"
 							disabled>
 					</div>
 					<div class="col-sm-6">
 						<label for="personal-phone" class="form-label">Tel</label>
-						<input type="tel" class="form-control" id="personal-phone" placeholder="094-047-5891"
+						<input type="tel" class="form-control text-body-tertiary" id="personal-phone"
 							disabled>
 					</div>
 					<div class="col-sm-6">
 						<label for="personal-email" class="form-label">Email</label>
-						<input type="email" class="form-control" id="personal-email"
-							placeholder="leo.silveri@mail.ru" disabled>
+						<input type="email" class="form-control text-body-tertiary" id="personal-email"
+							disabled>
 					</div>
 					<div class="col-sm-6">
 						<label for="personal-tag" class="form-label">Tag</label>
 						<div>
 							<div class="input-group">
 								<span class="input-group-text">@</span>
-								<input class="form-control" type="text" id="personal-tag" name="username"
-									placeholder="pelmeshkaa" disabled>
+								<input class="form-control text-body-tertiary" type="text" id="personal-tag" name="username"
+									disabled>
 							</div>
 						</div>
 					</div>
@@ -56,8 +56,8 @@ export class Settings extends Component {
 					<form class="col-sm-6">
 						<div>
 							<label for="profile-username" class="form-label">Username</label>
-							<input type="text" class="form-control" id="profile-username"
-								placeholder="windoshopper95" disabled>
+							<input type="text" class="form-control text-body-tertiary" id="profile-username"
+								disabled>
 						</div>
 						<div class="d-flex justify-content-end mt-3">
 							<button type="button" class="btn btn-secondary" id="edit-username-button">Edit</button>
@@ -70,7 +70,7 @@ export class Settings extends Component {
 					<form class="col-sm-6">
 						<div>
 							<label for="profile-password" class="form-label">Password</label>
-							<input type="password" class="form-control" id="profile-password" disabled>
+							<input type="password" class="form-control text-body-tertiary" id="profile-password" disabled>
 						</div>
 						<div class="d-flex justify-content-end mt-3">
 							<button type="button" class="btn btn-secondary" id="edit-password-button">Edit</button>
@@ -98,7 +98,7 @@ export class Settings extends Component {
     makeLinkActive(document.getElementById("profileMenu"));
   }
 
-  setupEventListeners() {
+  async setupEventListeners() {
     const usernameField = document.getElementById("profile-username");
     const passwordField = document.getElementById("profile-password");
     const nameField = document.getElementById("personal-name");
@@ -129,7 +129,27 @@ export class Settings extends Component {
       tagField,
     ];
 
-    passwordField.value = "qwerty12345";
+    await fetch(`https://${location.host}:9000/user/getinfo`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        nameField.value = data.name;
+        lastNameField.value = data.last_name;
+        emailField.value = data.email;
+        phoneField.value = data.phone_number;
+        tagField.value = data.tag;
+        usernameField.value = data.username;
+      })
+      .catch((error) => {
+        console.log("we got an error: ", error);
+      });
 
     const toggleEditMode = (
       fieldsArray,
@@ -232,10 +252,26 @@ export class Settings extends Component {
       );
     });
 
-    logoutButton.addEventListener("click", () => {
-      isLoggedIn.status = false;
-      document.querySelector("nav").innerHTML = "";
-      replaceHistoryAndGoTo("/Login");
+    logoutButton.addEventListener("click", async () => {
+      await fetch(`https://${location.host}:9000/user/logout`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      })
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          console.log("we have data: ", data);
+          isLoggedIn.status = false;
+          document.querySelector("nav").innerHTML = "";
+          replaceHistoryAndGoTo("/Login");
+        })
+        .catch((error) => {
+          console.log("we got an error: ", error);
+        });
     });
   }
 }
