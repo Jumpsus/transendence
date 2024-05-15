@@ -15,7 +15,21 @@ window.addEventListener("popstate", () => {
 });
 
 export let isLoggedIn = { status: false };
-export let myUsername = { username: "" };
+
+let username = "";
+
+export const myUsername = {
+    get username() {
+        return username;
+    },
+    set username(value) {
+        if (username === "") {
+            username = value;
+        } else {
+            console.error("Cannot change the value of myUsername after it has been set.");
+        }
+    }
+};
 
 export async function getLoggedInStatus() {
   return await fetch(`https://${location.host}:9000/user/getinfo`, {

@@ -2,6 +2,7 @@ import { Component } from "../library/component.js";
 import { Friends } from "./friends.js";
 import { makeLinkActive } from "../utils/other.js";
 import { username } from "../utils/router.js";
+import { myUsername } from "../../index.js";
 
 export class Profile extends Component {
   constructor() {
@@ -50,7 +51,7 @@ export class Profile extends Component {
 			<li class="nav-item">
 				<a href="/${username.username}/History" class="nav-link text-body-tertiary" data-link>Match History</a>
 			</li>
-			<li class="nav-item">
+			<li class="nav-item" id="settingsTab">
 				<a href="/${username.username}/Settings" class="nav-link text-body-tertiary" data-link>Settings</a>
 			</li>
 		</ul>
@@ -64,6 +65,9 @@ export class Profile extends Component {
   render() {
     if (!document.getElementById("profileMenu")) super.render();
     new Friends();
+	if (myUsername.username != username.username) {
+		document.getElementById("settingsTab").style.display = "none";
+	}
     const wonNumber = document.getElementById("wonNumber");
     const lostNumber = document.getElementById("lostNumber");
 	const lvl = document.getElementById("lvl");
