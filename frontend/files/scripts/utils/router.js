@@ -54,7 +54,7 @@ function arrayFromMultiPath(url) {
 }
 
 async function userExists(username) {
-  return await fetch(`https://localhost:9000/user/loginlist`, {
+  return await fetch(`https://${location.host}:9000/user/loginlist`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

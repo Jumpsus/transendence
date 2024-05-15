@@ -101,7 +101,7 @@ export class Register extends Component {
         password: password,
       };
 
-      fetch("https://localhost:9000/user/register", {
+      fetch(`https://${location.host}:9000/user/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -19,7 +19,7 @@ export let isLoggedIn = { status: false };
 export let myUsername = { username: "" };
 
 export async function getLoggedInStatus() {
-  return await fetch("https://localhost:9000/user/getinfo", {
+  return await fetch(`https://${location.host}:9000/user/getinfo`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
