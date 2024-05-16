@@ -173,7 +173,7 @@ def get_other_info(req):
 def logout(req):
     try:
         del req.session["username"]
-        del req.session["last_login"]
+        request.session.modified = True
     except KeyError:
         pass
     return utils.reponseJsonErrorMessage(200, "00", "Success")
