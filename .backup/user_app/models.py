@@ -1,19 +1,15 @@
 from django.db import models
 
-from django.db import models
-
 # Create your models here.
 class UserManagement(models.Model):
     user_id = models.BigAutoField(primary_key=True)
     username = models.CharField(max_length=16, unique=True)
     password = models.CharField(max_length=255)
     name = models.CharField(max_length=50)
-    last_name = models.CharField(max_length=50)
     type = models.CharField(max_length=1)
+    image = models.CharField(max_length=255)
     status = models.CharField(max_length=30)
     phone_number = models.CharField(max_length=255)
-    tag = models.CharField(max_length=50)
-    experience = models.CharField(max_length=50)
     last_activity = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now_add=True)

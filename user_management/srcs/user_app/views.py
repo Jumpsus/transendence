@@ -4,6 +4,7 @@ from django.views.decorators.csrf import csrf_exempt
 from user_app.models import UserManagement
 from user_project import utils
 from datetime import datetime
+from user_app import database
 import json
 
 # Create your views here.
@@ -19,7 +20,7 @@ def login(req):
     except:
         return utils.reponseJsonErrorMessage(400, "10", "Invalid request")
 
-    u = UserManagement.objects.filter(username = user, password = passwd)
+    u = database.find_user_by_username_passwd(user, passwd)
 
     if len(u) == 0:
         return utils.reponseJsonErrorMessage(400, "11", "Mismatch username or password")
@@ -39,14 +40,11 @@ def register(req):
     except:
         return utils.reponseJsonErrorMessage(400, "10", "Invalid request")
 
-    u = UserManagement.objects.filter(username = user)
+    u = database.find_user_by_username(user)
     if len(u) != 0:
         return utils.reponseJsonErrorMessage(400, "12", "Username already exists")
 
-    try:
-        new_user = UserManagement(username = user, password = passwd)
-        new_user.save()
-    except:
+    if database.create_user(user, passwd) != True:
         return utils.reponseJsonErrorMessage(500, "20", "Internal error")
     
     req.session["username"] = user
@@ -67,14 +65,13 @@ def loginlist(req):
     response_data["user_list"] = user_list
     return HttpResponse(json.dumps(response_data), content_type="application/json", status=200)
 
-def getinfo(req):
+def get_info(req):
     try:
         user = req.session["username"]
     except KeyError:
-        print ("No session found")
-        return utils.reponseJsonErrorMessage(400, "10", "Invalid Request")
+        return utils.reponseJsonErrorMessage(400, "30", "Invalid Session")
 
-    u = UserManagement.objects.filter(username = user)
+    u = database.find_user_by_username(user)
 
     if len(u) == 0:
         return utils.reponseJsonErrorMessage(400, "13", "User Not Found")
@@ -93,7 +90,7 @@ def getinfo(req):
 
 
 @csrf_exempt
-def updateinfo(req):
+def update_info(req):
 
     try:
         body = utils.getJsonBody(req.body)
@@ -103,37 +100,34 @@ def updateinfo(req):
     try:
         user = req.session["username"]
     except KeyError:
-        print ("No session found")
-        return utils.reponseJsonErrorMessage(400, "10", "Invalid Request")
+        return utils.reponseJsonErrorMessage(400, "30", "Invalid Session")
 
-    u = UserManagement.objects.filter(username = user)
+    u = database.find_user_by_username(user)
 
     if len(u) == 0:
         return utils.reponseJsonErrorMessage(400, "13", "User Not Found")
 
     try:
-        u[0].name = body["name"]
+        name = body["name"]
     except:
-        u[0].name = ""
+        name = ""
 
     try:
-        u[0].last_name = body["last_name"]
+        last_name = body["last_name"]
     except:
-        u[0].last_name = ""
+        last_name = ""
 
     try:
-        u[0].phone_number = body["phone_number"]
+        phone_number = body["phone_number"]
     except:
-        u[0].phone_number = ""
+        phone_number = ""
 
     try:
-        u[0].tag = body["tag"]
+        tag = body["tag"]
     except:
-        u[0].tag = ""
+        tag = ""
 
-    try:
-        u[0].save()
-    except:
+    if database.edit_user(name, last_name, phone_number, tag) != True:
         return utils.reponseJsonErrorMessage(500, "20", "Internal error")
 
     return utils.reponseJsonErrorMessage(200, "00", "Success")
@@ -143,7 +137,7 @@ def get_other_info(req):
 
     try:
         body = utils.getJsonBody(req.body)
-        user = body["username"]
+        other_user = body["username"]
     except:
         return utils.reponseJsonErrorMessage(400, "10", "Invalid request")
 
@@ -153,7 +147,7 @@ def get_other_info(req):
     #     print ("No session found")
     #     return utils.reponseJsonErrorMessage(400, "10", "Invalid Request")
 
-    u = UserManagement.objects.filter(username = user)
+    u = database.find_user_by_username(other_user)
 
     if len(u) == 0:
         return utils.reponseJsonErrorMessage(400, "13", "User Not Found")
@@ -170,10 +164,103 @@ def get_other_info(req):
     response_data["level"] = 0
     return HttpResponse(json.dumps(response_data), content_type="application/json", status=200)
 
+@csrf_exempt
+def add_friend(req):
+    #get other_username
+    try:
+        body = utils.getJsonBody(req.body)
+        add_user = body["username"]
+    except:
+        return utils.reponseJsonErrorMessage(400, "10", "Invalid request")
+
+    #get my_username
+    try:
+        current_user = req.session["username"]
+    except KeyError:
+        return utils.reponseJsonErrorMessage(400, "30", "Invalid Session")
+    
+    # validate username
+    if add_user == current_user:
+        return utils.reponseJsonErrorMessage(400, "10", "Invalid request")
+
+    add_u = database.find_user_by_username(add_user)
+    u = database.find_user_by_username(current_user)
+
+    if len(add_u) == 0:
+        return utils.reponseJsonErrorMessage(400, "13", "User Not Found")
+    elif len(u) == 0:
+        return utils.responseJsonErrorMessage(400, "13", "User Not Found")
+
+    # add friend
+    if database.add_friend(u[0], add_u[0]) == False:
+        return utils.reponseJsonErrorMessage(500, "20", "Internal error")
+    
+    return utils.reponseJsonErrorMessage(200, "00", "Success")
+
+@csrf_exempt
+def block_user(req):
+    #get other_username
+    try:
+        body = utils.getJsonBody(req.body)
+        block_user = body["username"]
+    except:
+        return utils.reponseJsonErrorMessage(400, "10", "Invalid request")
+
+    #get my_username
+    try:
+        current_user = req.session["username"]
+    except KeyError:
+        return utils.reponseJsonErrorMessage(400, "30", "Invalid Session")
+    
+    # validate username
+    if block_user == current_user:
+        return utils.reponseJsonErrorMessage(400, "10", "Invalid request")
+
+    block_u = database.find_user_by_username(block_user)
+    u = database.find_user_by_username(current_user)
+
+    if len(block_u) == 0:
+        return utils.reponseJsonErrorMessage(400, "13", "User Not Found")
+    elif len(u) == 0:
+        return utils.responseJsonErrorMessage(400, "13", "User Not Found")
+
+    # add friend
+    if database.add_friend(u[0], block_u[0]) == False:
+        return utils.reponseJsonErrorMessage(500, "20", "Internal error")
+    
+    return utils.reponseJsonErrorMessage(200, "00", "Success")
+
+def friend_list(req):
+    try:
+        current_user = req.session["username"]
+    except KeyError:
+        return utils.reponseJsonErrorMessage(400, "30", "Invalid Session")
+
+    u = database.find_user_by_username(current_user)
+    if len(u) == 0:
+        return utils.responseJsonErrorMessage(400, "13", "User Not Found")
+
+    friends = database.find_frend(u[0])
+    
+    friend_list = []
+    for friend in friends:
+        if friend.action == "add_friend": #to do change to friend
+            if friend.user_a.username == u[0].username:
+                data = {"username": friend.user_b.username}
+            else:
+                data = {"username": friend.user_a.username}
+            friend_list.append(data)
+
+    response_data = {}
+    response_data["code"] = "00"
+    response_data["friend_list"] = friend_list
+    return HttpResponse(json.dumps(response_data), content_type="application/json", status=200)
+
+
 def logout(req):
     try:
         del req.session["username"]
-        del req.session["last_login"]
+        request.session.modified = True
     except KeyError:
         pass
     return utils.reponseJsonErrorMessage(200, "00", "Success")
