@@ -10,7 +10,6 @@ class UserManagement(models.Model):
     name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     type = models.CharField(max_length=1)
-    image = models.CharField(max_length=255)
     status = models.CharField(max_length=30)
     phone_number = models.CharField(max_length=255)
     tag = models.CharField(max_length=50)
