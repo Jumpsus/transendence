@@ -21,3 +21,69 @@ body {
   font-weight: 400;
   font-style: normal;
 }
+
+/* for debug */
+
+/* Extra small	None	<576px
+Small	sm	≥576px
+Medium	md	≥768px
+Large	lg	≥992px
+Extra large	xl	≥1200px horizontal
+Extra extra large	xxl	≥1400px */
+
+#navigation-wrapper::before {
+  content: "xsm";
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+@media (min-width: 576px) {
+  #navigation-wrapper::before {
+    content: "sm";
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+  }
+}
+
+@media (min-width: 768px) {
+  #navigation-wrapper::before {
+    content: "md";
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+  }
+}
+
+@media (min-width: 992px) {
+  #navigation-wrapper::before {
+    content: "lg";
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+  }
+}
+
+@media (min-width: 1200px) {
+  #navigation-wrapper::before {
+    content: "xl";
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+  }
+}
+
+@media (min-width: 1400px) {
+  #navigation-wrapper::before {
+    content: "xxl";
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+  }
+}
