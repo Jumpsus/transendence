@@ -88,7 +88,6 @@ def get_info(req):
     response_data["level"] = 0
     return HttpResponse(json.dumps(response_data), content_type="application/json", status=200)
 
-
 @csrf_exempt
 def update_info(req):
 
@@ -289,6 +288,7 @@ def change_password(req):
 def logout(req):
     try:
         del req.session["username"]
+        req.session.set_expiry(0)
         req.session.modified = True
     except KeyError:
         pass
