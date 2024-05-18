@@ -5,6 +5,11 @@ from user_app.models import FriendManagement
 # USER_MANAGEMENT
 
 def find_user_by_username(username):
+    # try:
+    #     UserManagement.objects.get(username = username)
+    # except:
+    #     return UserManagement(), False
+    # return user, True
     return UserManagement.objects.filter(username = username)
 
 def find_user_by_username_passwd(username, password):
@@ -34,6 +39,17 @@ def edit_user(user, name = "", last_name = "", phone_number = "", tag = ""):
     user.tag = tag
 
     try: 
+        user.save()
+    except:
+        return False
+    return True
+
+def update_password(user, passwd):
+    if len(passwd) == 0:
+        return False
+
+    user.password = passwd
+    try:
         user.save()
     except:
         return False

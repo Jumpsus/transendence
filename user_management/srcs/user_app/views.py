@@ -256,11 +256,40 @@ def friend_list(req):
     response_data["friend_list"] = friend_list
     return HttpResponse(json.dumps(response_data), content_type="application/json", status=200)
 
+@csrf_exempt
+def change_password(req):
+    try:
+        body = utils.getJsonBody(req.body)
+        old_passwd = body ["old_password"]
+        passwd = body["password"]
+    except:
+        return utils.reponseJsonErrorMessage(400, "10", "Invalid request")
+
+    if len(passwd) == 0 or len(old_passwd) == 0:
+        return utils.reponseJsonErrorMessage(400, "10", "Invalid request")
+
+    try:
+        current_user = req.session["username"]
+    except KeyError:
+        return utils.reponseJsonErrorMessage(400, "30", "Invalid Session")
+
+    u = database.find_user_by_username(current_user)
+
+    if len(u) == 0:
+        return utils.responseJsonErrorMessage(400, "13", "User Not Found")
+
+    if u[0].password != old_passwd:
+        return utils.reponseJsonErrorMessage(400, "14", "Incorrect Password")
+
+    if database.update_password(u[0], passwd) == False:
+        return utils.reponseJsonErrorMessage(500, "20", "Internal error")
+    
+    return utils.reponseJsonErrorMessage(200, "00", "Success")
 
 def logout(req):
     try:
         del req.session["username"]
-        request.session.modified = True
+        req.session.modified = True
     except KeyError:
         pass
     return utils.reponseJsonErrorMessage(200, "00", "Success")
