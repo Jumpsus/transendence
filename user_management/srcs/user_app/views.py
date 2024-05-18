@@ -288,7 +288,7 @@ def change_password(req):
 def logout(req):
     try:
         del req.session["username"]
-        req.session.set_expiry(0)
+        req.session.set_expiry(1)
         req.session.modified = True
     except KeyError:
         pass
