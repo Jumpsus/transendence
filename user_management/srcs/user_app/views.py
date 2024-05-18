@@ -127,7 +127,7 @@ def update_info(req):
     except:
         tag = ""
 
-    if database.edit_user(name, last_name, phone_number, tag) != True:
+    if database.edit_user(u[0], name, last_name, phone_number, tag) != True:
         return utils.reponseJsonErrorMessage(500, "20", "Internal error")
 
     return utils.reponseJsonErrorMessage(200, "00", "Success")
