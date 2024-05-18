@@ -26,11 +26,6 @@ export class Settings extends Component {
 							disabled>
 					</div>
 					<div class="col-sm-6">
-						<label for="personal-email" class="form-label">Email</label>
-						<input type="email" class="form-control text-body-tertiary" id="personal-email"
-							disabled>
-					</div>
-					<div class="col-sm-6">
 						<label for="personal-tag" class="form-label">Tag</label>
 						<div>
 							<div class="input-group">
@@ -53,25 +48,25 @@ export class Settings extends Component {
 			<div class="col">
 				<h4 class="mb-4">Account information</h4>
 				<div class="row g-3">
+					<div class="col-sm-6">
+						<label for="profile-username" class="form-label">Username</label>
+						<input type="text" class="form-control text-body-tertiary" id="profile-username"
+							disabled>
+					</div>
 					<form class="col-sm-6">
-						<div>
-							<label for="profile-username" class="form-label">Username</label>
-							<input type="text" class="form-control text-body-tertiary" id="profile-username"
-								disabled>
-						</div>
-						<div class="d-flex justify-content-end mt-3">
-							<button type="button" class="btn btn-secondary" id="edit-username-button">Edit</button>
-							<button type="submit" class="btn btn-primary me-2" style="display: none;"
-								id="save-username-button">Save</button>
-							<button type="button" class="btn btn-secondary" style="display: none;"
-								id="reset-username-button">Cancel</button>
-						</div>
-					</form>
-					<form class="col-sm-6">
-						<div>
+						<div id="old-password-div">
 							<label for="profile-password" class="form-label">Password</label>
 							<input type="password" class="form-control text-body-tertiary" id="profile-password" disabled>
 						</div>
+						<div class="mt-3 d-none" id="new-password-div">
+							<label for="new-profile-password" class="form-label">New password</label>
+							<input type="password" class="form-control text-body-tertiary" id="new-profile-password">
+						</div>
+						<div class="mt-3 d-none" id="new-password-2-div">
+							<label for="new-profile-password-2" class="form-label">Confirm new password</label>
+							<input type="password" class="form-control text-body-tertiary" id="new-profile-password-2">
+						</div>
+						<div class="text-danger" id="password-error"></div>
 						<div class="d-flex justify-content-end mt-3">
 							<button type="button" class="btn btn-secondary" id="edit-password-button">Edit</button>
 							<button type="submit" class="btn btn-primary me-2" style="display: none;"
@@ -103,31 +98,23 @@ export class Settings extends Component {
     const passwordField = document.getElementById("profile-password");
     const nameField = document.getElementById("personal-name");
     const lastNameField = document.getElementById("personal-lastname");
-    const emailField = document.getElementById("personal-email");
     const phoneField = document.getElementById("personal-phone");
     const tagField = document.getElementById("personal-tag");
     const editButton = document.getElementById("edit-button");
     const saveButton = document.getElementById("save-button");
     const cancelButton = document.getElementById("reset-button");
-    const editUsernameButton = document.getElementById("edit-username-button");
-    const saveUsernameButton = document.getElementById("save-username-button");
-    const cancelUsernameButton = document.getElementById(
-      "reset-username-button"
-    );
     const editPasswordButton = document.getElementById("edit-password-button");
     const savePasswordButton = document.getElementById("save-password-button");
     const cancelPasswordButton = document.getElementById(
       "reset-password-button"
     );
     const logoutButton = document.getElementById("logout-button");
+    const oldPassDiv = document.getElementById("old-password-div");
+    let newPassDiv = document.getElementById("new-password-div");
+    let newPass2Div = document.getElementById("new-password-2-div");
+    const passwordErrorMsg = document.getElementById("password-error");
 
-    const fieldsArray = [
-      nameField,
-      lastNameField,
-      emailField,
-      phoneField,
-      tagField,
-    ];
+    const fieldsArray = [nameField, lastNameField, phoneField, tagField];
 
     await fetch(`https://${location.host}:9000/user/getinfo`, {
       method: "GET",
@@ -142,7 +129,6 @@ export class Settings extends Component {
       .then((data) => {
         nameField.value = data.name;
         lastNameField.value = data.last_name;
-        emailField.value = data.email;
         phoneField.value = data.phone_number;
         tagField.value = data.tag;
         usernameField.value = data.username;
@@ -155,12 +141,23 @@ export class Settings extends Component {
       fieldsArray,
       editButton,
       saveButton,
-      cancelButton
+      cancelButton,
+      isPassword = false
     ) => {
+      if (isPassword) {
+        if (newPassDiv.classList.contains("d-none")) {
+          newPassDiv.classList.remove("d-none");
+          newPass2Div.classList.remove("d-none");
+          oldPassDiv.querySelector("label").innerText = "Old password";
+        } else {
+          newPassDiv.classList.add("d-none");
+          newPass2Div.classList.add("d-none");
+          oldPassDiv.querySelector("label").innerText = "Password";
+        }
+      }
       fieldsArray.forEach(function (element) {
         element.disabled = !element.disabled;
       });
-
       editButton.style.display = fieldsArray[0].disabled
         ? "inline-block"
         : "none";
@@ -179,47 +176,40 @@ export class Settings extends Component {
         fieldsArray,
         editButton,
         saveButton,
-        cancelButton
+        cancelButton,
+        false
       )
     );
 
-    saveButton.addEventListener("click", (e) => {
+    saveButton.addEventListener("click", async (e) => {
       e.preventDefault();
       toggleEditMode(fieldsArray, editButton, saveButton, cancelButton);
+      await fetch(`https://${location.host}:9000/user/updateinfo`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: nameField.value,
+          last_name: lastNameField.value,
+          phone_number: phoneField.value,
+          tag: tagField.value,
+        }),
+        credentials: "include",
+      })
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          console.log("we have data: ", data);
+        })
+        .catch((error) => {
+          console.log("we got an error: ", error);
+        });
     });
 
     cancelButton.addEventListener("click", () => {
-      toggleEditMode(fieldsArray, editButton, saveButton, cancelButton);
-    });
-
-    editUsernameButton.addEventListener(
-      "click",
-      toggleEditMode.bind(
-        null,
-        [usernameField],
-        editUsernameButton,
-        saveUsernameButton,
-        cancelUsernameButton
-      )
-    );
-
-    saveUsernameButton.addEventListener("click", (e) => {
-      e.preventDefault();
-      toggleEditMode(
-        [usernameField],
-        editUsernameButton,
-        saveUsernameButton,
-        cancelUsernameButton
-      );
-    });
-
-    cancelUsernameButton.addEventListener("click", () => {
-      toggleEditMode(
-        [usernameField],
-        editUsernameButton,
-        saveUsernameButton,
-        cancelUsernameButton
-      );
+      toggleEditMode(fieldsArray, editButton, saveButton, cancelButton, false);
     });
 
     editPasswordButton.addEventListener(
@@ -229,26 +219,57 @@ export class Settings extends Component {
         [passwordField],
         editPasswordButton,
         savePasswordButton,
-        cancelPasswordButton
+        cancelPasswordButton,
+        true
       )
     );
 
-    savePasswordButton.addEventListener("click", (e) => {
+    savePasswordButton.addEventListener("click", async (e) => {
       e.preventDefault();
+      if (
+        newPassDiv.querySelector("input").value !==
+        newPass2Div.querySelector("input").value
+      ) {
+        passwordErrorMsg.innerText = "Passwords do not match";
+        return;
+      } else {
+        await fetch(`https://${location.host}:9000/user/updatepassword`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            old_password: passwordField.value,
+            new_password: newPassDiv.querySelector("input").value,
+          }),
+          credentials: "include",
+        })
+          .then(() => {
+            passwordErrorMsg.innerText = "Password updated";
+            passwordErrorMsg.classList.remove("text-danger");
+            passwordErrorMsg.classList.add("text-success");
+          })
+          .catch((error) => {
+            passwordErrorMsg.innerText = "Error reaching the server";
+          });
+      }
       toggleEditMode(
         [passwordField],
         editPasswordButton,
         savePasswordButton,
-        cancelPasswordButton
+        cancelPasswordButton,
+        true
       );
     });
 
     cancelPasswordButton.addEventListener("click", () => {
+      passwordErrorMsg.innerText = "";
       toggleEditMode(
         [passwordField],
         editPasswordButton,
         savePasswordButton,
-        cancelPasswordButton
+        cancelPasswordButton,
+        true
       );
     });
 
