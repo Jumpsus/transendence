@@ -2,6 +2,8 @@ import { Component } from "../library/component.js";
 import { makeLinkActive } from "../utils/other.js";
 import { isLoggedIn } from "../../index.js";
 import { replaceHistoryAndGoTo } from "../utils/router.js";
+import { myUsername } from "../../index.js";
+import { NotExist } from "./404.js";
 
 export class Settings extends Component {
   constructor() {
@@ -89,7 +91,13 @@ export class Settings extends Component {
   }
 
   render() {
-    super.render();
+    if (
+      myUsername.username != location.pathname.split("/")[1] &&
+      location.pathname.split("/")[1] != ""
+    )
+	  new NotExist();
+	else
+      super.render();
     makeLinkActive(document.getElementById("profileMenu"));
   }
 
