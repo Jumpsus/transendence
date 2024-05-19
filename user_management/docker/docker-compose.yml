@@ -5,9 +5,10 @@ services:
     build:
         context: .
         dockerfile: Dockerfile
-    command: sh -c "python manage.py makemigrations && python manage.py migrate --noinput && python manage.py runserver 0.0.0.0:8000"
+    command: sh -c "python manage.py makemigrations && python manage.py migrate --noinput && gunicorn -c /app/gunicorn.config.py"
     volumes:
         - user_srcs:/app
+        - ssl_volume:/app/ssl
 
   user-nginx:
     networks:
