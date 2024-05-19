@@ -254,6 +254,7 @@ def change_password(req):
     
     return utils.responseJsonErrorMessage(200, "00", "Success")
 
+@csrf_exempt
 def logout(req):
     try:
         del req.session["username"]
