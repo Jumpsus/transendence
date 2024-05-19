@@ -5,7 +5,7 @@ def getJsonBody(body_unicode):
     body = json.loads(body_unicode)
     return body
 
-def reponseJsonErrorMessage(status, code, message):
+def responseJsonErrorMessage(status, code, message):
     response_data = {}
     response_data["code"] = code
     response_data["message"] = message

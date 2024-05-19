@@ -5,11 +5,6 @@ from user_app.models import FriendManagement
 # USER_MANAGEMENT
 
 def find_user_by_username(username):
-    # try:
-    #     UserManagement.objects.get(username = username)
-    # except:
-    #     return UserManagement(), False
-    # return user, True
     return UserManagement.objects.filter(username = username)
 
 def find_user_by_username_passwd(username, password):
@@ -45,10 +40,8 @@ def edit_user(user, name = "", last_name = "", phone_number = "", tag = ""):
     return True
 
 def update_password(user, passwd):
-    if len(passwd) == 0:
-        return False
-
     user.password = passwd
+
     try:
         user.save()
     except:
@@ -65,11 +58,28 @@ def set_image(user, image):
     return True
 
 # FRIEND_MANAGEMENT
-def find_frend(user):
-    return FriendManagement.objects.filter(Q(user_a = user) | Q(user_b = user))
+def find_relation(user_a, user_b):
+    return FriendManagement.objects.filter((Q(user_a = user_a) & Q(user_b = user_b)) | (Q(user_a = user_b) & Q(user_b = user_a)))
+
+def find_friend(user):
+    return FriendManagement.objects.filter(Q(action = "friend"), Q(user_a = user) | Q(user_b = user))
+
+def save_relation(friend_management):
+    try:
+        friend_management.save()
+    except:
+        return False
+    return True
+
+def delete_relation(friend_management):
+    try:
+        friend_management.delete()
+    except:
+        return False
+    return True
 
 def add_friend(user_a, user_b):
-    friend_management = FriendManagement(user_a = user_a, user_b = user_b, action = "add_friend")
+    friend_management = FriendManagement(user_a = user_a, user_b = user_b, action = "pending")
 
     try:
         friend_management.save()
@@ -86,11 +96,8 @@ def block_user(user_a, user_b):
         return False
     return True
 
-def check_blocked(user_a, user_b):
-    friend_management = FriendManagement.objects.filter( Q(user_a = user_a, user_b = user_b, action = "block") |
-                                                         Q(user_a = user_b, user_b = user_a, action = "block"))
+def find_friends_by_action_user(user, action):
+    return FriendManagement.objects.filter(user_a = user, action = action)
 
-    if len(friend_management > 0):
-        return True
-    return False
-
+def find_friends_by_actioned_user(user, action):
+    return FriendManagement.objects.filter(user_b = user, action = action)
