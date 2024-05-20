@@ -149,3 +149,24 @@ def unblock_user(u, unblock_u):
                 return utils.responseJsonErrorMessage(400, "16", "Relation Not Found")
 
     return utils.responseJsonErrorMessage(200, "00", "Success")
+
+def map_relation(user_a, user_b):
+    relation = database.find_relation(user_a, user_b)
+
+    if len (relation) != 0:
+        match relation[0].action:
+            case "block":
+                if relation[0].user_a == user_a:
+                    return "block"
+                else:
+                    return ""
+            
+            case "pending":
+                if relation[0].user_a == user_a:
+                    return "pending"
+                else:
+                    return "add"
+            case "friend":
+                return "friend"
+
+    return ""
