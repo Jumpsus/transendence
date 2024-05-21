@@ -12,6 +12,8 @@ import { NotExist } from "../views/404.js";
 import { myUsername } from "../../index.js";
 
 export let username = { username: "" };
+let lastViewedUser = "";
+export let newUserView = false;
 
 const routes = [
   { path: "/", view: Home },
@@ -25,13 +27,6 @@ const routesLoggedOut = [
   { path: "/Login", view: Login },
   { path: "/Register", view: Register },
 ];
-
-// function checkIfProfileUrl(url) {
-//   const parts = string.split("/");
-//   if (parts.length != 2) return false;
-//   const substring = parts.length > 1 ? parts[parts.length - 1] : "";
-//   return routes.some((route) => route.path === `/${substring}`);
-// }
 
 function getCorrectUrl(url) {
   let route;
@@ -68,7 +63,7 @@ async function userExists(username) {
       const userExists = data.user_list.some(
         (user) => user.username === username
       );
-	  return userExists;
+      return userExists;
     })
     .catch((error) => {
       console.log(error);
@@ -91,6 +86,10 @@ async function pathToView(url) {
           return;
         } else {
           username.username = parts[i].replace("/", "");
+          if (lastViewedUser != username.username) {
+            newUserView = true;
+            lastViewedUser = username.username;
+          } else newUserView = false;
           renderView(Profile);
           continue;
         }
@@ -105,12 +104,6 @@ async function pathToView(url) {
     renderView(route.view);
   }
 }
-
-// function router() {
-//   const url = window.location.pathname;
-//   const route = routes.find((route) => route.path === url);
-//   const view = new route.view();
-// }
 
 function renderView(view) {
   new view();

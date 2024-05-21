@@ -95,9 +95,8 @@ export class Settings extends Component {
       myUsername.username != location.pathname.split("/")[1] &&
       location.pathname.split("/")[1] != ""
     )
-	  new NotExist();
-	else
-      super.render();
+      new NotExist();
+    else super.render();
     makeLinkActive(document.getElementById("profileMenu"));
   }
 
@@ -241,33 +240,42 @@ export class Settings extends Component {
         passwordErrorMsg.innerText = "Passwords do not match";
         return;
       } else {
-        await fetch(`https://${location.host}:9000/user/updatepassword`, {
+        await fetch(`https://${location.host}:9000/user/changepassword`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
             old_password: passwordField.value,
-            new_password: newPassDiv.querySelector("input").value,
+            password: newPassDiv.querySelector("input").value,
           }),
           credentials: "include",
         })
-          .then(() => {
+          .then((response) => {
+            return response.json();
+          })
+          .then((data) => {
+            if (data.code != "00") {
+              passwordErrorMsg.classList.add("text-danger");
+              passwordErrorMsg.classList.remove("text-success");
+              passwordErrorMsg.innerText = data.message;
+              return;
+            }
             passwordErrorMsg.innerText = "Password updated";
             passwordErrorMsg.classList.remove("text-danger");
             passwordErrorMsg.classList.add("text-success");
+			toggleEditMode(
+				[passwordField],
+				editPasswordButton,
+				savePasswordButton,
+				cancelPasswordButton,
+				true
+			  );
           })
           .catch((error) => {
             passwordErrorMsg.innerText = "Error reaching the server";
           });
       }
-      toggleEditMode(
-        [passwordField],
-        editPasswordButton,
-        savePasswordButton,
-        cancelPasswordButton,
-        true
-      );
     });
 
     cancelPasswordButton.addEventListener("click", () => {
