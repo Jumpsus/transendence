@@ -9,32 +9,30 @@ export class Profile extends Component {
   constructor() {
     super(document.getElementById("content-wrapper"));
     this.view = `
-		<div class="bg-body-tertiary rounded-5 d-flex flex-md-row flex-column" id="profileHeader">
-			<div class="align-self-center mt-3 m-md-3">
-				<img src="/assets/profile.png" class="rounded-5" width="200" height="200" alt="">
+		<div class="container d-flex flex-md-row flex-column align-items-md-end" id="profileHeader">
+			<div class="align-self-center mt-3 mt-md-5">
+				<img src="/assets/profile.png" class="rounded-top-3" width="200" height="200" alt="">
 				<div class="d-flex mt-3 justify-content-evenly gap-2 d-none" id="profile-interaction">
 					<button class="col btn rounded-4 btn-light" id="message-button">Message</button>
 					<button class="col btn rounded-4 btn-outline-light" id="friend-button"></button>
 				</div>
 			</div>
-			<div class="w-100 p-md-3 pb-3 px-3 h-100 align-self-end d-flex flex-column">
+			<div class="w-100 h-100 d-flex flex-column justify-content-end">
 				<div
-					class="mb-2 d-flex flex-wrap flex-md-row flex-column align-items-md-end align-items-center justify-content-between">
-						<div class="fs-3">@${username.username}</div>
+					class="d-flex flex-wrap flex-md-row flex-column align-items-md-end align-items-center justify-content-between">
+						<div class="fs-3">${username.username}</div>
 					<div class="d-flex gap-1 my-md-0 my-2">
 						<div class="fs-3 border border-1 rounded-3 d-flex align-items-center p-2 gap-2">
 							<div>Lvl</div>
 							<div id="lvl"></div>
 						</div>
 						<div class="fs-3 border border-1 rounded-3 d-flex p-2 gap-2">
-							<div>👍</div>
 							<div class="d-flex flex-column">
 								<div class="fs-6 text-secondary">Wins</div>
 								<div class="text-success" id="wonNumber"></div>
 							</div>
 						</div>
 						<div class="fs-3 border border-1 rounded-3 d-flex p-2 gap-2">
-							<div>👎</div>
 							<div class="d-flex flex-column">
 								<div class="fs-6 text-secondary">Losses</div>
 								<div class="text-danger" id="lostNumber"></div>
@@ -42,13 +40,9 @@ export class Profile extends Component {
 						</div>
 					</div>
 				</div>
-				<div class="progress" role="progressbar" aria-label="Warning example with label" aria-valuenow="75"
-					aria-valuemin="0" aria-valuemax="100">
-					<div class="progress-bar text-bg-dark w-75">75%</div>
-				</div>
 			</div>
 		</div>
-		<ul class="nav nav-pills d-flex justify-content-center py-3" id="profileMenu">
+		<ul class="nav nav-pills d-flex justify-content-center py-3 border-top border-bottom" id="profileMenu">
 			<li class="nav-item" id="friendsTab">
 				<a href="/${username.username}/Friends" class="nav-link active bg-body-tertiary text-body" aria-current="page"
 					data-link>Friends</a>
@@ -60,7 +54,7 @@ export class Profile extends Component {
 				<a href="/${username.username}/Settings" class="nav-link text-body-tertiary" data-link>Settings</a>
 			</li>
 		</ul>
-		<div class="bg-body-tertiary rounded-5 px-5 py-4" id="profile-wrapper">
+		<div class="container py-4 flex-grow-1" style="" id="profile-wrapper">
 		</div>
 	`;
     this.render();
@@ -72,7 +66,7 @@ export class Profile extends Component {
     new MatchHistory();
     if (myUsername.username != username.username) {
       document.getElementById("settingsTab").style.display = "none";
-	  document.getElementById("friendsTab").style.display = "none";
+      document.getElementById("friendsTab").style.display = "none";
       document.getElementById("profile-interaction").classList.remove("d-none");
     }
     const wonNumber = document.getElementById("wonNumber");

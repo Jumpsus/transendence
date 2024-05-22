@@ -1,0 +1,22 @@
+.finals-section {
+  flex-grow: 1.5;
+}
+.semi-finals-section {
+  flex-grow: 1;
+}
+.quarter-finals-section {
+  flex-grow: 1;
+}
+@media (min-width: 1200px) {
+  .card {
+    width: 100%;
+    aspect-ratio: 1/1;
+  }
+}
+
+@media (max-width: 1199px) {
+  .card {
+    height: 100%;
+    aspect-ratio: 1/1;
+  }
+}
