@@ -46,7 +46,7 @@ export class Nav extends Component {
 						</svg>
 						<div class="ms-3 fs-6 d-lg-block d-none">Darkmode</div>
 				</div>
-				<a href="/${myUsername.username}/Friends" class="nav-link d-flex justify-content-lg-start justify-content-center" data-link>
+				<a href="/${myUsername.username}/History" class="nav-link d-flex justify-content-lg-start justify-content-center" data-link>
 					<div class="d-flex align-items-center">
 						<img src="/assets/profile.png"
 						alt="profile image" class="rounded-circle" width=30

@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from user_app.models import UserManagement
 from datetime import datetime
-from user_app import utils, database
+from user_app import utils, friend_management, database
 import json
 
 # Create your views here.
@@ -89,34 +89,34 @@ def user_list(req):
         case "":
             users = UserManagement.objects.all()
             for user in users:
-                d = {"username": user.username}
+                d = {"username": user.username, "status": "offline"}
                 user_list.append(d)
         
         case "friend":
             friends = database.find_friend(u[0])
             for friend in friends:
                 if friend.user_a == u[0]:
-                    d = {"username": friend.user_b.username}
+                    d = {"username": friend.user_b.username, "status": "offline"}
                 else:
-                    d = {"username": friend.user_a.username}
+                    d = {"username": friend.user_a.username, "status": "offline"}
                 user_list.append(d)
         
         case "add":
             friends = database.find_friends_by_action_user(u[0], "pending")
             for friend in friends:
-                d = {"username": friend.user_b.username}
+                d = {"username": friend.user_b.username, "status": "offline"}
                 user_list.append(d)
         
         case "pending":
             friends = database.find_friends_by_actioned_user(u[0], "pending")
             for friend in friends:
-                d = {"username": friend.user_a.username}
+                d = {"username": friend.user_a.username, "status": "offline"}
                 user_list.append(d)
         
         case "block":
             friends = database.find_friends_by_action_user(u[0], "block")
             for friend in friends:
-                d = {"username": friend.user_b.username}
+                d = {"username": friend.user_b.username, "status": "offline"}
                 user_list.append(d)
         
         case _:
@@ -202,15 +202,20 @@ def get_other_info(req):
     except:
         return utils.responseJsonErrorMessage(400, "10", "Invalid request")
 
-    # try:
-    #     user = req.session["username"]
-    # except KeyError:
-    #     print ("No session found")
-    #     return utils.responseJsonErrorMessage(400, "10", "Invalid Request")
-
     other_u = database.find_user_by_username(other_user)
     if len(other_u) == 0:
         return utils.responseJsonErrorMessage(400, "13", "User Not Found")
+
+    try:
+        user = req.session["username"]
+    except KeyError:
+        return utils.responseJsonErrorMessage(400, "30", "Invalid Session")
+
+    u = database.find_user_by_username(user)
+    if len(u) == 0:
+        return utils.responseJsonErrorMessage(400, "13", "User Not Found")
+
+    relation = friend_management.map_relation(u[0], other_u[0])
 
     response_data = {}
     response_data["code"] = "00"
@@ -222,6 +227,8 @@ def get_other_info(req):
     response_data["win"] = 0
     response_data["lose"] = 0
     response_data["level"] = 0
+    response_data["relation"] = relation
+    response_data["status"] = "offline" # TODO handle this case
     return HttpResponse(json.dumps(response_data), content_type="application/json", status=200)
 
 @csrf_exempt
