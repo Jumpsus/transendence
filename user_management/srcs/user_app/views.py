@@ -145,6 +145,7 @@ def get_info(req):
     response_data["last_name"] = u[0].last_name
     response_data["phone_number"] = u[0].phone_number
     response_data["tag"] = u[0].tag
+    response_data["image"] = u[0].image
     response_data["win"] = 0
     response_data["lose"] = 0
     response_data["level"] = 0
@@ -224,6 +225,7 @@ def get_other_info(req):
     response_data["last_name"] = other_u[0].last_name
     response_data["phone_number"] = other_u[0].phone_number
     response_data["tag"] = other_u[0].tag
+    response_data["image"] = other_u[0].image
     response_data["win"] = 0
     response_data["lose"] = 0
     response_data["level"] = 0
