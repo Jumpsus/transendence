@@ -19,7 +19,7 @@ services:
       service: user-db
 
   user-db-setup:
-    restart: always
+    restart: on-failure:10
     extends:
       file: user_management/docker/docker-compose.yml
       service: user-db-setup
@@ -72,6 +72,14 @@ volumes:
     driver_opts:
       type: none
       device: ./user_management/srcs
+      o: bind
+
+  common:
+    name: common
+    driver: local
+    driver_opts:
+      type: none
+      device: ./common
       o: bind
 
 networks:
