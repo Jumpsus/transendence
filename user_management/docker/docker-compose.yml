@@ -13,7 +13,7 @@ services:
 
   user-nginx:
     networks:
-      - transcendence
+      - user-network
       - user-network
     build:
       context: nginx
