@@ -1,3 +1,12 @@
+@import url("styles.css");
+
+[data-bs-theme="light"] {
+  --game-ui-color: var(--my-secondary-color);
+}
+[data-bs-theme="dark"] {
+  --game-ui-color: var(--bs-body-color);
+}
+
 #game-container {
   container-type: size;
   container-name: resize-box;
@@ -11,10 +20,12 @@
   object-fit: contain;
   overflow: hidden;
   margin: auto;
+  border: 3px solid var(--game-ui-color) !important;
 }
 
 .paddle {
   transition: all 100ms ease-out;
+  background-color: var(--game-ui-color);
 }
 
 #player-one {
@@ -30,6 +41,11 @@
   transform: translate(-50%, 50%);
   --x: 50;
   --y: 50;
+  background-color: var(--game-ui-color);
+}
+
+.separator-chunk {
+  background-color: var(--game-ui-color);
 }
 
 /* horizontal */
@@ -56,11 +72,17 @@
     height: 100%;
     width: 1%;
   }
+  .separator-chunk {
+    height: 4%;
+    width: 100%;
+  }
   #score-one {
     right: 100%;
+    top: 0;
   }
   #score-two {
     left: 100%;
+    top: 0;
   }
   #name-one {
     right: 100%;
@@ -111,7 +133,11 @@
   }
   #separator {
     width: 100%;
-    padding: 0.5%;
+    height: 1%;
+  }
+  .separator-chunk {
+    width: 4%;
+    height: 100%;
   }
   #score-one {
     right: 0;

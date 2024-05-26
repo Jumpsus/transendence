@@ -8,8 +8,8 @@ scoreTwo.textContent = 0;
 
 const nameOne = document.getElementById("name-one");
 const nameTwo = document.getElementById("name-two");
-nameOne.textContent = "Player 1";
-nameTwo.textContent = "Player 2";
+nameOne.textContent = "Player1";
+nameTwo.textContent = "Player2";
 
 export const gameField = document.getElementById("game-field");
 export const gameState = {
@@ -27,7 +27,7 @@ window.addEventListener("resize", () => {
 
 if (gameState.isOnline) {
   setInterval(async () => {
-	await playerOne.sendUpdate();
+    await playerOne.sendUpdate();
     await ball.fetchUpdate();
     await playerTwo.fetchUpdate();
   }, 16);
