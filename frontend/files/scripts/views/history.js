@@ -6,7 +6,7 @@ export class MatchHistory extends Component {
   constructor() {
     super(document.getElementById("profile-wrapper"));
     this.view = `
-		<div>Match History</div>
+		<h4>Match History</h4>
 		`;
     this.render();
     this.setupEventListeners();

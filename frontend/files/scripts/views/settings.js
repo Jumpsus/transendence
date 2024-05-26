@@ -9,39 +9,39 @@ export class Settings extends Component {
   constructor() {
     super(document.getElementById("profile-wrapper"));
     this.view = `
-		<div class="container mt-3">
+		<div class="container m-0 p-0">
 			<div class="col">
 				<h4 class="mb-4">Personal information</h4>
 				<form class="row g-3">
 					<div class="col-sm-6">
 						<label for="personal-name" class="form-label">First Name</label>
-						<input type="text" class="form-control text-body-tertiary" id="personal-name" disabled>
+						<input type="text" class="form-control  rounded-0" id="personal-name" disabled>
 					</div>
 					<div class="col-sm-6">
 						<label for="personal-lastname" class="form-label">Last name</label>
-						<input type="text" class="form-control text-body-tertiary" id="personal-lastname"
+						<input type="text" class="form-control  rounded-0" id="personal-lastname"
 							disabled>
 					</div>
 					<div class="col-sm-6">
 						<label for="personal-phone" class="form-label">Tel</label>
-						<input type="tel" class="form-control text-body-tertiary" id="personal-phone"
+						<input type="tel" class="form-control  rounded-0" id="personal-phone"
 							disabled>
 					</div>
 					<div class="col-sm-6">
 						<label for="personal-tag" class="form-label">Tag</label>
 						<div>
 							<div class="input-group">
-								<span class="input-group-text">@</span>
-								<input class="form-control text-body-tertiary" type="text" id="personal-tag" name="username"
+								<span class="input-group-text rounded-0">@</span>
+								<input class="form-control  rounded-0" type="text" id="personal-tag" name="username"
 									disabled>
 							</div>
 						</div>
 					</div>
 					<div class="d-flex justify-content-end">
-						<button type="button" class="btn btn-secondary" id="edit-button">Edit</button>
-						<button type="submit" class="btn btn-primary me-2" style="display: none;"
+						<button type="button" class="btn btn-secondary rounded-0" id="edit-button">Edit</button>
+						<button type="submit" class="btn btn-primary me-2 rounded-0" style="display: none;"
 							id="save-button">Save</button>
-						<button type="button" class="btn btn-secondary" style="display: none;"
+						<button type="button" class="btn btn-secondary rounded-0" style="display: none;"
 							id="reset-button">Cancel</button>
 					</div>
 				</form>
@@ -52,28 +52,28 @@ export class Settings extends Component {
 				<div class="row g-3">
 					<div class="col-sm-6">
 						<label for="profile-username" class="form-label">Username</label>
-						<input type="text" class="form-control text-body-tertiary" id="profile-username"
+						<input type="text" class="form-control  rounded-0" id="profile-username"
 							disabled>
 					</div>
 					<form class="col-sm-6">
 						<div id="old-password-div">
 							<label for="profile-password" class="form-label">Password</label>
-							<input type="password" class="form-control text-body-tertiary" id="profile-password" disabled>
+							<input type="password" class="form-control  rounded-0" id="profile-password" disabled>
 						</div>
 						<div class="mt-3 d-none" id="new-password-div">
 							<label for="new-profile-password" class="form-label">New password</label>
-							<input type="password" class="form-control text-body-tertiary" id="new-profile-password">
+							<input type="password" class="form-control  rounded-0" id="new-profile-password">
 						</div>
 						<div class="mt-3 d-none" id="new-password-2-div">
 							<label for="new-profile-password-2" class="form-label">Confirm new password</label>
-							<input type="password" class="form-control text-body-tertiary" id="new-profile-password-2">
+							<input type="password" class="form-control  rounded-0" id="new-profile-password-2">
 						</div>
 						<div class="text-danger" id="password-error"></div>
 						<div class="d-flex justify-content-end mt-3">
-							<button type="button" class="btn btn-secondary" id="edit-password-button">Edit</button>
-							<button type="submit" class="btn btn-primary me-2" style="display: none;"
+							<button type="button" class="btn btn-secondary rounded-0" id="edit-password-button">Edit</button>
+							<button type="submit" class="btn btn-primary me-2 rounded-0" style="display: none;"
 								id="save-password-button">Save</button>
-							<button type="button" class="btn btn-secondary" style="display: none;"
+							<button type="button" class="btn btn-secondary rounded-0" style="display: none;"
 								id="reset-password-button">Cancel</button>
 						</div>
 					</form>
@@ -81,7 +81,7 @@ export class Settings extends Component {
 			</div>
 			<hr class="my-4">
 			<div class="d-flex justify-content-end">
-				<button type="button" class="btn btn-outline-danger" id="logout-button">Log
+				<button type="button" class="btn btn-outline-danger rounded-0" id="logout-button">Log
 					out</button>
 			</div>
 		</div>
@@ -264,13 +264,13 @@ export class Settings extends Component {
             passwordErrorMsg.innerText = "Password updated";
             passwordErrorMsg.classList.remove("text-danger");
             passwordErrorMsg.classList.add("text-success");
-			toggleEditMode(
-				[passwordField],
-				editPasswordButton,
-				savePasswordButton,
-				cancelPasswordButton,
-				true
-			  );
+            toggleEditMode(
+              [passwordField],
+              editPasswordButton,
+              savePasswordButton,
+              cancelPasswordButton,
+              true
+            );
           })
           .catch((error) => {
             passwordErrorMsg.innerText = "Error reaching the server";

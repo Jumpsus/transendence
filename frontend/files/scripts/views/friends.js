@@ -6,10 +6,10 @@ export class Friends extends Component {
   constructor() {
     super(document.getElementById("profile-wrapper"));
     this.view = `
-	<div class="d-flex justify-content-between">
-				<div class="fs-3" id="friend-count"></div>
+	<div class="d-flex justify-content-between align-items-center">
+				<h4 class="" id="friend-count"></h4>
 				<form action="">
-					<input type="text" class="form-control rounded-pill" placeholder="Find a friend" id="find-friend">
+					<input type="text" class="form-control rounded-0" placeholder="Find a friend" style="max-width: 200px;" id="find-friend">
 					</input>
 				</form>
 			</div>
@@ -47,8 +47,10 @@ export class Friends extends Component {
         ).textContent = `${data.user_list.length} Friends`;
         data.user_list.forEach((friend) => {
           friendsList.innerHTML += `<div>
-					<a href="/${friend.username}/History" data-link><img src="/assets/profile.png" class="rounded-circle border border-4 border-success"
-							width="100" height="100" alt="..."></a>
+					<a href="/${friend.username}/History" data-link><div class="profile-img-box position-relative rounded-0" style="width: 100px; height:100px;">
+						<img src="/assets/profile.png" class="position-absolute object-fit-cover  profile-img rounded-0"
+								alt="...">
+					</div></a>
 					<div class="d-flex justify-content-center">
 						<div>${friend.username}</div>
 					</div>
@@ -91,8 +93,10 @@ export class Friends extends Component {
               friend.username != myUsername.username
             ) {
               searchList.innerHTML += `<div>
-				<a href="/${friend.username}/History" data-link><img src="/assets/profile.png" class="rounded-circle border border-4 border-success"
-						width="100" height="100" alt="..."></a>
+				<a href="/${friend.username}/History" data-link><div class="profile-img-box position-relative rounded-1" style="width: 100px; height:100px;">
+				<img src="/assets/profile.png" class="position-absolute object-fit-cover  profile-img rounded-1"
+						alt="...">
+			</div></a>
 				<div class="d-flex justify-content-center">
 					<div>${friend.username}</div>
 				</div>

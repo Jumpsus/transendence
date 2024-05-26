@@ -12,7 +12,7 @@ export class Register extends Component {
 	<div class="d-flex h-100 justify-content-center">
 		<div style="width: 324px">
 			<div class="d-flex flex-column justify-content-end login-header">
-				<div class="fs-1 mb-3 mx-4 d-flex justify-content-between">Sign up
+				<div class="fs-1 mb-3 mx-4 d-flex justify-content-between align-items-center">Sign up
 					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
 						id="Content-Files-Quill-Ink--Streamline-Pixel" fill="currentColor" height="40" width="40">
 						<desc>Content Files Quill Ink Streamline Icon: https://streamlinehq.com</desc>
@@ -96,10 +96,10 @@ export class Register extends Component {
 							password</label>
 						<div class="ms-4 invalid-feedback">Passwords do not match</div>
 					</div>
-					<button class="btn btn-outline-primary rounded-0 p-3 w-100">Sign up</button>
+					<button class="btn btn-outline-primary rounded-0 p-3 w-100 big-btn">Sign up</button>
 				</form>
 				<div class="mt-4 mb-2 mx-4 text-secondary d-flex flex-column align-items-center">Already have an
-					account? <a href="/Login" data-link>Sign&nbsp;in</a></div>
+					account? <a href="/Login" class="link-text" data-link>Sign&nbsp;in</a></div>
 				<div class="d-flex justify-content-center" id="modeSwitch">
 					<div class="p-1">
 						<svg xmlns="http://www.w3.org/2000/svg" id="sunIcon" viewBox="0 0 24 24"

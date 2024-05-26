@@ -9,52 +9,48 @@ export class Profile extends Component {
   constructor() {
     super(document.getElementById("content-wrapper"));
     this.view = `
-		<div class="container d-flex flex-md-row flex-column align-items-md-end" id="profileHeader">
-			<div class="align-self-center mt-3 mt-md-5">
-				<img src="/assets/profile.png" class="rounded-top-3" width="200" height="200" alt="">
-				<div class="d-flex mt-3 justify-content-evenly gap-2 d-none" id="profile-interaction">
-					<button class="col btn rounded-4 btn-light" id="message-button">Message</button>
-					<button class="col btn rounded-4 btn-outline-light" id="friend-button"></button>
+		<div class="container-lg d-flex flex-md-row flex-column align-items-md-end pt-4 pb-3" id="profileHeader">
+			<div class="d-flex flex-column align-items-center">
+				<div class="profile-img-box position-relative rounded-1" style="width: 200px; height: 200px;"><img src="/assets/profile.png" class="position-absolute object-fit-cover profile-img rounded-1" alt=""></div>
+				<div class="container d-flex mt-3 mx-0 px-0 justify-content-between gap-2 d-none" style="max-width:280px" id="profile-interaction">
+					<button class="col btn btn-light rounded-0" id="message-button">Text</button>
+					<button class="col btn btn-outline-light rounded-0" id="friend-button"></button>
 				</div>
 			</div>
-			<div class="w-100 h-100 d-flex flex-column justify-content-end">
+			<div class="w-100 ms-md-3 h-100 d-flex flex-column justify-content-end">
 				<div
 					class="d-flex flex-wrap flex-md-row flex-column align-items-md-end align-items-center justify-content-between">
 						<div class="fs-3">${username.username}</div>
-					<div class="d-flex gap-1 my-md-0 my-2">
-						<div class="fs-3 border border-1 rounded-3 d-flex align-items-center p-2 gap-2">
-							<div>Lvl</div>
-							<div id="lvl"></div>
-						</div>
-						<div class="fs-3 border border-1 rounded-3 d-flex p-2 gap-2">
-							<div class="d-flex flex-column">
+					<div class="d-flex my-md-0 my-0 gap-1 fs-1 container m-0 p-0 justify-content-center" style="max-width: 300px">
+							<div class="col-4 d-flex flex-column align-items-center">
 								<div class="fs-6 text-secondary">Wins</div>
-								<div class="text-success" id="wonNumber"></div>
+								<div class="" id="wonNumber"></div>
 							</div>
-						</div>
-						<div class="fs-3 border border-1 rounded-3 d-flex p-2 gap-2">
-							<div class="d-flex flex-column">
+							<div class="col-4 d-flex flex-column align-items-center">
+								<div class="fs-6 text-secondary">Ratio</div>
+								<div class="" id="winRate">65%</div>
+							</div>
+							<div class="col-4 d-flex flex-column align-items-center">
 								<div class="fs-6 text-secondary">Losses</div>
-								<div class="text-danger" id="lostNumber"></div>
+								<div class="" id="lostNumber"></div>
 							</div>
-						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		<ul class="nav nav-pills d-flex justify-content-center py-3 border-top border-bottom" id="profileMenu">
+		<ul class="nav d-flex justify-content-center py-3" id="profileMenu">
 			<li class="nav-item" id="friendsTab">
-				<a href="/${username.username}/Friends" class="nav-link active bg-body-tertiary text-body" aria-current="page"
+				<a href="/${username.username}/Friends" class="nav-link" aria-current="page"
 					data-link>Friends</a>
 			</li>
 			<li class="nav-item">
-				<a href="/${username.username}/History" class="nav-link text-body-tertiary" data-link>Match History</a>
+				<a href="/${username.username}/History" class="nav-link" data-link>History</a>
 			</li>
 			<li class="nav-item" id="settingsTab">
-				<a href="/${username.username}/Settings" class="nav-link text-body-tertiary" data-link>Settings</a>
+				<a href="/${username.username}/Settings" class="nav-link" data-link>Settings</a>
 			</li>
 		</ul>
-		<div class="container py-4 flex-grow-1" style="" id="profile-wrapper">
+		<div class="container-lg py-4 flex-grow-1" style="" id="profile-wrapper">
 		</div>
 	`;
     this.render();
@@ -71,7 +67,6 @@ export class Profile extends Component {
     }
     const wonNumber = document.getElementById("wonNumber");
     const lostNumber = document.getElementById("lostNumber");
-    const lvl = document.getElementById("lvl");
     fetch(`https://${location.host}:9000/user/getotherinfo`, {
       method: "POST",
       headers: {
@@ -84,7 +79,6 @@ export class Profile extends Component {
         return response.json();
       })
       .then((data) => {
-        lvl.textContent = data.level;
         wonNumber.textContent = data.win;
         lostNumber.textContent = data.lose;
         let status = data.relation;
