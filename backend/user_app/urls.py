@@ -1,9 +1,0 @@
-from django.urls import path
-from user_app import views
-
-urlpatterns = [
-    path('status', views.status, name='status'),
-    path('login', views.login, name='login'),
-    path('register', views.register, name='register'),
-    path('loginlist', views.loginlist, name='loginlist'), #TODO: delete after test
-]

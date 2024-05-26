@@ -17,6 +17,7 @@ def create_user(username, password, name = "", last_name = "", phone_number = ""
                             name = name,
                             last_name = last_name,
                             phone_number = phone_number,
+                            image = "default.png",
                             tag = tag)
 
     try: 
@@ -28,11 +29,30 @@ def create_user(username, password, name = "", last_name = "", phone_number = ""
 # return True if "success" False if "fail"
 def edit_user(user, name = "", last_name = "", phone_number = "", tag = ""):
 
-    user.name = name
-    user.last_name = last_name
-    user.phone_number = phone_number
-    user.tag = tag
+    if name != "":
+        user.name = name
+    
+    if last_name != "":
+        user.last_name = last_name
 
+    if phone_number != "":
+        user.phone_number = phone_number
+    
+    if user.tag != "":
+        user.tag = tag
+
+    try: 
+        user.save()
+    except:
+        return False
+    return True
+
+def update_image(user, image):
+    if image == "":
+        user.image = "default.png"
+    else:
+        user.image = image
+    
     try: 
         user.save()
     except:

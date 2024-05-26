@@ -9,6 +9,7 @@ services:
     volumes:
         - user_srcs:/app
         - ssl_volume:/app/ssl
+        - common:/app/share-resource
 
   user-nginx:
     networks:

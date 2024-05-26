@@ -11,3 +11,4 @@ services:
         volumes:
             - frontend_data:/frontend/
             - ssl_volume:/etc/nginx/ssl
+            - common:/share-resource

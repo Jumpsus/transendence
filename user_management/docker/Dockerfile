@@ -1,5 +1,8 @@
 FROM python:3.10-slim
 
+RUN mkdir -p /app/share-resource
+RUN mkdir -p /app/temp
+
 WORKDIR /app
 
 COPY requirements.txt .
