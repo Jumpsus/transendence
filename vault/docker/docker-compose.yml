@@ -1,7 +1,6 @@
 services:
     vault-service:
         networks:
-            - transcendence
             - user-network
         build:
             context: .
