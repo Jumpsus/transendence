@@ -3,7 +3,8 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from user_app.models import UserManagement
 from datetime import datetime
-from user_app import utils, friend_management, database
+from user_app import utils, database
+from user_app.views import friend_management
 import json
 
 # Create your views here.
