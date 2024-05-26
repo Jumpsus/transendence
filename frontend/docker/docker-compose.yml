@@ -1,7 +1,7 @@
 services:
     front-nginx:
         networks:
-            - transcendence
+            - user-network
         build:
             context: nginx
             dockerfile: Dockerfile
