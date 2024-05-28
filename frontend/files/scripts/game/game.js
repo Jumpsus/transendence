@@ -13,8 +13,10 @@ nameOne.textContent = "Player1";
 nameTwo.textContent = "Player2";
 
 const pauseArea = document.getElementById("pause-area");
+homeNav.classList.toggle("hidden");
 
 const PLAYER_SPEED = 1;
+
 
 function setFieldBorders() {
   if (gameContainer.offsetWidth == gameField.offsetWidth) {

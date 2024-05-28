@@ -10,6 +10,7 @@ import { isLoggedIn } from "../../index.js";
 import { Nav } from "../views/nav.js";
 import { NotExist } from "../views/404.js";
 import { myUsername } from "../../index.js";
+import { Game } from "../views/gameview.js";
 
 export let username = { username: "" };
 let lastViewedUser = "";
@@ -21,6 +22,7 @@ const routes = [
   { path: "/Friends", view: Friends },
   { path: "/History", view: MatchHistory },
   { path: "/Settings", view: Settings },
+  { path: "/Game", view: Game },
 ];
 
 const routesLoggedOut = [
