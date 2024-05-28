@@ -1,10 +1,10 @@
 from django.db import models
 
-SIZE_CHOICES = (
-    (4, 4),
-    (8, 8),
-    (16, 16),
-)
+# SIZE_CHOICES = (
+#     (4, 4),
+#     (8, 8),
+#     (16, 16),
+# )
 
 class Tournament(models.Model):
     CREATED = 0
@@ -12,7 +12,7 @@ class Tournament(models.Model):
     FINISNED = 2
 
     name = models.CharField(max_length=200)
-    max_players = models.IntegerField(default=16, choices=SIZE_CHOICES)
+    max_players = models.IntegerField(default=8)
     status = models.IntegerField(default=CREATED)
     admin_id = models.BigIntegerField(default=0)
     created_date = models.DateField(auto_now_add=True)
