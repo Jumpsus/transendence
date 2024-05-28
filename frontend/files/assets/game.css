@@ -20,7 +20,7 @@
   object-fit: contain;
   overflow: hidden;
   margin: auto;
-  border: 3px solid var(--game-ui-color) !important;
+  border: 3px solid var(--game-ui-color);
 }
 
 .paddle {

@@ -11,6 +11,38 @@ const nameTwo = document.getElementById("name-two");
 nameOne.textContent = "Player1";
 nameTwo.textContent = "Player2";
 
+const PLAYER_SPEED = 1;
+
+function setFieldBorders() {
+  if (gameContainer.offsetWidth == gameField.offsetWidth) {
+    gameField.style.setProperty("border-left", "none");
+    gameField.style.setProperty("border-right", "none");
+    gameField.style.setProperty("border-top", "3px solid var(--game-ui-color)");
+    gameField.style.setProperty(
+      "border-bottom",
+      "3px solid var(--game-ui-color)"
+    );
+  } else if (gameContainer.offsetHeight == gameField.offsetHeight) {
+    gameField.style.setProperty("border-top", "none");
+    gameField.style.setProperty("border-bottom", "none");
+    gameField.style.setProperty(
+      "border-left",
+      "3px solid var(--game-ui-color)"
+    );
+    gameField.style.setProperty(
+      "border-right",
+      "3px solid var(--game-ui-color)"
+    );
+  } else {
+    gameField.style.removeProperty("border-top");
+    gameField.style.removeProperty("border-bottom");
+    gameField.style.removeProperty("border-left");
+    gameField.style.removeProperty("border-right");
+    gameField.style.setProperty("border", "3px solid var(--game-ui-color)");
+  }
+}
+
+const gameContainer = document.getElementById("game-container");
 export const gameField = document.getElementById("game-field");
 export const gameState = {
   isHorizontal: gameField.clientWidth > gameField.clientHeight,
@@ -22,8 +54,11 @@ const ball = new Ball(document.getElementById("ball"));
 const playerOne = new Paddle(document.getElementById("player-one"));
 const playerTwo = new Paddle(document.getElementById("player-two"));
 
+setFieldBorders();
+
 window.addEventListener("resize", () => {
   gameState.isHorizontal = gameField.clientWidth > gameField.clientHeight;
+  setFieldBorders();
 });
 
 if (gameState.isOnline) {
@@ -69,31 +104,33 @@ function isLose() {
 function updatePaddles() {
   if (gameState.isHorizontal) {
     if (keys["w"]) {
-      playerOne.y -= 1;
+      playerOne.y -= PLAYER_SPEED;
     }
     if (keys["s"]) {
-      playerOne.y += 1;
+      playerOne.y += PLAYER_SPEED;
     }
     if (keys["ArrowUp"]) {
-      playerTwo.y -= 1;
+      playerTwo.y -= PLAYER_SPEED;
     }
     if (keys["ArrowDown"]) {
-      playerTwo.y += 1;
+      playerTwo.y += PLAYER_SPEED;
     }
   } else {
     if (keys["a"]) {
-      playerOne.y -= 1;
+      playerOne.y -= PLAYER_SPEED;
     }
     if (keys["d"]) {
-      playerOne.y += 1;
+      playerOne.y += PLAYER_SPEED;
     }
     if (keys["ArrowLeft"]) {
-      playerTwo.y -= 1;
+      playerTwo.y -= PLAYER_SPEED;
     }
     if (keys["ArrowRight"]) {
-      playerTwo.y += 1;
+      playerTwo.y += PLAYER_SPEED;
     }
   }
+  playerOne.y = Math.max(10, Math.min(playerOne.y, 90));
+  playerTwo.y = Math.max(10, Math.min(playerTwo.y, 90));
 }
 
 window.addEventListener("keydown", (event) => {
