@@ -17,6 +17,7 @@ export const gameState = {
   isOnline: false,
 };
 
+const keys = {};
 const ball = new Ball(document.getElementById("ball"));
 const playerOne = new Paddle(document.getElementById("player-one"));
 const playerTwo = new Paddle(document.getElementById("player-two"));
@@ -36,6 +37,7 @@ if (gameState.isOnline) {
   function update(time) {
     if (lastTime != undefined) {
       const delta = time - lastTime;
+      updatePaddles();
       ball.update(delta, [playerOne.rect(), playerTwo.rect()]);
       if (isLose()) {
         ball.reset();
@@ -64,40 +66,74 @@ function isLose() {
   }
 }
 
-window.addEventListener("keydown", (event) => {
+function updatePaddles() {
   if (gameState.isHorizontal) {
-    if (event.key === "w") {
-      playerOne.y -= 10;
+    if (keys["w"]) {
+      playerOne.y -= 1;
     }
-    if (event.key === "s") {
-      playerOne.y += 10;
+    if (keys["s"]) {
+      playerOne.y += 1;
+    }
+    if (keys["ArrowUp"]) {
+      playerTwo.y -= 1;
+    }
+    if (keys["ArrowDown"]) {
+      playerTwo.y += 1;
     }
   } else {
-    if (event.key === "a") {
-      playerOne.y -= 10;
+    if (keys["a"]) {
+      playerOne.y -= 1;
     }
-    if (event.key === "d") {
-      playerOne.y += 10;
+    if (keys["d"]) {
+      playerOne.y += 1;
+    }
+    if (keys["ArrowLeft"]) {
+      playerTwo.y -= 1;
+    }
+    if (keys["ArrowRight"]) {
+      playerTwo.y += 1;
+    }
+  }
+}
+
+window.addEventListener("keydown", (event) => {
+  if (gameState.isHorizontal) {
+    if (
+      (!gameState.isOnline &&
+        (event.key === "ArrowUp" || event.key === "ArrowDown")) ||
+      event.key === "w" ||
+      event.key === "s"
+    )
+      keys[event.key] = true;
+  } else {
+    if (
+      (!gameState.isOnline &&
+        (event.key === "ArrowLeft" || event.key === "ArrowRight")) ||
+      event.key === "a" ||
+      event.key === "d"
+    ) {
+      keys[event.key] = true;
     }
   }
 });
 
-if (!gameState.isOnline) {
-  window.addEventListener("keydown", (event) => {
-    if (gameState.isHorizontal) {
-      if (event.key === "ArrowUp") {
-        playerTwo.y -= 10;
-      }
-      if (event.key === "ArrowDown") {
-        playerTwo.y += 10;
-      }
-    } else {
-      if (event.key === "ArrowLeft") {
-        playerTwo.y -= 10;
-      }
-      if (event.key === "ArrowRight") {
-        playerTwo.y += 10;
-      }
+window.addEventListener("keyup", (event) => {
+  if (gameState.isHorizontal) {
+    if (
+      (!gameState.isOnline &&
+        (event.key === "ArrowUp" || event.key === "ArrowDown")) ||
+      event.key === "w" ||
+      event.key === "s"
+    )
+      keys[event.key] = false;
+  } else {
+    if (
+      (!gameState.isOnline &&
+        (event.key === "ArrowLeft" || event.key === "ArrowRight")) ||
+      event.key === "a" ||
+      event.key === "d"
+    ) {
+      keys[event.key] = false;
     }
-  });
-}
+  }
+});
