@@ -11,7 +11,7 @@ export class Profile extends Component {
     this.view = `
 		<div class="container-lg d-flex flex-md-row flex-column align-items-md-end pt-4 pb-3" id="profileHeader">
 			<div class="d-flex flex-column align-items-center">
-				<div class="profile-img-box position-relative rounded-1" style="width: 200px; height: 200px;"><img src="/assets/profile.png" class="position-absolute object-fit-cover profile-img rounded-1" alt=""></div>
+				<div class="profile-img-box position-relative" style="width: 200px; height: 200px;"><img src="/assets/profile.png" class="position-absolute object-fit-cover profile-img" alt=""></div>
 				<div class="container d-flex mt-3 mx-0 px-0 justify-content-between gap-2 d-none" style="max-width:280px" id="profile-interaction">
 					<button class="col btn btn-secondary rounded-0" id="message-button">Text</button>
 					<button class="col btn btn-outline-secondary rounded-0" id="friend-button"></button>

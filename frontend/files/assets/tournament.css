@@ -1,22 +1,98 @@
-.finals-section {
-  flex-grow: 1.5;
-}
-.semi-finals-section {
-  flex-grow: 1;
-}
-.quarter-finals-section {
-  flex-grow: 1;
-}
 @media (min-width: 1200px) {
-  .card {
+  .tournament-label {
+    bottom: calc(100% + 1rem);
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .tournament-table {
     width: 100%;
-    aspect-ratio: 1/1;
+    max-width: 1200px;
+  }
+  .quarters-section,
+  .semifinals-section,
+  .finals-section {
+    width: 30%;
+  }
+  .prize-section {
+    width: 10%;
   }
 }
 
+.user-name {
+  max-width: 130px;
+  overflow-wrap: break-word;
+}
+
+.card-right-section {
+  flex-grow: 1;
+}
+
+.tournament-label {
+  color: var(--bs-body-color);
+}
+
+.contestant-card {
+  width: 100%;
+  aspect-ratio: 4/1;
+  background-color: var(--bs-secondary-bg);
+}
+
+.user-icon-tournament {
+  height: 100%;
+  aspect-ratio: 1/1;
+  image-rendering: pixelated;
+}
+
 @media (max-width: 1199px) {
-  .card {
-    height: 100%;
-    aspect-ratio: 1/1;
+  .finals-section > .tournament-label {
+    bottom: calc(100% + 1rem);
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .finals-section {
+    margin-top: 2.5rem;
+  }
+  .quarters-section {
+    border-bottom: 3px dashed var(--bs-body-color);
+  }
+  .semifinals-section {
+    border-bottom: 3px dashed var(--bs-body-color);
+  }
+  .vs-card:not(.finals-section > .vs-card) {
+    width: 50%;
+  }
+  .finals-section > .vs-card {
+    width: 100%;
+  }
+  .tournament-table {
+    width: calc(100% - 8rem);
+  }
+}
+
+@media (576px <= width <= 1199px) {
+  .tournament-label:not(.finals-section > .tournament-label) {
+    right: calc(100% + 1rem);
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}
+
+@media (max-width: 768px) {
+  .user-icon-tournament {
+    display: none;
+  }
+}
+
+@media (max-width: 575px) {
+  .tournament-table {
+    width: calc(100% - 1rem);
+  }
+  .tournament-label:not(.finals-section > .tournament-label) {
+    bottom: calc(100% + 1rem);
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .semifinals-section {
+    margin-top: 2rem;
   }
 }
