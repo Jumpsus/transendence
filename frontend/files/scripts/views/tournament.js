@@ -26,7 +26,7 @@ export class Tournament extends Component {
 					</div>
 					</div>
 				</div>
-				<div class="vs-card ">
+				<div class="vs-card">
 					<div class="contestant-card d-flex align-items-center">
 						<div class="d-flex justify-content-center w-100 h-100 align-items-center">???</div>
 					</div>

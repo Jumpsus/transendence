@@ -5,7 +5,7 @@ export class Home extends Component {
     super(document.getElementById("content-wrapper"));
     this.view = `
 	<div class="w-100 h-100" id="game-container">
-			<div class="px-xl-5 py-xl-0 py-5 d-flex flex-column flex-xl-row justify-content-between position-relative"
+			<div class="d-flex flex-column flex-xl-row justify-content-between position-relative"
 				id="game-field">
 				<div class="position-relative player-axis">
 					<div class="paddle position-absolute" id="player-one"></div>

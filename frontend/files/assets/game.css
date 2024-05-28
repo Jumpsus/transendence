@@ -62,6 +62,12 @@
     top: calc(var(--y) * 1%);
     transform: translateY(-50%);
   }
+  .player-axis:has(#player-one) {
+    margin-left: 4%;
+  }
+  .player-axis:has(#player-two) {
+    margin-right: 4%;
+  }
   #ball {
     height: 3%;
     left: calc(var(--x) * 1%);
@@ -118,6 +124,12 @@
   }
   .player-axis {
     height: 2%;
+  }
+  .player-axis:has(#player-one) {
+    margin-top: 4%;
+  }
+  .player-axis:has(#player-two) {
+    margin-bottom: 4%;
   }
   .paddle {
     width: 20%;
