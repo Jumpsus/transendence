@@ -7,109 +7,65 @@ export class Tournament extends Component {
 	<div class="w-100 h-100 d-flex justify-content-center align-items-center">
 	<div
 		class="d-flex justify-content-center align-items-xl-center align-items-stretch flex-column flex-xl-row gap-3 tournament-table">
-		<div class="quarters-section d-flex flex-column gap-3 position-relative pb-3">
+		<div class="quarters-section d-flex flex-column gap-3 position-relative pb-xl-0 pb-3">
 			<div class="tournament-label position-absolute">1/4</div>
 			<div class="quarters-half d-flex flex-xl-column flex-row gap-3">
 				<div class="vs-card">
 					<div class="contestant-card d-flex align-items-center">
-						<img class="user-icon-tournament" src="/assets/profile.png">
+						<div class="profile-img-box position-relative" style="height: 100%; aspect-ratio: 1/1;"><img class="position-absolute object-fit-cover profile-img" src="/assets/profile.png"></div>
 						<div class="card-right-section d-flex justify-content-between">
 							<div class="user-name">contestant</div>
 							<div class="d-flex align-items-center">69%</div>
 						</div>
 					</div>
 					<div class="contestant-card d-flex align-items-center">
-						<img class="user-icon-tournament" src="/assets/profile.png">
-						<div class="card-right-section d-flex justify-content-between">
-							<div class="user-name">contestant</div>
-							<div class="d-flex align-items-center">69%</div>
-						</div>
+					<div class="profile-img-box position-relative" style="height: 100%; aspect-ratio: 1/1;"><img class="position-absolute object-fit-cover profile-img" src="/assets/profile.png"></div>
+					<div class="card-right-section d-flex justify-content-between">
+						<div class="user-name">contestant</div>
+						<div class="d-flex align-items-center">69%</div>
+					</div>
 					</div>
 				</div>
 				<div class="vs-card ">
 					<div class="contestant-card d-flex align-items-center">
-						<img class="user-icon-tournament" src="/assets/profile.png">
-						<div class="card-right-section d-flex justify-content-between">
-							<div class="user-name">contestant</div>
-							<div class="d-flex align-items-center">69%</div>
-						</div>
+						<div class="d-flex justify-content-center w-100 h-100 align-items-center">???</div>
 					</div>
 					<div class="contestant-card d-flex align-items-center">
-						<img class="user-icon-tournament" src="/assets/profile.png">
-						<div class="card-right-section d-flex justify-content-between">
-							<div class="user-name">contestant</div>
-							<div class="d-flex align-items-center">69%</div>
-						</div>
+						<div class="d-flex justify-content-center w-100 h-100 align-items-center">???</div>
 					</div>
 				</div>
 			</div>
 			<div class="quarters-half d-flex flex-xl-column flex-row gap-3">
 				<div class="vs-card ">
 					<div class="contestant-card d-flex align-items-center">
-						<img class="user-icon-tournament" src="/assets/profile.png">
-						<div class="card-right-section d-flex justify-content-between">
-							<div class="user-name">contestant</div>
-							<div class="d-flex align-items-center">69%</div>
-						</div>
+						<div class="d-flex justify-content-center w-100 h-100 align-items-center">???</div>
 					</div>
 					<div class="contestant-card d-flex align-items-center">
-						<img class="user-icon-tournament" src="/assets/profile.png">
-						<div class="card-right-section d-flex justify-content-between">
-							<div class="user-name">contestant</div>
-							<div class="d-flex align-items-center">69%</div>
-						</div>
+						<div class="d-flex justify-content-center w-100 h-100 align-items-center">???</div>
 					</div>
 				</div>
 				<div class="vs-card ">
-					<div class="contestant-card d-flex align-items-center">
-						<img class="user-icon-tournament" src="/assets/profile.png">
-						<div class="card-right-section d-flex justify-content-between">
-							<div class="user-name">contestant</div>
-							<div class="d-flex align-items-center">69%</div>
-						</div>
-					</div>
-					<div class="contestant-card d-flex align-items-center">
-						<img class="user-icon-tournament" src="/assets/profile.png">
-						<div class="card-right-section d-flex justify-content-between">
-							<div class="user-name">contestant</div>
-							<div class="d-flex align-items-center">69%</div>
-						</div>
-					</div>
+					<div class="contestant-card d-flex align-items-center"><div class="d-flex justify-content-center w-100 h-100 align-items-center">???</div></div>
+					<div class="contestant-card d-flex align-items-center"><div class="d-flex justify-content-center w-100 h-100 align-items-center">???</div></div>
 				</div>
 			</div>
 		</div>
-		<div class="semifinals-section d-flex flex-xl-column flex-row gap-3 position-relative pb-3">
+		<div class="semifinals-section d-flex flex-xl-column flex-row gap-3 position-relative pb-xl-0 pb-3">
 			<div class="tournament-label position-absolute">1/2</div>
 			<div class="vs-card ">
 				<div class="contestant-card d-flex align-items-center">
-					<img class="user-icon-tournament" src="/assets/profile.png">
-					<div class="card-right-section d-flex justify-content-between">
-						<div class="user-name">contestant</div>
-						<div class="d-flex align-items-center">69%</div>
-					</div>
+				<div class="d-flex justify-content-center w-100 h-100 align-items-center">???</div>
 				</div>
 				<div class="contestant-card d-flex align-items-center">
-					<img class="user-icon-tournament" src="/assets/profile.png">
-					<div class="card-right-section d-flex justify-content-between">
-						<div class="user-name">contestant</div>
-						<div class="d-flex align-items-center">69%</div>
-					</div>
+				<div class="d-flex justify-content-center w-100 h-100 align-items-center">???</div>
 				</div>
 			</div>
 			<div class="vs-card ">
 				<div class="contestant-card d-flex align-items-center">
-					<img class="user-icon-tournament" src="/assets/profile.png">
-					<div class="card-right-section d-flex justify-content-between">
-						<div class="user-name">contestant</div>
-						<div class="d-flex align-items-center">69%</div>
-					</div>
+				<div class="d-flex justify-content-center w-100 h-100 align-items-center">???</div>
 				</div>
 				<div class="contestant-card d-flex align-items-center">
-					<img class="user-icon-tournament" src="/assets/profile.png">
-					<div class="card-right-section d-flex justify-content-between">
-						<div class="user-name">contestant</div>
-						<div class="d-flex align-items-center">69%</div>
-					</div>
+				<div class="d-flex justify-content-center w-100 h-100 align-items-center">???</div>
 				</div>
 			</div>
 		</div>
@@ -117,8 +73,10 @@ export class Tournament extends Component {
 			<div class="tournament-label position-absolute">finals</div>
 			<div class="vs-card  d-flex flex-xl-column flex-row gap-3">
 				<div class="contestant-card d-flex align-items-center">
+				<div class="d-flex justify-content-center w-100 h-100 align-items-center">???</div>
 				</div>
 				<div class="contestant-card d-flex align-items-center">
+				<div class="d-flex justify-content-center w-100 h-100 align-items-center">???</div>
 				</div>
 			</div>
 		</div>

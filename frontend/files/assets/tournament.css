@@ -31,10 +31,21 @@
   color: var(--bs-body-color);
 }
 
+[data-bs-theme="light"] {
+  .contestant-card {
+    background-color: var(--my-secondary-color);
+  }
+}
+
+[data-bs-theme="dark"] {
+  .contestant-card {
+    background-color: var(--bs-secondary-bg);
+  }
+}
+
 .contestant-card {
   width: 100%;
   aspect-ratio: 4/1;
-  background-color: var(--bs-secondary-bg);
 }
 
 .user-icon-tournament {
