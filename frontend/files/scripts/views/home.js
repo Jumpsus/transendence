@@ -10,6 +10,7 @@ export class Home extends Component {
 				<div class="position-relative player-axis">
 					<div class="paddle position-absolute" id="player-one"></div>
 				</div>
+				<div class="position-absolute" id="pause-area"></div>
 				<div class="position-relative" id="separator">
 					<div class="d-flex flex-xl-column justify-content-around flex-row w-100 h-100">
 						<div class=" separator-chunk"></div>

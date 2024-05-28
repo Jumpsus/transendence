@@ -36,6 +36,10 @@ label::after {
   border-right: 3px solid var(--bs-body-color);
 }
 
+#navigation-wrapper {
+  transition: all 0.4s ease;
+}
+
 #profileMenu {
   border-top: 3px dashed var(--bs-body-color);
 }
@@ -293,9 +297,24 @@ body {
   transform: rotate(180deg);
 }
 
+@media (width < 576px) {
+  #navigation-wrapper.hidden {
+    margin-bottom: -75px;
+  }
+}
+
+@media (576px <= width <= 991px) {
+  #navigation-wrapper.hidden {
+    margin-left: -91px;
+  }
+}
+
 @media (min-width: 992px) {
   .menu-item:hover .menu-selector {
     display: block;
+  }
+  #navigation-wrapper.hidden {
+    margin-left: -263.15px;
   }
 }
 
@@ -336,8 +355,8 @@ Medium	md	≥768px
 Large	lg	≥992px
 Extra large	xl	≥1200px horizontal
 Extra extra large	xxl	≥1400px */
-/* 
-#navigation-wrapper::before {
+
+/* #navigation-wrapper::before {
   content: "xsm";
   position: absolute;
   top: 0;

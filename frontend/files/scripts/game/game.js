@@ -8,8 +8,11 @@ scoreTwo.textContent = 0;
 
 const nameOne = document.getElementById("name-one");
 const nameTwo = document.getElementById("name-two");
+const homeNav = document.getElementById("navigation-wrapper");
 nameOne.textContent = "Player1";
 nameTwo.textContent = "Player2";
+
+const pauseArea = document.getElementById("pause-area");
 
 const PLAYER_SPEED = 1;
 
@@ -47,6 +50,7 @@ export const gameField = document.getElementById("game-field");
 export const gameState = {
   isHorizontal: gameField.clientWidth > gameField.clientHeight,
   isOnline: false,
+  isPaused: false,
 };
 
 const keys = {};
@@ -70,7 +74,7 @@ if (gameState.isOnline) {
 } else {
   let lastTime;
   function update(time) {
-    if (lastTime != undefined) {
+    if (lastTime != undefined && !gameState.isPaused) {
       const delta = time - lastTime;
       updatePaddles();
       ball.update(delta, [playerOne.rect(), playerTwo.rect()]);
@@ -173,4 +177,13 @@ window.addEventListener("keyup", (event) => {
       keys[event.key] = false;
     }
   }
+});
+
+function pauseGame() {
+  gameState.isPaused = !gameState.isPaused;
+  homeNav.classList.toggle("hidden");
+}
+
+pauseArea.addEventListener("click", () => {
+  pauseGame();
 });
