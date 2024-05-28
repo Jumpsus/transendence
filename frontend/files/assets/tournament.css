@@ -65,6 +65,7 @@
   }
   .quarters-section {
     border-bottom: 3px dashed var(--bs-body-color);
+    margin-top: 3rem;
   }
   .semifinals-section {
     border-bottom: 3px dashed var(--bs-body-color);
@@ -89,7 +90,7 @@
 }
 
 @media (max-width: 768px) {
-  .user-icon-tournament {
+  .contestant-card .profile-img-box {
     display: none;
   }
 }
