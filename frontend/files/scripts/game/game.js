@@ -17,7 +17,6 @@ homeNav.classList.toggle("hidden");
 
 const PLAYER_SPEED = 1;
 
-
 function setFieldBorders() {
   if (gameContainer.offsetWidth == gameField.offsetWidth) {
     gameField.style.setProperty("border-left", "none");
