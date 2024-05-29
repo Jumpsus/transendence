@@ -1,24 +1,19 @@
 from django.db import models
 
-# SIZE_CHOICES = (
-#     (4, 4),
-#     (8, 8),
-#     (16, 16),
-# )
-
 class Tournament(models.Model):
     CREATED = 0
     IN_PROGRESS = 1
     FINISNED = 2
 
     name = models.CharField(max_length=200)
-    max_players = models.IntegerField(default=8)
+    max_players = 8
     status = models.IntegerField(default=CREATED)
     admin_id = models.BigIntegerField(default=0)
     created_date = models.DateField(auto_now_add=True)
 
 class Player(models.Model):
     player_name = models.CharField(max_length=200)
+    player_id = models.IntegerField(null=False)
     elo = models.IntegerField(null=True)
     rank = models.IntegerField(null=True)
     tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE, related_name='players')
