@@ -5,6 +5,7 @@ export const gameState = {
   isHorizontal: true,
   isOnline: false,
   isPaused: false,
+  hasCPU: false,
 };
 
 export function init() {
@@ -86,7 +87,9 @@ export function init() {
       if (lastTime != undefined && !gameState.isPaused) {
         const delta = time - lastTime;
         updatePaddles();
+        console.log(playerOne.y, playerTwo.y);
         ball.update(delta, [playerOne.rect(), playerTwo.rect()]);
+        if (gameState.hasCPU) updateCPU();
         if (isLose()) {
           ball.reset();
           playerOne.reset();
@@ -130,16 +133,16 @@ export function init() {
       }
     } else {
       if (keys["a"]) {
-        playerOne.y -= PLAYER_SPEED;
-      }
-      if (keys["d"]) {
         playerOne.y += PLAYER_SPEED;
       }
+      if (keys["d"]) {
+        playerOne.y -= PLAYER_SPEED;
+      }
       if (keys["ArrowLeft"]) {
-        playerTwo.y -= PLAYER_SPEED;
+        playerTwo.y += PLAYER_SPEED;
       }
       if (keys["ArrowRight"]) {
-        playerTwo.y += PLAYER_SPEED;
+        playerTwo.y -= PLAYER_SPEED;
       }
     }
     playerOne.y = Math.max(10, Math.min(playerOne.y, 90));
@@ -150,17 +153,19 @@ export function init() {
     if (gameState.isHorizontal) {
       if (
         (!gameState.isOnline &&
-          (event.key === "ArrowUp" || event.key === "ArrowDown")) ||
-        event.key === "w" ||
-        event.key === "s"
+          !gameState.hasCPU &&
+          (event.key === "w" || event.key === "s")) ||
+        event.key === "ArrowUp" ||
+        event.key === "ArrowDown"
       )
         keys[event.key] = true;
     } else {
       if (
         (!gameState.isOnline &&
-          (event.key === "ArrowLeft" || event.key === "ArrowRight")) ||
-        event.key === "a" ||
-        event.key === "d"
+          !gameState.hasCPU &&
+          (event.key === "a" || event.key === "d")) ||
+        event.key === "ArrowLeft" ||
+        event.key === "ArrowRight"
       ) {
         keys[event.key] = true;
       }
@@ -171,22 +176,77 @@ export function init() {
     if (gameState.isHorizontal) {
       if (
         (!gameState.isOnline &&
-          (event.key === "ArrowUp" || event.key === "ArrowDown")) ||
-        event.key === "w" ||
-        event.key === "s"
+          !gameState.hasCPU &&
+          (event.key === "w" || event.key === "s")) ||
+        event.key === "ArrowUp" ||
+        event.key === "ArrowDown"
       )
         keys[event.key] = false;
     } else {
       if (
         (!gameState.isOnline &&
-          (event.key === "ArrowLeft" || event.key === "ArrowRight")) ||
-        event.key === "a" ||
-        event.key === "d"
+          !gameState.hasCPU &&
+          (event.key === "a" || event.key === "d")) ||
+        event.key === "ArrowLeft" ||
+        event.key === "ArrowRight"
       ) {
         keys[event.key] = false;
       }
     }
   });
+
+//   function updateCPU() {
+//     let up = "w";
+//     let down = "s";
+//     if (!gameState.isHorizontal) {
+//       up = "d";
+//       down = "a";
+//     }
+//     setTimeout(() => {
+//       if (playerOne.y < ball.y) {
+//         keys[`${up}`] = false;
+//         keys[`${down}`] = true;
+//       } else {
+//         keys[`${down}`] = false;
+//         keys[`${up}`] = true;
+//       }
+//     }, 1);
+//   }
+
+    function updateCPU() {
+      // Randomize delay to simulate human reaction time
+      const delay = Math.random() * 200 + 300; // Random delay between 300ms and 500ms
+
+      setTimeout(() => {
+        // Calculate a small offset to simulate human inaccuracy
+        const offset = Math.random() * 10 - 5; // Random offset between -5 and 5
+
+        let up = "w";
+        let down = "s";
+        if (!gameState.isHorizontal) {
+          up = "d";
+          down = "a";
+        }
+        if (playerOne.y < ball.y + offset) {
+          keys[`${up}`] = false;
+          keys[`${down}`] = true;
+        } else {
+          keys[`${down}`] = false;
+          keys[`${up}`] = true;
+        }
+
+        // Randomize the duration for how long a key is held down
+        const holdTime = Math.random() * 300 + 200; // Random hold time between 200ms and 500ms
+
+        // After the hold time, stop the key press to simulate a real player releasing the key
+        setTimeout(() => {
+          keys[`${up}`] = false;
+          keys[`${down}`] = false;
+
+          // Continue updating the CPU's movements
+        }, holdTime);
+      }, delay);
+    }
 
   function pauseGame() {
     gameState.isPaused = !gameState.isPaused;
@@ -206,12 +266,10 @@ export function init() {
   function handleTouchStart(event) {
     for (let touch of event.changedTouches) {
       if (touch.clientY < window.innerHeight / 2) {
-        // Left side touch, assign to paddle1 if not already assigned
         if (paddle1TouchId === null) {
           paddle1TouchId = touch.identifier;
         }
       } else {
-        // Right side touch, assign to paddle2 if not already assigned
         if (paddle2TouchId === null) {
           paddle2TouchId = touch.identifier;
         }
@@ -240,10 +298,8 @@ export function init() {
   }
 
   function movePaddle(paddle, y) {
-    // console.log(y);
     const yPercent = (y / window.innerWidth) * 100;
     paddle.y = yPercent;
-    console.log(paddle.y);
   }
 
   const options = { passive: true };

@@ -145,8 +145,8 @@
   .paddle {
     width: 20%;
     height: 100%;
-    left: calc(var(--y) * 1%);
-    transform: translateX(-50%);
+    right: calc(var(--y) * 1%);
+    transform: translateX(50%);
   }
   #ball {
     width: 3%;
