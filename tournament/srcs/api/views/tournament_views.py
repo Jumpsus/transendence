@@ -26,10 +26,9 @@ class TournamentView(APIView):
         try:
             # to change request data before serialize
             new_tname = request.data.get("name")
-            print(new_tname)
             t_check = Tournament.objects.filter(name=new_tname)
             if t_check:
-                return Response(data={'error': 'Tournament name is already exist'}, status=400)
+                return Response({'error': 'Tournament name is already exist'}, status=400)
             request.data.update({"admin_id": user_id})
             t_json = TournamentSerializer(data=request.data)
             if t_json.is_valid():
@@ -48,3 +47,38 @@ class TournamentView(APIView):
             return Response(status=204)
         except Exception as e:
             return Response({'error': [str(e)]}, status=500)
+
+class ManageTournamentView(APIView):
+
+    @staticmethod
+    def get_tournament_obj(self, pk):
+        try:
+            return Tournament.objects.get(id=pk)
+        except Tournament.DoesNotExist: 
+            return Response({'error': 'The tournament does not exist'}, status=404)
+        except Exception as e:
+            return Response({'error': [str(e)]}, status=500)
+         
+    def get(self, request, pk, format=None):
+        obj = self.get_tournament_obj(pk)
+        try:
+            t_players = obj.players.all()
+            obj_json = TournamentSerializer(obj)
+        except Exception as e:
+            return Response({'error': [str(e)]}, status=500)
+        return Response(obj_json, status=200)
+            
+        
+    def patch(self, request, pk, format=None):
+        obj = self.get_tournament_obj(pk)
+        obj_json = TournamentSerializer(obj)
+        if obj_json.is_valid():
+            obj_json.save()
+            return Response(obj_json.data, status=201)
+        return Response({'error': 'bad request'}, status=400)
+
+    def delete(self, request, pk, format=None):
+        obj = self.get_tournament_obj(pk)
+        obj.delete()
+        return Response(status=204)
+    
