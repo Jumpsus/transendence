@@ -298,7 +298,7 @@ export function init() {
   }
 
   function movePaddle(paddle, y) {
-    const yPercent = (y / window.innerWidth) * 100;
+    const yPercent = ((window.innerWidth - y) / window.innerWidth) * 100;
     paddle.y = yPercent;
   }
 
