@@ -1,11 +1,11 @@
 const INITIAL_VELOCITY = 0.05;
 
-import { gameField } from "../game/game.js";
 import { gameState } from "../game/game.js";
 
 export default class Ball {
-  constructor(ballElem) {
+  constructor(ballElem, gameField) {
     this.ballElem = ballElem;
+	this.gameField = gameField;
     this.reset();
   }
 
@@ -42,18 +42,19 @@ export default class Ball {
   }
 
   update(delta = 16, paddleRects) {
+
     this.x += this.direction.x * this.velocity * delta;
     this.y += this.direction.y * this.velocity * delta;
     const rect = this.rect();
     if (
-      rect.bottom >= gameField.getBoundingClientRect().bottom ||
-      rect.top <= gameField.getBoundingClientRect().top
+      rect.bottom >= this.gameField.getBoundingClientRect().bottom ||
+      rect.top <= this.gameField.getBoundingClientRect().top
     ) {
       if (gameState.isHorizontal) this.direction.y *= -1;
     }
     if (
-      rect.right >= gameField.getBoundingClientRect().right ||
-      rect.left <= gameField.getBoundingClientRect().left
+      rect.right >= this.gameField.getBoundingClientRect().right ||
+      rect.left <= this.gameField.getBoundingClientRect().left
     ) {
       if (!gameState.isHorizontal) this.direction.y *= -1;
     }

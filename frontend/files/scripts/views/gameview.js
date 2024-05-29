@@ -47,6 +47,7 @@ export class Game extends Component {
     super.render();
     import("../game/game.js").then((module) => {
 		console.log("Game script loaded");
+		module.init();
 	}).catch((error) => {
       console.error("Error loading Pong game script:", error);
     });
