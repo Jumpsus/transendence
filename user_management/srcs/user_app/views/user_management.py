@@ -90,34 +90,34 @@ def user_list(req):
         case "":
             users = UserManagement.objects.all()
             for user in users:
-                d = {"username": user.username, "status": "offline"}
+                d = {"username": user.username, "image": user.image ,"status": "offline"}
                 user_list.append(d)
         
         case "friend":
             friends = database.find_friend(u[0])
             for friend in friends:
                 if friend.user_a == u[0]:
-                    d = {"username": friend.user_b.username, "status": "offline"}
+                    d = {"username": friend.user_b.username, "image": user.image ,"status": "offline"}
                 else:
-                    d = {"username": friend.user_a.username, "status": "offline"}
+                    d = {"username": friend.user_a.username, "image": user.image ,"status": "offline"}
                 user_list.append(d)
         
         case "add":
             friends = database.find_friends_by_action_user(u[0], "pending")
             for friend in friends:
-                d = {"username": friend.user_b.username, "status": "offline"}
+                d = {"username": friend.user_b.username, "image": user.image ,"status": "offline"}
                 user_list.append(d)
         
         case "pending":
             friends = database.find_friends_by_actioned_user(u[0], "pending")
             for friend in friends:
-                d = {"username": friend.user_a.username, "status": "offline"}
+                d = {"username": friend.user_a.username, "image": user.image ,"status": "offline"}
                 user_list.append(d)
         
         case "block":
             friends = database.find_friends_by_action_user(u[0], "block")
             for friend in friends:
-                d = {"username": friend.user_b.username, "status": "offline"}
+                d = {"username": friend.user_b.username, "image": user.image ,"status": "offline"}
                 user_list.append(d)
         
         case _:
