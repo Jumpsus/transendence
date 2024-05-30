@@ -68,6 +68,15 @@ def update_password(user, passwd):
         return False
     return True
 
+def update_status(user, status):
+    user.status = status
+
+    try:
+        user.save()
+    except:
+        return False
+    return True
+
 def set_image(user, image):
     user.image = image
 
