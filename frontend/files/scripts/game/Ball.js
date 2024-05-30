@@ -1,4 +1,4 @@
-const INITIAL_VELOCITY = 0.07;
+const INITIAL_VELOCITY = 0.1;
 
 import { gameState } from "../game/game.js";
 

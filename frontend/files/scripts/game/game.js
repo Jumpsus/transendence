@@ -23,7 +23,8 @@ export function init() {
   const pauseArea = document.getElementById("pause-area");
   homeNav.classList.toggle("hidden");
 
-  const PLAYER_SPEED = 1;
+  const PLAYER_SPEED = 0.1;
+  const CPU_TIME_TO_UPDATE = 1000;
 
   function setFieldBorders() {
     if (gameContainer.offsetWidth == gameField.offsetWidth) {
@@ -75,6 +76,8 @@ export function init() {
     setFieldBorders();
   });
 
+  const debugConsole = document.querySelector("#debug-console");
+
   if (gameState.isOnline) {
     setInterval(async () => {
       await playerOne.sendUpdate();
@@ -86,10 +89,10 @@ export function init() {
     function update(time) {
       if (lastTime != undefined && !gameState.isPaused) {
         const delta = time - lastTime;
-        updatePaddles();
-        console.log(playerOne.y, playerTwo.y);
+        debugConsole.textContent = delta;
+        updatePaddles(delta);
         ball.update(delta, [playerOne.rect(), playerTwo.rect()]);
-        if (gameState.hasCPU) updateCPU();
+        if (gameState.hasCPU) updateCPU(delta);
         if (isLose()) {
           ball.reset();
           playerOne.reset();
@@ -117,32 +120,32 @@ export function init() {
     }
   }
 
-  function updatePaddles() {
+  function updatePaddles(delta) {
     if (gameState.isHorizontal) {
       if (keys["w"]) {
-        playerOne.y -= PLAYER_SPEED;
+        playerOne.y -= PLAYER_SPEED * delta;
       }
       if (keys["s"]) {
-        playerOne.y += PLAYER_SPEED;
+        playerOne.y += PLAYER_SPEED * delta;
       }
       if (keys["ArrowUp"]) {
-        playerTwo.y -= PLAYER_SPEED;
+        playerTwo.y -= PLAYER_SPEED * delta;
       }
       if (keys["ArrowDown"]) {
-        playerTwo.y += PLAYER_SPEED;
+        playerTwo.y += PLAYER_SPEED * delta;
       }
     } else {
       if (keys["a"]) {
-        playerOne.y += PLAYER_SPEED;
+        playerOne.y += PLAYER_SPEED * delta;
       }
       if (keys["d"]) {
-        playerOne.y -= PLAYER_SPEED;
+        playerOne.y -= PLAYER_SPEED * delta;
       }
       if (keys["ArrowLeft"]) {
-        playerTwo.y += PLAYER_SPEED;
+        playerTwo.y += PLAYER_SPEED * delta;
       }
       if (keys["ArrowRight"]) {
-        playerTwo.y -= PLAYER_SPEED;
+        playerTwo.y -= PLAYER_SPEED * delta;
       }
     }
     playerOne.y = Math.max(10, Math.min(playerOne.y, 90));
@@ -195,58 +198,88 @@ export function init() {
     }
   });
 
-//   function updateCPU() {
-//     let up = "w";
-//     let down = "s";
-//     if (!gameState.isHorizontal) {
-//       up = "d";
-//       down = "a";
-//     }
-//     setTimeout(() => {
-//       if (playerOne.y < ball.y) {
-//         keys[`${up}`] = false;
-//         keys[`${down}`] = true;
-//       } else {
-//         keys[`${down}`] = false;
-//         keys[`${up}`] = true;
-//       }
-//     }, 1);
-//   }
+  function calcBallTrajectory(delta) {
+    let futureBallX = ball.x;
+    let futureBallY = ball.y;
+    let velocityX = ball.velocity * ball.direction.x;
+    let velocityY = ball.velocity * ball.direction.y;
+    let totalTime = CPU_TIME_TO_UPDATE;
 
-    function updateCPU() {
-      // Randomize delay to simulate human reaction time
-      const delay = Math.random() * 200 + 300; // Random delay between 300ms and 500ms
+    while (totalTime > 0) {
+      let timeToHorizontalWall = Infinity;
+      if (velocityY > 0) {
+        timeToHorizontalWall = (100 - futureBallY) / velocityY;
+      } else if (velocityY < 0) {
+        timeToHorizontalWall = -futureBallY / velocityY;
+      }
 
-      setTimeout(() => {
-        // Calculate a small offset to simulate human inaccuracy
-        const offset = Math.random() * 10 - 5; // Random offset between -5 and 5
+      let timeToVerticalWall = Infinity;
+      if (velocityX > 0) {
+        timeToVerticalWall = (100 - futureBallX) / velocityX;
+      } else if (velocityX < 0) {
+        timeToVerticalWall = -futureBallX / velocityX;
+      }
 
-        let up = "w";
-        let down = "s";
-        if (!gameState.isHorizontal) {
-          up = "d";
-          down = "a";
-        }
-        if (playerOne.y < ball.y + offset) {
-          keys[`${up}`] = false;
-          keys[`${down}`] = true;
+      let nextCollisionTime = Math.min(
+        timeToVerticalWall,
+        timeToHorizontalWall,
+        totalTime
+      );
+      futureBallX += velocityX * nextCollisionTime;
+      futureBallY += velocityY * nextCollisionTime;
+      totalTime -= nextCollisionTime;
+
+      if (nextCollisionTime === timeToHorizontalWall) {
+        velocityY *= -1;
+      }
+
+      if (nextCollisionTime === timeToVerticalWall) {
+        if (futureBallX <= 0) {
+          futureBallX = 0;
+          break;
         } else {
-          keys[`${down}`] = false;
-          keys[`${up}`] = true;
+          velocityX *= -1;
         }
-
-        // Randomize the duration for how long a key is held down
-        const holdTime = Math.random() * 300 + 200; // Random hold time between 200ms and 500ms
-
-        // After the hold time, stop the key press to simulate a real player releasing the key
-        setTimeout(() => {
-          keys[`${up}`] = false;
-          keys[`${down}`] = false;
-
-          // Continue updating the CPU's movements
-        }, holdTime);
-      }, delay);
+      }
     }
+
+    return futureBallY;
+  }
+
+  let lastUpdate = 0;
+  let ballEstY = ball.y;
+  function updateCPU(delta) {
+    let up = "w";
+    let down = "s";
+    if (!gameState.isHorizontal) {
+      up = "d";
+      down = "a";
+    }
+
+    const now = Date.now();
+    if (now - lastUpdate >= CPU_TIME_TO_UPDATE || lastUpdate == 0) {
+      ballEstY = calcBallTrajectory(delta);
+      lastUpdate = now;
+    }
+    if (playerOne.y < ballEstY) {
+      keys[`${up}`] = false;
+      keys[`${down}`] = true;
+    } else {
+      keys[`${down}`] = false;
+      keys[`${up}`] = true;
+    }
+
+    // // Randomize the duration for how long a key is held down
+    // const holdTime = Math.random() * 300 + 200; // Random hold time between 200ms and 500ms
+
+    // // After the hold time, stop the key press to simulate a real player releasing the key
+    // setTimeout(() => {
+    //   keys[`${up}`] = false;
+    //   keys[`${down}`] = false;
+
+    //   // Continue updating the CPU's movements
+    // }, holdTime);
+  }
 
   function pauseGame() {
     gameState.isPaused = !gameState.isPaused;
