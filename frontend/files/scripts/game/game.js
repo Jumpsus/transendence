@@ -76,7 +76,7 @@ export function init() {
     setFieldBorders();
   });
 
-  const debugConsole = document.querySelector("#debug-console");
+//   const debugConsole = document.querySelector("#debug-console");
 
   if (gameState.isOnline) {
     setInterval(async () => {
@@ -89,7 +89,7 @@ export function init() {
     function update(time) {
       if (lastTime != undefined && !gameState.isPaused) {
         const delta = time - lastTime;
-        debugConsole.textContent = delta;
+        // debugConsole.textContent = delta;
         updatePaddles(delta);
         ball.update(delta, [playerOne.rect(), playerTwo.rect()]);
         if (gameState.hasCPU) updateCPU(delta);

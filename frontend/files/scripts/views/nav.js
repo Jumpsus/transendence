@@ -50,8 +50,8 @@ export class Nav extends Component {
 				</div>
 				<a href="/${myUsername.username}/History" class="nav-link d-flex justify-content-lg-start justify-content-center" data-link>
 					<div class="d-flex align-items-center w-100 menu-item">
-						<div class="profile-img-box position-relative rounded-0" style="width: 40px; height: 40px;">
-							<img src="/assets/profile.png"
+						<div class="profile-img-box position-relative rounded-0"  style="width: 40px; height: 40px;">
+							<img src="/assets/profile.png" id="profile-img-nav"
 							alt="profile image" class="position-absolute rounded-0 object-fit-cover  profile-img">
 						</div>
 						<div class="ms-3 fs-5 d-lg-block d-none">Profile</div>
@@ -68,6 +68,27 @@ export class Nav extends Component {
 
   render() {
     super.render();
+    const profileImg = document.getElementById("profile-img-nav");
+    let imgPath = "assets/profile.png";
+    fetch(`https://${location.host}:9000/user/getotherinfo`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ username: myUsername.username }),
+      credentials: "include",
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        if (data.image) imgPath = data.image;
+        console.log(imgPath);
+        profileImg.src = `https://localhost/image/${imgPath}`;
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
   }
 
   setupEventListeners() {
