@@ -18,35 +18,32 @@ class PlayerView(APIView):
         tournament = get_tournament_obj(self,pk)
         players_data = tournament.players.all()
         p_json = PlayerSerializer(players_data, many=True)
-        new_p = {'no_of_players': len(players_data)}
-        new_p.update(p_json.data)
+        new_p = list(p_json.data)
+        new_p.append({'no_of_players': len(players_data)})
         return Response(new_p, status=200)
 
     #add a player to a tournament
     def post(self, request, pk, format=None):
-        # player_id = get_user_id(request)
-        
         tournament = get_tournament_obj(self,pk)
-        # request.data.update({"player_id": player_id})
-        request.data.update({"tournament": tournament})
+        player=Player(player_id=request.data.get("player_id"),
+                      player_name=request.data.get("player_name"),
+                      tournament=tournament)
         p_json = PlayerSerializer(data=request.data)
         #check if player can join a tournament
-        # can_join, error = PlayerView.CheckTournamentSeat(p_json, tournament)
-        # if can_join and p_json.is_valid:
-        #     p_json.save()
-        if p_json.is_valid():
-            p_json.save()
-        # else:
-        #     return Response({'error': [error[0]]}, status=error[1])
+        can_join, error = PlayerView.CheckTournamentSeat(player, tournament)
+        if can_join:
+            player.save()
+            if p_json.is_valid():
+                p_json.save()
+        else:
+            return Response({'error': [error[0]]}, status=error[1])
         return Response(p_json.data, status=201)
     
     #leave a tournament
     def delete(self, request, pk, format=None):
-        user_id = get_user_id(request)
-
         tournament = get_tournament_obj(self, pk)
         try:
-            check_exist = tournament.players.get(player_id=user_id)
+            check_exist = tournament.players.filter(player_id=request.data.get("player_id"))
         except Player.DoesNotExist:
             return Response({'error': 'user not registered'}, status=404)
         except Exception as e:
@@ -58,7 +55,7 @@ class PlayerView(APIView):
             check_exist.delete()
         except Exception as e:
             return Response({'error': [str(e)]}, status=500)
-        return Response({[f'You left the tournament id `{pk}`']}, status=200)
+        return Response({'You left the tournament id `{pk}`'}, status=200)
     
     @staticmethod
     def CheckTournamentSeat(new_player: Player, tournament: Tournament)\
