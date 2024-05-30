@@ -1,7 +1,5 @@
 from django.db import models
 
-from django.db import models
-
 # Create your models here.
 class UserManagement(models.Model):
     user_id = models.BigAutoField(primary_key=True)
