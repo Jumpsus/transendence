@@ -1,11 +1,11 @@
-const INITIAL_VELOCITY = 0.05;
+const INITIAL_VELOCITY = 0.1;
 
 import { gameState } from "../game/game.js";
 
 export default class Ball {
   constructor(ballElem, gameField) {
     this.ballElem = ballElem;
-	this.gameField = gameField;
+    this.gameField = gameField;
     this.reset();
   }
 
@@ -42,7 +42,6 @@ export default class Ball {
   }
 
   update(delta = 16, paddleRects) {
-
     this.x += this.direction.x * this.velocity * delta;
     this.y += this.direction.y * this.velocity * delta;
     const rect = this.rect();
