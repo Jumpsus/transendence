@@ -5,6 +5,7 @@ from django.core.files.storage import default_storage
 from django.views.decorators.csrf import csrf_exempt
 
 from user_app import utils, database
+from user_app.views import validator
 from user_project import settings
 
 import os
@@ -15,12 +16,10 @@ from PIL import Image
 @csrf_exempt
 def upload_image(req):
 
-    try:
-        current_user = req.session["username"]
-    except KeyError:
+    found, user = validator.validate_user(req)
+    if found != True:
         return utils.responseJsonErrorMessage(400, "30", "Invalid Session")
 
-    user = database.find_user_by_username(current_user)
     if len(user) == 0:
         return utils.responseJsonErrorMessage(400, "13", "User Not Found")
 
