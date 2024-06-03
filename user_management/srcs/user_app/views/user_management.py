@@ -6,6 +6,7 @@ from datetime import datetime
 from user_app import utils, database, jwt_handler
 from user_app.views import friend_management, validator
 import json
+import requests
 
 # Create your views here.
 def status(req):
@@ -42,14 +43,6 @@ def login(req):
     }
 
     return HttpResponse(json.dumps(response_data), content_type="application/json", status=200)
-
-def mock(req):
-    result, decode_data = jwt_handler.validate_jwt(req.headers)
-
-    if result != True:
-        return utils.responseJsonErrorMessage(400, "30", "Invalid Session")
-
-    return HttpResponse(json.dumps(decode_data), content_type="application/json", status=200)
 
 
 @csrf_exempt
