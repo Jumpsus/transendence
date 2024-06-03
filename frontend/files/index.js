@@ -19,10 +19,12 @@ export let isLoggedIn = { status: false };
 export const myUsername = { username: "" };
 
 export async function getLoggedInStatus() {
+  if (localStorage.getItem("jwt") === null) return false;
   return await fetch(`https://${location.host}:9000/user/getinfo`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
+	  "Authorization": `Bearer ${localStorage.getItem("jwt")}`,
     },
     credentials: "include",
   })

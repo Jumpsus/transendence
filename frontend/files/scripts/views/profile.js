@@ -78,6 +78,7 @@ export class Profile extends Component {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
       },
       body: JSON.stringify({ username: username.username }),
       credentials: "include",
@@ -144,12 +145,15 @@ export class Profile extends Component {
           await fetch(`https://${location.host}:9000/user/uploadimage`, {
             method: "POST",
             body: formData,
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+            },
             credentials: "include",
           })
             .then((response) => {
               if (response.ok) {
                 profileImg.src = URL.createObjectURL(file);
-				profileImgNav.src = URL.createObjectURL(file);
+                profileImgNav.src = URL.createObjectURL(file);
                 // profileImg.src = `https://localhost/image/${imgPath}`;
                 // profileImgNav.src = `https://localhost/image/${imgPath}`;
               }
@@ -178,6 +182,7 @@ export class Profile extends Component {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("jwt")}`,
           },
           credentials: "include",
           body: JSON.stringify({ username: username.username, action: action }),

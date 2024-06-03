@@ -11,14 +11,15 @@ def find_user_by_username_passwd(username, password):
     return UserManagement.objects.filter(username = username, password = password)
 
 # return True if "success" False if "fail"
-def create_user(username, password, name = "", last_name = "", phone_number = "", tag = ""):
+def create_user(username, password, name = "", last_name = "", phone_number = "", tag = "", jti = ""):
     user = UserManagement(  username = username, 
                             password = password,
                             name = name,
                             last_name = last_name,
                             phone_number = phone_number,
                             image = "default.png",
-                            tag = tag)
+                            tag = tag,
+                            jti = jti)
 
     try: 
         user.save()
@@ -80,6 +81,15 @@ def update_status(user, status):
 def set_image(user, image):
     user.image = image
 
+    try: 
+        user.save()
+    except:
+        return False
+    return True
+
+def stamp_jti(user, jti):
+    user.jti = jti
+    
     try: 
         user.save()
     except:

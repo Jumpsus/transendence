@@ -143,7 +143,8 @@ export class Login extends Component {
           }
           return response.json();
         })
-        .then(() => {
+        .then((data) => {
+		  localStorage.setItem("jwt", data.token);
           return getLoggedInStatus();
         })
         .then((resp) => {

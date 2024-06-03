@@ -4,6 +4,7 @@ from django.views.decorators.csrf import csrf_exempt
 from user_app.models import UserManagement
 from datetime import datetime
 from user_app import utils, database
+from user_app.views import validator
 import json
 
 @csrf_exempt
@@ -20,12 +21,10 @@ def make_relation(req):
         return utils.responseJsonErrorMessage(400, "13", "User Not Found")
 
     #get my_username
-    try:
-        current_user = req.session["username"]
-    except KeyError:
+    found, action_u = validator.validate_user(req)
+    if found != True:
         return utils.responseJsonErrorMessage(400, "30", "Invalid Session")
 
-    action_u = database.find_user_by_username(current_user)
     if len(action_u) == 0:
         return utils.responseJsonErrorMessage(400, "13", "User Not Found")
 

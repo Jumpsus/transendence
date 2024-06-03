@@ -127,6 +127,7 @@ export class Settings extends Component {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+		"Authorization": `Bearer ${localStorage.getItem("jwt")}`
       },
       credentials: "include",
     })
@@ -195,6 +196,7 @@ export class Settings extends Component {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+		  "Authorization": `Bearer ${localStorage.getItem("jwt")}`
         },
         body: JSON.stringify({
           name: nameField.value,
@@ -244,6 +246,7 @@ export class Settings extends Component {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+			"Authorization": `Bearer ${localStorage.getItem("jwt")}`
           },
           body: JSON.stringify({
             old_password: passwordField.value,
@@ -294,6 +297,7 @@ export class Settings extends Component {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+		  "Authorization": `Bearer ${localStorage.getItem("jwt")}`
         },
         credentials: "include",
       })
@@ -301,7 +305,7 @@ export class Settings extends Component {
           return response.json();
         })
         .then((data) => {
-          console.log("we have data: ", data);
+          localStorage.removeItem("jwt");
           isLoggedIn.status = false;
           document.querySelector("nav").innerHTML = "";
           replaceHistoryAndGoTo("/Login");
