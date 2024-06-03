@@ -14,7 +14,6 @@ services:
   user-nginx:
     networks:
       - user-network
-      - user-network
     build:
       context: nginx
       dockerfile: Dockerfile
