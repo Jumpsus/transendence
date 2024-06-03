@@ -84,8 +84,8 @@ export class Nav extends Component {
       })
       .then((data) => {
         if (data.image) imgPath = data.image;
-        console.log(imgPath);
-        profileImg.src = `https://localhost/image/${imgPath}`;
+		const timestamp = new Date().getTime();
+        profileImg.src = `http://${location.host}/image/${imgPath}?${timestamp}`;
       })
       .catch((error) => {
         console.error("Error:", error);

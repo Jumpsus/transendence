@@ -4,6 +4,7 @@ import { makeLinkActive } from "../utils/other.js";
 import { username, newUserView } from "../utils/router.js";
 import { myUsername } from "../../index.js";
 import { MatchHistory } from "./history.js";
+import { compressImage } from "../utils/compress.js";
 
 export class Profile extends Component {
   constructor() {
@@ -91,7 +92,8 @@ export class Profile extends Component {
         lostNumber.textContent = data.lose;
         let status = data.relation;
         if (data.image) imgPath = data.image;
-        profileImg.src = `https://localhost/image/${imgPath}`;
+		const timestamp = new Date().getTime();
+        profileImg.src = `http://${location.host}/image/${imgPath}?${timestamp}`;
         switch (status) {
           case "pending":
             document.getElementById("friend-button").textContent = "Pending";
@@ -139,7 +141,11 @@ export class Profile extends Component {
         input.accept = "image/*";
         input.click();
         input.addEventListener("change", async () => {
-          const file = input.files[0];
+          const file = await compressImage(input.files[0], {
+            quality: 0,
+            type: "image/jpeg",
+          });	
+          // const file = input.files[0];
           const formData = new FormData();
           formData.append("image", file);
           await fetch(`https://${location.host}:9000/user/uploadimage`, {

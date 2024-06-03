@@ -34,7 +34,7 @@ export class Friends extends Component {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-		"Authorization": `Bearer ${localStorage.getItem("jwt")}`
+        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
       },
       credentials: "include",
       body: JSON.stringify({ type: "friend" }),
@@ -47,7 +47,9 @@ export class Friends extends Component {
           "friend-count"
         ).textContent = `${data.user_list.length} Friends`;
         data.user_list.forEach((friend) => {
-			const imgPath = friend.image ? `https://localhost/image/${friend.image}` : "/assets/profile.png";
+          const imgPath = friend.image
+            ? `http://${location.host}/image/${friend.image}`
+            : "/assets/profile.png";
           friendsList.innerHTML += `<div>
 					<a href="/${friend.username}/History" data-link><div class="profile-img-box position-relative rounded-0" style="width: 100px; height:100px;">
 						<img src=${imgPath} class="position-absolute object-fit-cover  profile-img rounded-0"
@@ -75,7 +77,7 @@ export class Friends extends Component {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-		  "Authorization": `Bearer ${localStorage.getItem("jwt")}`
+          Authorization: `Bearer ${localStorage.getItem("jwt")}`,
         },
         credentials: "include",
       })
@@ -95,7 +97,9 @@ export class Friends extends Component {
               friend.username.startsWith(findFriend.value) &&
               friend.username != myUsername.username
             ) {
-				const imgPath = friend.image ? `https://localhost/image/${friend.image}` : "/assets/profile.png";
+              const imgPath = friend.image
+                ? `http://${location.host}/image/${friend.image}`
+                : "/assets/profile.png";
               searchList.innerHTML += `<div>
 				<a href="/${friend.username}/History" data-link><div class="profile-img-box position-relative rounded-1" style="width: 100px; height:100px;">
 				<img src=${imgPath} class="position-absolute object-fit-cover  profile-img rounded-1"
