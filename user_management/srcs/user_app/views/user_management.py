@@ -122,7 +122,7 @@ def user_list(req):
                 if friend.user_a == u[0]:
                     d = {"username": friend.user_b.username, "image": friend.user_b.image ,"status": "offline"}
                 else:
-                    d = {"username": friend.user_a.username, "image": friend.user_b.image ,"status": "offline"}
+                    d = {"username": friend.user_a.username, "image": friend.user_a.image ,"status": "offline"}
                 user_list.append(d)
         
         case "add":
