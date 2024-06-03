@@ -240,6 +240,7 @@ export class Register extends Component {
             errorAlert.textContent = data.message;
             registerForm.insertAdjacentElement("afterend", errorAlert);
           } else {
+            localStorage.setItem("jwt", data.token);
             return getLoggedInStatus();
           }
         })

@@ -34,6 +34,7 @@ export class Friends extends Component {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+		"Authorization": `Bearer ${localStorage.getItem("jwt")}`
       },
       credentials: "include",
       body: JSON.stringify({ type: "friend" }),
@@ -74,6 +75,7 @@ export class Friends extends Component {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+		  "Authorization": `Bearer ${localStorage.getItem("jwt")}`
         },
         credentials: "include",
       })

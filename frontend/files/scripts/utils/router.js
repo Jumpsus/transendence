@@ -55,6 +55,7 @@ async function userExists(username) {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
+	  "Authorization": `Bearer ${localStorage.getItem("jwt")}`
     },
     credentials: "include",
   })
