@@ -3,7 +3,7 @@ import { isLoggedIn } from "../../index.js";
 import { replaceHistoryAndGoTo } from "../utils/router.js";
 import { Nav } from "./nav.js";
 import { setupDarkModeToggle } from "../utils/darkmode.js";
-import { getLoggedInStatus } from "../../index.js";
+import { setMyUsername } from "../../index.js";
 
 export class Login extends Component {
   constructor() {
@@ -134,8 +134,7 @@ export class Login extends Component {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(requestBody),
-        credentials: "include",
+        body: JSON.stringify(requestBody)
       })
         .then((response) => {
           if (!response.ok) {
@@ -145,7 +144,7 @@ export class Login extends Component {
         })
         .then((data) => {
 		  localStorage.setItem("jwt", data.token);
-          return getLoggedInStatus();
+          return setMyUsername();
         })
         .then((resp) => {
           isLoggedIn.status = resp;

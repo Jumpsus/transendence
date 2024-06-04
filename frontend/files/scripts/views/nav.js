@@ -76,8 +76,7 @@ export class Nav extends Component {
         "Content-Type": "application/json",
 		"Authorization": `Bearer ${localStorage.getItem("jwt")}`
       },
-      body: JSON.stringify({ username: myUsername.username }),
-      credentials: "include",
+      body: JSON.stringify({ username: myUsername.username })
     })
       .then((response) => {
         return response.json();

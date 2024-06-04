@@ -36,7 +36,6 @@ export class Friends extends Component {
         "Content-Type": "application/json",
         Authorization: `Bearer ${localStorage.getItem("jwt")}`,
       },
-      credentials: "include",
       body: JSON.stringify({ type: "friend" }),
     })
       .then((response) => {
@@ -78,8 +77,7 @@ export class Friends extends Component {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-        },
-        credentials: "include",
+        }
       })
         .then((response) => {
           return response.json();

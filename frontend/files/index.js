@@ -5,6 +5,10 @@ import {
   goTo,
 } from "./scripts/utils/router.js";
 
+export let isLoggedIn = { status: false };
+
+export const myUsername = { username: "" };
+
 window.addEventListener("popstate", () => {
   const url = window.location.pathname;
   if (isLoggedIn.status && (url === "/Login" || url === "/Register")) {
@@ -14,41 +18,25 @@ window.addEventListener("popstate", () => {
   } else goTo(url);
 });
 
-export let isLoggedIn = { status: false };
-
-export const myUsername = { username: "" };
-
-export async function getLoggedInStatus() {
+export async function setMyUsername() {
   if (localStorage.getItem("jwt") === null) return false;
-  return await fetch(`https://${location.host}:9000/user/getinfo`, {
+  const resp = await fetch(`https://${location.host}:9000/user/getinfo`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-	  "Authorization": `Bearer ${localStorage.getItem("jwt")}`,
+      Authorization: `Bearer ${localStorage.getItem("jwt")}`,
     },
-    credentials: "include",
-  })
-    .then((response) => {
-      return response.json();
-    })
-    .then((data) => {
-      if (data.username === undefined) {
-        return false;
-      } else {
-        myUsername.username = data.username;
-        return true;
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+  });
+  const data = await resp.json();
+  if (data.username === undefined) return false;
+  myUsername.username = data.username;
+  return true;
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
-  isLoggedIn.status = await getLoggedInStatus();
+  isLoggedIn.status = await setMyUsername();
   setupDarkMode();
   setupNavigation();
-  //   console.log(isLoggedIn.status);
   replaceHistoryAndGoTo(window.location.pathname);
 });
 
@@ -62,7 +50,3 @@ function setupNavigation() {
     }
   });
 }
-
-// window.addEventListener("load", function () {
-//   console.log("All resources have finished loading");
-// });

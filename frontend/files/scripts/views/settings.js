@@ -129,7 +129,6 @@ export class Settings extends Component {
         "Content-Type": "application/json",
 		"Authorization": `Bearer ${localStorage.getItem("jwt")}`
       },
-      credentials: "include",
     })
       .then((response) => {
         return response.json();
@@ -204,7 +203,6 @@ export class Settings extends Component {
           phone_number: phoneField.value,
           tag: tagField.value,
         }),
-        credentials: "include",
       })
         .then((response) => {
           return response.json();
@@ -252,7 +250,6 @@ export class Settings extends Component {
             old_password: passwordField.value,
             password: newPassDiv.querySelector("input").value,
           }),
-          credentials: "include",
         })
           .then((response) => {
             return response.json();
@@ -299,7 +296,6 @@ export class Settings extends Component {
           "Content-Type": "application/json",
 		  "Authorization": `Bearer ${localStorage.getItem("jwt")}`
         },
-        credentials: "include",
       })
         .then((response) => {
           return response.json();

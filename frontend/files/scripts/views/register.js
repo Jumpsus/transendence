@@ -3,7 +3,7 @@ import { isLoggedIn } from "../../index.js";
 import { replaceHistoryAndGoTo } from "../utils/router.js";
 import { Nav } from "./nav.js";
 import { setupDarkModeToggle } from "../utils/darkmode.js";
-import { getLoggedInStatus } from "../../index.js";
+import { setMyUsername } from "../../index.js";
 
 export class Register extends Component {
   constructor() {
@@ -226,7 +226,6 @@ export class Register extends Component {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(requestBody),
-        credentials: "include",
       })
         .then((response) => {
           return response.json();
@@ -241,7 +240,7 @@ export class Register extends Component {
             registerForm.insertAdjacentElement("afterend", errorAlert);
           } else {
             localStorage.setItem("jwt", data.token);
-            return getLoggedInStatus();
+            return setMyUsername();
           }
         })
         .then((resp) => {
