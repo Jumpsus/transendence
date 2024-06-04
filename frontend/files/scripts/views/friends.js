@@ -1,5 +1,4 @@
 import { Component } from "../library/component.js";
-import { NotExist } from "./404.js";
 import { myUsername } from "../../index.js";
 
 export class Friends extends Component {
@@ -23,12 +22,6 @@ export class Friends extends Component {
   }
 
   async render() {
-    // if (
-    //   myUsername.username != location.pathname.split("/")[1] &&
-    //   location.pathname.split("/")[1] != ""
-    // )
-    //   new NotExist();
-    // else 
 	super.render();
     const friendsList = document.getElementById("friends-list");
     await fetch(`https://${location.host}:9000/user/userlist`, {

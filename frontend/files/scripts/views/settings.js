@@ -2,8 +2,6 @@ import { Component } from "../library/component.js";
 import { makeLinkActive } from "../utils/other.js";
 import { isLoggedIn } from "../../index.js";
 import { replaceHistoryAndGoTo } from "../utils/router.js";
-import { myUsername } from "../../index.js";
-import { NotExist } from "./404.js";
 
 export class Settings extends Component {
   constructor() {
@@ -91,12 +89,7 @@ export class Settings extends Component {
   }
 
   render() {
-    if (
-      myUsername.username != location.pathname.split("/")[1] &&
-      location.pathname.split("/")[1] != ""
-    )
-      new NotExist();
-    else super.render();
+    super.render();
     makeLinkActive(document.getElementById("profileMenu"));
   }
 
@@ -127,7 +120,7 @@ export class Settings extends Component {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-		"Authorization": `Bearer ${localStorage.getItem("jwt")}`
+        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
       },
     })
       .then((response) => {
@@ -195,7 +188,7 @@ export class Settings extends Component {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-		  "Authorization": `Bearer ${localStorage.getItem("jwt")}`
+          Authorization: `Bearer ${localStorage.getItem("jwt")}`,
         },
         body: JSON.stringify({
           name: nameField.value,
@@ -244,7 +237,7 @@ export class Settings extends Component {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-			"Authorization": `Bearer ${localStorage.getItem("jwt")}`
+            Authorization: `Bearer ${localStorage.getItem("jwt")}`,
           },
           body: JSON.stringify({
             old_password: passwordField.value,
@@ -294,7 +287,7 @@ export class Settings extends Component {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-		  "Authorization": `Bearer ${localStorage.getItem("jwt")}`
+          Authorization: `Bearer ${localStorage.getItem("jwt")}`,
         },
       })
         .then((response) => {

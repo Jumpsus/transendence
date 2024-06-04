@@ -34,7 +34,7 @@ function getCorrectUrl(url) {
     if (routesLoggedOut.find((route) => route.path === url))
       return myUsername.username;
     else {
-      if (url[url.length - 1] === "/") url = url.slice(0, -1);
+      if (url != "/" && url[url.length - 1] === "/") url = url.slice(0, -1);
       return url;
     }
   } else {
