@@ -48,7 +48,7 @@ export class Nav extends Component {
 							<path fill-rule="evenodd" clip-rule="evenodd" d="M10 20H8V4H10V6H12V9H14V11H16V13H14V15H12V18H10V20Z"/>
 						</svg>
 				</div>
-				<a href="/${myUsername.username}/History" class="nav-link d-flex justify-content-lg-start justify-content-center" data-link>
+				<a href="/${myUsername.username}" class="nav-link d-flex justify-content-lg-start justify-content-center" data-link>
 					<div class="d-flex align-items-center w-100 menu-item">
 						<div class="profile-img-box position-relative rounded-0"  style="width: 40px; height: 40px;">
 							<img src="/assets/profile.png" id="profile-img-nav"
