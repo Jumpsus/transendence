@@ -20,7 +20,6 @@ const routes = [
   { path: "/", view: Home },
   { path: "/Tournament", view: Tournament },
   { path: "/Friends", view: Friends },
-  { path: "/History", view: MatchHistory },
   { path: "/Settings", view: Settings },
   { path: "/Game", view: Game },
 ];
@@ -51,25 +50,16 @@ function arrayFromMultiPath(url) {
 }
 
 async function userExists(username) {
-  return await fetch(`https://${location.host}:9000/user/loginlist`, {
+  const resp = await fetch(`https://${location.host}:9000/user/loginlist`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-	  "Authorization": `Bearer ${localStorage.getItem("jwt")}`
-    }
-  })
-    .then((response) => {
-      return response.json();
-    })
-    .then((data) => {
-      const userExists = data.user_list.some(
-        (user) => user.username === username
-      );
-      return userExists;
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+      Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+    },
+  });
+  const data = await resp.json();
+  const userExists = data.user_list.some((user) => user.username === username);
+  return userExists;
 }
 
 async function pathToView(url) {
@@ -80,10 +70,7 @@ async function pathToView(url) {
     for (let i = 0; i < parts.length; i++) {
       route = routes.find((route) => route.path === parts[i]);
       if (i == 0 && !route) {
-        if (
-          parts.length == 1 ||
-          !(await userExists(parts[i].replace("/", "")))
-        ) {
+        if (!(await userExists(parts[0].replace("/", "")))) {
           renderView(NotExist);
           return;
         } else {
@@ -95,6 +82,10 @@ async function pathToView(url) {
           renderView(Profile);
           continue;
         }
+      }
+      if (i > 0 && !route) {
+        renderView(NotExist);
+        return;
       }
       renderView(route.view);
     }

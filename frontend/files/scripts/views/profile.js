@@ -50,7 +50,7 @@ export class Profile extends Component {
 					data-link>Friends</a>
 			</li>
 			<li class="nav-item">
-				<a href="/${username.username}/History" class="nav-link" data-link>History</a>
+				<a href="/${username.username}" class="nav-link" data-link>History</a>
 			</li>
 			<li class="nav-item" id="settingsTab">
 				<a href="/${username.username}/Settings" class="nav-link" data-link>Settings</a>
@@ -91,7 +91,7 @@ export class Profile extends Component {
         lostNumber.textContent = data.lose;
         let status = data.relation;
         if (data.image) imgPath = data.image;
-		const timestamp = new Date().getTime();
+        const timestamp = new Date().getTime();
         profileImg.src = `http://${location.host}/image/${imgPath}?${timestamp}`;
         switch (status) {
           case "pending":
@@ -143,7 +143,7 @@ export class Profile extends Component {
           const file = await compressImage(input.files[0], {
             quality: 0,
             type: "image/jpeg",
-          });	
+          });
           // const file = input.files[0];
           const formData = new FormData();
           formData.append("image", file);

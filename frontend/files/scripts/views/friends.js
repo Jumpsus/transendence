@@ -50,7 +50,7 @@ export class Friends extends Component {
             ? `http://${location.host}/image/${friend.image}`
             : "/assets/profile.png";
           friendsList.innerHTML += `<div>
-					<a href="/${friend.username}/History" data-link><div class="profile-img-box position-relative rounded-0" style="width: 100px; height:100px;">
+					<a href="/${friend.username}" data-link><div class="profile-img-box position-relative rounded-0" style="width: 100px; height:100px;">
 						<img src=${imgPath} class="position-absolute object-fit-cover  profile-img rounded-0"
 								alt="...">
 					</div></a>
@@ -77,7 +77,7 @@ export class Friends extends Component {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-        }
+        },
       })
         .then((response) => {
           return response.json();
@@ -99,7 +99,7 @@ export class Friends extends Component {
                 ? `http://${location.host}/image/${friend.image}`
                 : "/assets/profile.png";
               searchList.innerHTML += `<div>
-				<a href="/${friend.username}/History" data-link><div class="profile-img-box position-relative rounded-1" style="width: 100px; height:100px;">
+				<a href="/${friend.username}" data-link><div class="profile-img-box position-relative rounded-1" style="width: 100px; height:100px;">
 				<img src=${imgPath} class="position-absolute object-fit-cover  profile-img rounded-1"
 						alt="...">
 			</div></a>
