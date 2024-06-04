@@ -3,14 +3,13 @@ import { Login } from "../views/login.js";
 import { Profile } from "../views/profile.js";
 import { Tournament } from "../views/tournament.js";
 import { Register } from "../views/register.js";
-import { MatchHistory } from "../views/history.js";
 import { Settings } from "../views/settings.js";
 import { Friends } from "../views/friends.js";
-import { isLoggedIn } from "../../index.js";
+import { isLoggedIn, myUsername } from "../../index.js";
 import { Nav } from "../views/nav.js";
 import { NotExist } from "../views/404.js";
-import { myUsername } from "../../index.js";
 import { Game } from "../views/gameview.js";
+import { arrayFromMultiPath } from "./other.js";
 
 export let username = { username: "" };
 let lastViewedUser = "";
@@ -34,19 +33,15 @@ function getCorrectUrl(url) {
   if (isLoggedIn.status) {
     if (routesLoggedOut.find((route) => route.path === url))
       return myUsername.username;
-    else return url;
+    else {
+      if (url[url.length - 1] === "/") url = url.slice(0, -1);
+      return url;
+    }
   } else {
     route = routesLoggedOut.find((route) => route.path === url);
     if (!route) return routesLoggedOut[0].path;
     return route.path;
   }
-}
-
-function arrayFromMultiPath(url) {
-  let parts = url.split("/").filter(Boolean);
-  parts = parts.map((part) => "/" + part);
-  if (parts.length == 0) parts = ["/"];
-  return parts;
 }
 
 async function userExists(username) {
@@ -64,6 +59,7 @@ async function userExists(username) {
 
 async function pathToView(url) {
   let route;
+  let viewArr = [];
   if (isLoggedIn.status) {
     if (!document.getElementById("homeNav")) new Nav();
     let parts = arrayFromMultiPath(url);
@@ -71,31 +67,36 @@ async function pathToView(url) {
       route = routes.find((route) => route.path === parts[i]);
       if (i == 0 && !route) {
         if (!(await userExists(parts[0].replace("/", "")))) {
-          renderView(NotExist);
-          return;
+          viewArr.push(NotExist);
+          break;
         } else {
           username.username = parts[i].replace("/", "");
           if (lastViewedUser != username.username) {
             newUserView = true;
             lastViewedUser = username.username;
           } else newUserView = false;
-          renderView(Profile);
+          viewArr.push(Profile);
           continue;
         }
       }
       if (i > 0 && !route) {
-        renderView(NotExist);
-        return;
+        viewArr.push(NotExist);
+        break;
       }
-      renderView(route.view);
+      viewArr.push(route.view);
     }
   } else {
     route = routesLoggedOut.find((route) => route.path === url);
-    if (!route) route = routesLoggedOut[0];
     if (document.getElementById("homeNav"))
       document.getElementById("homeNav").remove();
-    renderView(route.view);
+    viewArr.push(route.view);
   }
+  if (viewArr.includes(NotExist)) {
+    viewArr = [NotExist];
+  }
+  viewArr.forEach((view) => {
+    renderView(view);
+  });
 }
 
 function renderView(view) {

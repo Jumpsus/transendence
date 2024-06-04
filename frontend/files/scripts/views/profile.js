@@ -75,7 +75,7 @@ export class Profile extends Component {
     const lostNumber = document.getElementById("lostNumber");
     const profileImg = document.getElementById("profile-img");
     let imgPath = `/assets/profile.png`;
-    fetch(`https://${location.host}:9000/user/getotherinfo`, {
+    await fetch(`https://${location.host}:9000/user/getotherinfo`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
