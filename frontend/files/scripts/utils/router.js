@@ -67,10 +67,14 @@ async function pathToView(url) {
       route = routes.find((route) => route.path === parts[i]);
       if (i == 0 && !route) {
         if (!(await userExists(parts[0].replace("/", "")))) {
-          viewArr.push(NotExist);
+          viewArr = [NotExist];
           break;
         } else {
           username.username = parts[i].replace("/", "");
+          if (myUsername.username != username.username && parts.length > 1) {
+            viewArr = [NotExist];
+            break;
+          }
           if (lastViewedUser != username.username) {
             newUserView = true;
             lastViewedUser = username.username;
@@ -80,7 +84,7 @@ async function pathToView(url) {
         }
       }
       if (i > 0 && !route) {
-        viewArr.push(NotExist);
+        viewArr = [NotExist];
         break;
       }
       viewArr.push(route.view);
@@ -90,9 +94,6 @@ async function pathToView(url) {
     if (document.getElementById("homeNav"))
       document.getElementById("homeNav").remove();
     viewArr.push(route.view);
-  }
-  if (viewArr.includes(NotExist)) {
-    viewArr = [NotExist];
   }
   viewArr.forEach((view) => {
     renderView(view);

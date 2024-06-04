@@ -15,8 +15,8 @@ export function makeLinkActive(parent) {
 }
 
 export function arrayFromMultiPath(url) {
-	let parts = url.split("/").filter(Boolean);
-	parts = parts.map((part) => "/" + part);
-	if (parts.length == 0) parts = ["/"];
-	return parts;
-  }
+  let parts = url.split("/").filter(Boolean);
+  parts = parts.map((part) => "/" + part);
+  if (parts.length == 0) parts = ["/"];
+  return parts;
+}

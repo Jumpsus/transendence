@@ -23,12 +23,13 @@ export class Friends extends Component {
   }
 
   async render() {
-    if (
-      myUsername.username != location.pathname.split("/")[1] &&
-      location.pathname.split("/")[1] != ""
-    )
-      new NotExist();
-    else super.render();
+    // if (
+    //   myUsername.username != location.pathname.split("/")[1] &&
+    //   location.pathname.split("/")[1] != ""
+    // )
+    //   new NotExist();
+    // else 
+	super.render();
     const friendsList = document.getElementById("friends-list");
     await fetch(`https://${location.host}:9000/user/userlist`, {
       method: "POST",
