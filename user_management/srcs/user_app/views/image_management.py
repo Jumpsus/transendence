@@ -36,8 +36,8 @@ def upload_image(req):
     
     os.remove(temp_name)
 
-    _, file_extension = os.path.splitext(file.name)
-    new_filename = user[0].username + file_extension
+    # _, file_extension = os.path.splitext(file.name)
+    new_filename = user[0].username + ".png"
     full_image_path = os.path.join(settings.DEFAULT_IMAGE_PATH, new_filename)
     
     # clear existing image
