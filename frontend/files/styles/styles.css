@@ -2,7 +2,7 @@
 
 :root {
   --bs-body-bg: #000000;
-  --bs-body-color: #f1e5ff;
+  --bs-body-color: #eedfff;
   /* --bs-border-color: rgb(255, 255, 255); */
   --semi-transparent-body-color: #f1e5ff39;
   --bs-secondary-bg: #140831;
@@ -30,7 +30,7 @@ label::after {
 }
 
 #homeNav {
-  border-right: 3px solid var(--bs-body-color);
+  border-right: 1px solid var(--bs-body-color);
 }
 
 #navigation-wrapper {
@@ -163,6 +163,48 @@ label::after {
     filter: drop-shadow(0px 0px 8px var(--bs-btn-active-bg));
   }
 
+  /* .menu-item {
+    filter: drop-shadow(0px 0px 3px var(--bs-body-color));
+  } */
+
+  .menu-item:not(.active) {
+    /* filter: drop-shadow(0px 0px 3px var(--bs-body-color)); */
+  }
+
+  .profile-img {
+    -webkit-filter: grayscale(0%) brightness(1) contrast(10) saturate(1000);
+  }
+
+  body::before {
+    content: " ";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: linear-gradient(
+        rgba(18, 16, 16, 0) 50%,
+        rgba(0, 0, 0, 0.25) 50%
+      ),
+      linear-gradient(
+        90deg,
+        rgba(255, 0, 0, 0.06),
+        rgba(0, 255, 0, 0.02),
+        rgba(0, 0, 255, 0.06)
+      );
+    z-index: 5000;
+    background-size: 100% 2px, 3px 100%;
+    pointer-events: none;
+  }
+
+  #shadow-overlay {
+    /* box-shadow: inset 0px 0px 20px 0px rgb(75 12 207); */
+    z-index: 5000;
+    pointer-events: none;
+    /* filter: drop-shadow(0px 0px 3px white); */
+  }
+
   .menu-item.active {
     color: var(--glow-inner-color);
     filter: drop-shadow(0px 0px 3px var(--glow-outer-color));
@@ -290,15 +332,9 @@ body {
 
 @media (max-width: 575px) {
   .menu-nav {
-    /* border-radius: 40px 40px 0 0 !important; */
     border: none !important;
     border-top: 1.5px solid var(--bs-body-color) !important;
     padding: 10px 20px !important;
-    /* border-top: 1px solid var(--my-primary-color) !important; */
-    /* box-shadow: 0px -3px 3px var(--glow-inner-color) !important; */
-    /* box-shadow: 0px -2px 3px var(--glow-inner-color) !important; */
-    /* color: var(--glow-inner-color);
-    filter: drop-shadow(0px 0px 3px var(--glow-outer-color)); */
   }
 }
 
@@ -322,7 +358,6 @@ body {
   height: 100%;
   left: 0;
   top: 0;
-  /* -webkit-filter: grayscale(0%) brightness(1) contrast(1000); */
   -webkit-transition: 100ms -webkit-filter linear;
   z-index: 1;
 }
@@ -332,7 +367,7 @@ body {
     background-color: rgba(0, 67, 23, 0.5);
   }
   .profile-img {
-    filter: grayscale(100%) brightness(2.5) contrast(0.7) saturate(1);
+    filter: grayscale(100%) brightness(1.5) contrast(0.7) saturate(1);
   }
 }
 
