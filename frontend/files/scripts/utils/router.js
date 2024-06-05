@@ -3,14 +3,13 @@ import { Login } from "../views/login.js";
 import { Profile } from "../views/profile.js";
 import { Tournament } from "../views/tournament.js";
 import { Register } from "../views/register.js";
-import { MatchHistory } from "../views/history.js";
 import { Settings } from "../views/settings.js";
 import { Friends } from "../views/friends.js";
-import { isLoggedIn } from "../../index.js";
+import { isLoggedIn, myUsername } from "../../index.js";
 import { Nav } from "../views/nav.js";
 import { NotExist } from "../views/404.js";
-import { myUsername } from "../../index.js";
 import { Game } from "../views/gameview.js";
+import { arrayFromMultiPath, makeLinkActive } from "./other.js";
 
 export let username = { username: "" };
 let lastViewedUser = "";
@@ -20,7 +19,6 @@ const routes = [
   { path: "/", view: Home },
   { path: "/Tournament", view: Tournament },
   { path: "/Friends", view: Friends },
-  { path: "/History", view: MatchHistory },
   { path: "/Settings", view: Settings },
   { path: "/Game", view: Game },
 ];
@@ -35,7 +33,10 @@ function getCorrectUrl(url) {
   if (isLoggedIn.status) {
     if (routesLoggedOut.find((route) => route.path === url))
       return myUsername.username;
-    else return url;
+    else {
+      if (url != "/" && url[url.length - 1] === "/") url = url.slice(0, -1);
+      return url;
+    }
   } else {
     route = routesLoggedOut.find((route) => route.path === url);
     if (!route) return routesLoggedOut[0].path;
@@ -43,69 +44,61 @@ function getCorrectUrl(url) {
   }
 }
 
-function arrayFromMultiPath(url) {
-  let parts = url.split("/").filter(Boolean);
-  parts = parts.map((part) => "/" + part);
-  if (parts.length == 0) parts = ["/"];
-  return parts;
-}
-
 async function userExists(username) {
-  return await fetch(`https://${location.host}:9000/user/loginlist`, {
+  const resp = await fetch(`https://${location.host}:9000/user/loginlist`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-	  "Authorization": `Bearer ${localStorage.getItem("jwt")}`
+      Authorization: `Bearer ${localStorage.getItem("jwt")}`,
     },
-    credentials: "include",
-  })
-    .then((response) => {
-      return response.json();
-    })
-    .then((data) => {
-      const userExists = data.user_list.some(
-        (user) => user.username === username
-      );
-      return userExists;
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+  });
+  const data = await resp.json();
+  const userExists = data.user_list.some((user) => user.username === username);
+  return userExists;
 }
 
 async function pathToView(url) {
   let route;
+  let viewArr = [];
   if (isLoggedIn.status) {
     if (!document.getElementById("homeNav")) new Nav();
+	makeLinkActive(document.getElementById("homeNav"), true);
     let parts = arrayFromMultiPath(url);
     for (let i = 0; i < parts.length; i++) {
       route = routes.find((route) => route.path === parts[i]);
       if (i == 0 && !route) {
-        if (
-          parts.length == 1 ||
-          !(await userExists(parts[i].replace("/", "")))
-        ) {
-          renderView(NotExist);
-          return;
+        if (!(await userExists(parts[0].replace("/", "")))) {
+          viewArr = [NotExist];
+          break;
         } else {
           username.username = parts[i].replace("/", "");
+          if (myUsername.username != username.username && parts.length > 1) {
+            viewArr = [NotExist];
+            break;
+          }
           if (lastViewedUser != username.username) {
             newUserView = true;
             lastViewedUser = username.username;
           } else newUserView = false;
-          renderView(Profile);
+          viewArr.push(Profile);
           continue;
         }
       }
-      renderView(route.view);
+      if (i > 0 && !route) {
+        viewArr = [NotExist];
+        break;
+      }
+      viewArr.push(route.view);
     }
   } else {
     route = routesLoggedOut.find((route) => route.path === url);
-    if (!route) route = routesLoggedOut[0];
     if (document.getElementById("homeNav"))
       document.getElementById("homeNav").remove();
-    renderView(route.view);
+    viewArr.push(route.view);
   }
+  viewArr.forEach((view) => {
+    renderView(view);
+  });
 }
 
 function renderView(view) {
