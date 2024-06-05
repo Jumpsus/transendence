@@ -188,7 +188,7 @@ export class Register extends Component {
         "signup-password-confirm"
       );
 
-      const username = usernameElm.value;
+      const username = usernameElm.value.toLowerCase();
       const password = passwordElm.value;
       const passwordConfirm = passwordConfirmElm.value;
       let formIsValid = true;

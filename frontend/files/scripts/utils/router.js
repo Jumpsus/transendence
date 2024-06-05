@@ -9,7 +9,7 @@ import { isLoggedIn, myUsername } from "../../index.js";
 import { Nav } from "../views/nav.js";
 import { NotExist } from "../views/404.js";
 import { Game } from "../views/gameview.js";
-import { arrayFromMultiPath } from "./other.js";
+import { arrayFromMultiPath, makeLinkActive } from "./other.js";
 
 export let username = { username: "" };
 let lastViewedUser = "";
@@ -62,6 +62,7 @@ async function pathToView(url) {
   let viewArr = [];
   if (isLoggedIn.status) {
     if (!document.getElementById("homeNav")) new Nav();
+	makeLinkActive(document.getElementById("homeNav"), true);
     let parts = arrayFromMultiPath(url);
     for (let i = 0; i < parts.length; i++) {
       route = routes.find((route) => route.path === parts[i]);

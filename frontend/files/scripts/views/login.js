@@ -116,7 +116,7 @@ export class Login extends Component {
       const usernameElm = document.getElementById("login-username");
       const passwordElm = document.getElementById("login-password");
 
-      const username = usernameElm.value;
+      const username = usernameElm.value.toLowerCase();
       const password = passwordElm.value;
       if (username === "") usernameElm.classList.add("is-invalid");
       else usernameElm.classList.remove("is-invalid");
@@ -134,7 +134,7 @@ export class Login extends Component {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(requestBody)
+        body: JSON.stringify(requestBody),
       })
         .then((response) => {
           if (!response.ok) {
@@ -143,7 +143,7 @@ export class Login extends Component {
           return response.json();
         })
         .then((data) => {
-		  localStorage.setItem("jwt", data.token);
+          localStorage.setItem("jwt", data.token);
           return setMyUsername();
         })
         .then((resp) => {

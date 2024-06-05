@@ -1,15 +1,19 @@
-export function makeLinkActive(parent) {
-  const currentUrl = window.location.pathname;
+export function makeLinkActive(parent, isMenu) {
+  let currentUrl = window.location.pathname;
+  if (currentUrl === "/Game") currentUrl = "/";
+  if (isMenu) {
+	const secondSlashIndex = currentUrl.indexOf("/", 1);
+	currentUrl =
+	  secondSlashIndex === -1
+		? currentUrl
+		: currentUrl.slice(0, secondSlashIndex);
+  }
   const navLinks = parent.querySelectorAll("[data-link]");
   navLinks.forEach((link) => {
     if (link.getAttribute("href") === currentUrl) {
       link.classList.add("active");
-      link.classList.add("text-body");
-      link.classList.remove("text-body-tertiary");
     } else {
-      link.classList.add("text-body-tertiary");
       link.classList.remove("active");
-      link.classList.remove("text-body");
     }
   });
 }
