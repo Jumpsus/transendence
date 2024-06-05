@@ -143,10 +143,9 @@ label::after {
     filter: drop-shadow(0px 0px 8px var(--bs-btn-active-bg));
   }
 
-  .menu-item:hover > *:not(.profile-img-box) {
+  .menu-item:hover {
     color: var(--glow-inner-color);
     filter: drop-shadow(0px 0px 3px var(--glow-outer-color));
-    transition: 0ms;
   }
 
   .form-control:disabled {
