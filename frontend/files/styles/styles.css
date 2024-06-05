@@ -46,6 +46,23 @@ label::after {
   border-top: 3px dashed var(--bs-body-color);
 }
 
+#message-button {
+  border: 3px solid var(--my-secondary-color);
+}
+
+#message-button:hover {
+  border: 3px solid var(--my-tertiary-color);
+}
+
+#block-button {
+  fill: var(--bs-body-color);
+  opacity: 60%;
+  position: absolute;
+  top: 24px;
+  right: 20px;
+  cursor: pointer;
+}
+
 .btn-primary,
 .btn-secondary {
   border: none;

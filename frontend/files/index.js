@@ -28,6 +28,7 @@ export async function setMyUsername() {
     },
   });
   const data = await resp.json();
+  console.log(data);
   if (data.username === undefined) return false;
   myUsername.username = data.username;
   return true;
