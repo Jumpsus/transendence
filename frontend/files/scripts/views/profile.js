@@ -18,7 +18,7 @@ export class Profile extends Component {
 					</div>
 					<img src="http://${location.host}/image/${username.username}.jpeg" class="position-absolute object-fit-cover profile-img" id="profile-img" alt="">
 				</div>
-				<div class="container d-flex mt-3 mx-0 px-0 justify-content-between gap-2 d-none" style="max-width:280px" id="profile-interaction">
+				<div class="container d-flex mt-2 mx-0 px-0 justify-content-between gap-2 d-none" style="max-width:280px" id="profile-interaction">
 					<button class="col btn btn-secondary rounded-0" id="message-button">Text</button>
 					<button class="col btn btn-outline-secondary rounded-0" id="friend-button"></button>
 				</div>
