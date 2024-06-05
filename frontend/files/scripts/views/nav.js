@@ -65,27 +65,6 @@ export class Nav extends Component {
 
   render() {
     super.render();
-    const profileImg = document.getElementById("profile-img-nav");
-    let imgPath = "assets/profile.png";
-    fetch(`https://${location.host}:9000/user/getotherinfo`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-      },
-      body: JSON.stringify({ username: myUsername.username }),
-    })
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        if (data.image) imgPath = data.image;
-        const timestamp = new Date().getTime();
-        profileImg.src = `http://${location.host}/image/${imgPath}?${timestamp}`;
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
   }
 
   setupEventListeners() {
