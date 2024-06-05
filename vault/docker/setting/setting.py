@@ -4,6 +4,7 @@ import os
 
 def create_secret():
     client = hvac.Client(url = 'https://vault-service:8201', verify=False)
+    # client = hvac.Client(url = 'https://127.0.0.1:8201', verify=False)
     response = client.secrets.kv.v2.create_or_update_secret(path='app_secret', secret = dict(first_secret="first"))
     print("wirte response")
     print(response)
@@ -15,5 +16,6 @@ def read_secret():
     print(response.get("data"))
 
 os.environ["VAULT_ADDR"] = 'https://vault-service:8201'
+os.environ["VAULT_TOKEN"] = 'Do_not_share_this_ever_ever'
 create_secret()
 # read_secret()

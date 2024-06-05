@@ -13,37 +13,29 @@ services:
             - ssl_volume:/vault/cert
         healthcheck:
             retries: 5
-        # env_file:
-            # - .env-vault
-        environment:
-            - VAULT_ADDR=http://localhost:8201
         cap_add:
             - IPC_LOCK
-        # command: server -dev -dev-root-token-id="00000000-0000-0000-0000-000000000000"
         command: server
 
     vault-init:
         networks:
             - user-network
         image: hashicorp/vault
-        environment:
-          - VAULT_ADDR=https://vault-service:8201
-          - MY_VAULT_TOKEN=${MY_VAULT_TOKEN:-test}
+        env_file:
+            - .env-vault
         volumes:
           - ./init/vault-init.sh:/usr/local/bin/vault-init.sh
-        #   - vault_data/vault-root-token:/vault/file/vault-root-token
           - vault_data:/vault/file/
+          - ssl_volume:/vault/cert
         command: /usr/local/bin/vault-init.sh
-        # command: sleep 10000
     
-    # vault-setting:
-    #     networks:
-    #         - user-network
-    #     build:
-    #         context: setting
-    #         dockerfile: Dockerfile
-    #     env_file:
-    #         - .env-vault
-    #     # command: sleep 10000
-    #     command: python /app/setting.py
+    vault-setting:
+        networks:
+            - user-network
+        build:
+            context: setting
+            dockerfile: Dockerfile
+        env_file:
+            - .env-vault
+        command: python /app/setting.py
         
