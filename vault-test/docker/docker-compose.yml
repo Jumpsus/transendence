@@ -8,27 +8,16 @@ services:
         ports:
             - "8201:8201"
         volumes:
-            - ./vault/config.hcl:/vault/config/config.hcl
-            - vault_data:/vault/file/
             - ssl_volume:/vault/cert
         healthcheck:
             retries: 5
-        cap_add:
-            - IPC_LOCK
-        command: server
-
-    vault-init:
-        networks:
-            - user-network
-        image: hashicorp/vault
         env_file:
             - .env-vault
-        volumes:
-          - ./init/vault-init.sh:/usr/local/bin/vault-init.sh
-          - vault_data:/vault/file/
-          - ssl_volume:/vault/cert
-        command: /usr/local/bin/vault-init.sh
-    
+        cap_add:
+            - IPC_LOCK
+        # command: bash
+        command: server -dev -dev-root-token-id="00000000-0000-0000-0000-000000000000"
+
     vault-setting:
         networks:
             - user-network
@@ -37,5 +26,6 @@ services:
             dockerfile: Dockerfile
         env_file:
             - .env-vault
+        # command: sleep 10000
         command: python /app/setting.py
         

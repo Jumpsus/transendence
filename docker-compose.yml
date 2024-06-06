@@ -1,16 +1,33 @@
 
 services:
-  frontend:
-    restart: always
-    extends:
-      file: frontend/docker/docker-compose.yml
-      service: front-nginx
+  # frontend:
+  #   restart: always
+  #   extends:
+  #     file: frontend/docker/docker-compose.yml
+  #     service: front-nginx
 
   vault-service:
     restart: on-failure:10
     extends:
       file: vault/docker/docker-compose.yml
       service: vault-service
+
+  vault-init:
+    restart: on-failure:10
+    extends:
+      file: vault/docker/docker-compose.yml
+      service: vault-init
+    depends_on:
+      - vault-service
+
+  vault-setting:
+    restart: on-failure:10
+    extends:
+      file: vault/docker/docker-compose.yml
+      service: vault-setting
+    depends_on:
+      - vault-service
+      - vault-init
 
   user-db:
     restart: always
@@ -57,6 +74,14 @@ volumes:
     driver_opts:
       type: none
       device: ./frontend/files
+      o: bind
+
+  vault_data:
+    name: vault_data
+    driver: local
+    driver_opts:
+      type: none
+      device: ./vault/data
       o: bind
       
   user_pg:
