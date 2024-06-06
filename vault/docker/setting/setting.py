@@ -2,6 +2,11 @@ import hvac
 import json
 import os
 import uuid
+import time
+
+def check_seal():
+    client = hvac.Client(url = os.environ["VAULT_ADDR"], verify=False)
+    return client.sys.read_seal_status()['sealed']
 
 def create_secret(secret_dict):
     client = hvac.Client(url = os.environ["VAULT_ADDR"], verify=False)
@@ -17,6 +22,11 @@ def read_secret():
     return response.get("data", {}).get("data", {})
 
 os.environ["VAULT_TOKEN"] = os.environ["MY_VAULT_TOKEN"]
+
+while check_seal() == True:
+    print("[sleep] vault is seal...")
+    time.sleep(1)
+print("[congrat] vault is unseal...")
 
 secret_dict = read_secret()
 update = False
