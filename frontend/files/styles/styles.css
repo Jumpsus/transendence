@@ -33,6 +33,10 @@ label::after {
   border-right: 1px solid var(--bs-body-color);
 }
 
+.menu-item.active .icon-border {
+  display: none;
+}
+
 #navigation-wrapper {
   transition-property: margin-left, margin-bottom;
   transition-duration: 0.4s;
@@ -87,6 +91,28 @@ label::after {
   #content-wrapper,
   #navigation-wrapper {
     filter: drop-shadow(2px 2px rgba(0, 0, 0, 0.15));
+  }
+  @media (575px < width <= 991px) {
+    .menu-item.active .icon-border {
+      display: block;
+      position: absolute;
+      border-bottom: 2px solid var(--bs-body-color);
+      width: 100%;
+      z-index: 10000;
+      height: 100%;
+      transform: translateY(10px);
+    }
+  }
+  @media (width <= 575px) {
+    .menu-item.active .icon-border {
+      display: block;
+      position: absolute;
+      border-bottom: 2px solid var(--bs-body-color);
+      width: 100%;
+      z-index: 10000;
+      height: 100%;
+      transform: translateY(6px);
+    }
   }
 
   .form-floating > input {
@@ -157,14 +183,6 @@ label::after {
 [data-bs-theme="dark"] {
   .big-btn:hover {
     filter: drop-shadow(0px 0px 8px var(--bs-btn-active-bg));
-  }
-
-  /* .menu-item {
-    filter: drop-shadow(0px 0px 3px var(--bs-body-color));
-  } */
-
-  .menu-item:not(.active) {
-    /* filter: drop-shadow(0px 0px 3px var(--bs-body-color)); */
   }
 
   .profile-img {
