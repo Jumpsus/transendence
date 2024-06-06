@@ -2,18 +2,20 @@
 
 :root {
   --bs-body-bg: #000000;
-  --bs-body-color: #f0e3ff;
-  /* --bs-border-color: rgb(255, 255, 255); */
+  --bs-body-color: #e2c8ff;
+  --bs-border-color: #320093;
+  --semi-transparent-body-color: #f1e5ff39;
   --bs-secondary-bg: #140831;
-  --my-primary-color: #bb14f8;
-  --my-secondary-color: #00ffe5;
+  --my-primary-color: #5610ff;
+  --my-secondary-color: #42debe;
   --my-tertiary-color: #ffffff;
   --my-danger-color: #bb14f8;
-  --logo-color-one: #d58fe8;
-  --logo-color-two: #00ffe5;
+  --logo-color-one: #6d00ff;
+  --logo-color-two: #ffffff;
   --logo-shadow-color: #264688;
   --glow-inner-color: #84f2aa;
   --glow-outer-color: #00ffea;
+  --dark-border: #320093;
 }
 
 label::after {
@@ -29,7 +31,21 @@ label::after {
 }
 
 #homeNav {
-  border-right: 3px solid var(--bs-body-color);
+  border-right: 2px solid var(--dark-border);
+}
+
+#moonIcon {
+  transform: translateY(4px) !important;
+}
+
+.menu-item.active .icon-border {
+  display: none;
+}
+
+#project-title,
+.menu-item,
+#profileMenu .nav-link {
+  user-select: none;
 }
 
 #navigation-wrapper {
@@ -39,7 +55,7 @@ label::after {
 }
 
 #profileMenu {
-  border-top: 3px dashed var(--bs-body-color);
+  border-top: 3px dashed var(--dark-border);
 }
 
 #message-button {
@@ -64,6 +80,10 @@ label::after {
   border: none;
 }
 
+.settings-cont {
+  max-width: 100% !important;
+}
+
 .input-group-text {
   background-color: var(--my-secondary-color);
   color: var(--bs-body-bg);
@@ -72,12 +92,12 @@ label::after {
 }
 
 [data-bs-theme="light"] {
-  --bs-body-bg: #a0a69b;
+  --bs-body-bg: #a5b796;
   --bs-border-color: rgb(80, 109, 85);
   --bs-body-color: hsla(131, 22%, 20%);
   --bs-secondary-bg: #cfcfcf;
-  --my-primary-color: rgb(43, 86, 52);
-  --my-secondary-color: rgb(95, 115, 98);
+  --my-primary-color: rgb(51 51 51);
+  --my-secondary-color: rgb(102 131 106);
   --my-tertiary-color: hsl(130, 17%, 14%);
   --my-danger-color: hsl(130, 17%, 14%);
   --logo-color-one: #304e35;
@@ -87,9 +107,29 @@ label::after {
   #navigation-wrapper {
     filter: drop-shadow(2px 2px rgba(0, 0, 0, 0.15));
   }
-
-  body {
-    /* box-shadow: inset 0 0 1vw rgb(0, 0, 0); */
+  @media (575px < width <= 991px) {
+    .menu-item.active .icon-border {
+      display: block;
+      position: absolute;
+      border-bottom: 2px solid var(--bs-body-color);
+      width: 100%;
+      z-index: 10000;
+      height: 100%;
+      transform: translateY(10px);
+      pointer-events: none;
+    }
+  }
+  @media (width <= 575px) {
+    .menu-item.active .icon-border {
+      display: block;
+      position: absolute;
+      border-bottom: 2px solid var(--bs-body-color);
+      width: 100%;
+      z-index: 10000;
+      height: 100%;
+      transform: translateY(6px);
+      pointer-events: none;
+    }
   }
 
   .form-floating > input {
@@ -162,10 +202,36 @@ label::after {
     filter: drop-shadow(0px 0px 8px var(--bs-btn-active-bg));
   }
 
+  .profile-img {
+    filter: grayscale(20%) brightness(1) contrast(40);
+  }
+
+  body::before {
+    content: " ";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: linear-gradient(
+        rgba(18, 16, 16, 0) 50%,
+        rgba(0, 0, 0, 0.25) 50%
+      ),
+      linear-gradient(
+        90deg,
+        rgba(255, 0, 0, 0.06),
+        rgba(0, 255, 0, 0.02),
+        rgba(0, 0, 255, 0.06)
+      );
+    z-index: 5000;
+    background-size: 100% 2px, 3px 100%;
+    pointer-events: none;
+  }
+
   .menu-item.active {
     color: var(--glow-inner-color);
     filter: drop-shadow(0px 0px 3px var(--glow-outer-color));
-    transition: all 0.1s !important;
   }
 
   .form-control:disabled {
@@ -191,7 +257,7 @@ label::after {
   --bs-btn-hover-bg: var(--my-primary-color);
   --bs-btn-hover-border-color: var(--my-primary-color);
   --bs-btn-focus-shadow-rgb: 13, 110, 253;
-  --bs-btn-active-color: #fff;
+  --bs-btn-active-color: hsl(0, 0%, 100%);
   --bs-btn-active-bg: var(--my-primary-color);
   --bs-btn-active-border-color: var(--my-primary-color);
   --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
@@ -290,9 +356,9 @@ body {
 
 @media (max-width: 575px) {
   .menu-nav {
-    /* border-radius: 40px 40px 0 0 !important; */
     border: none !important;
-    border-top: 3px solid !important;
+    border-top: 1.5px solid var(--bs-body-color) !important;
+    padding: 10px 20px !important;
   }
 }
 
@@ -316,8 +382,7 @@ body {
   height: 100%;
   left: 0;
   top: 0;
-  /* -webkit-filter: grayscale(0%) brightness(1) contrast(1000); */
-  -webkit-transition: 100ms -webkit-filter linear;
+  transition: 100ms filter linear;
   z-index: 1;
 }
 
@@ -326,7 +391,7 @@ body {
     background-color: rgba(0, 67, 23, 0.5);
   }
   .profile-img {
-    filter: grayscale(100%) brightness(2.5) contrast(0.7) saturate(1);
+    filter: grayscale(100%) brightness(1.5) contrast(0.7) saturate(1);
   }
 }
 
@@ -397,15 +462,15 @@ body {
 
 #change-pic-svg {
   position: absolute;
-  bottom: -100%;
+  bottom: -60px;
   z-index: 10000;
-  fill: var(--logo-color-two);
-  background-color: var(--logo-color-one);
+  fill: var(--bs-body-bg);
+  background-color: var(--my-secondary-color);
   width: 100%;
   display: flex;
   justify-content: center;
   align-self: center;
-  transition: bottom 0.3s;
+  transition: bottom 0.2s ease-out;
 }
 
 #change-pic-svg.appear {

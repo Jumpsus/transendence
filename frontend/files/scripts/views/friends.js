@@ -22,7 +22,7 @@ export class Friends extends Component {
   }
 
   async render() {
-	super.render();
+    super.render();
     const friendsList = document.getElementById("friends-list");
     await fetch(`https://${location.host}:9000/user/userlist`, {
       method: "POST",
@@ -93,8 +93,8 @@ export class Friends extends Component {
                 ? `http://${location.host}/image/${friend.image}`
                 : "/assets/profile.png";
               searchList.innerHTML += `<div>
-				<a href="/${friend.username}" data-link><div class="profile-img-box position-relative rounded-1" style="width: 100px; height:100px;">
-				<img src=${imgPath} class="position-absolute object-fit-cover  profile-img rounded-1"
+				<a href="/${friend.username}" data-link><div class="profile-img-box position-relative rounded-0" style="width: 100px; height:100px;">
+				<img src=${imgPath} class="position-absolute object-fit-cover  profile-img rounded-0"
 						alt="...">
 			</div></a>
 				<div class="d-flex justify-content-center">
