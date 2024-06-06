@@ -69,6 +69,10 @@ label::after {
   border: none;
 }
 
+.settings-cont {
+  max-width: 100% !important;
+}
+
 .input-group-text {
   background-color: var(--my-secondary-color);
   color: var(--bs-body-bg);

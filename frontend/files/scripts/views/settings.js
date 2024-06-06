@@ -7,7 +7,7 @@ export class Settings extends Component {
   constructor() {
     super(document.getElementById("profile-wrapper"));
     this.view = `
-		<div class="container m-0 p-0">
+		<div class="container m-0 p-0 settings-cont">
 			<div class="col">
 				<h4 class="mb-4">Personal information</h4>
 				<form class="row g-3">
