@@ -9,6 +9,20 @@ export let isLoggedIn = { status: false };
 
 export const myUsername = { username: "" };
 
+document.addEventListener("keypress", (event) => {
+  if (event.key === "F" || event.key === "f") {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch((err) => {
+        console.log(
+          `Error attempting to enable full-screen mode: ${err.message} (${err.name})`
+        );
+      });
+    } else {
+      document.exitFullscreen();
+    }
+  }
+});
+
 window.addEventListener("popstate", () => {
   const url = window.location.pathname;
   if (isLoggedIn.status && (url === "/Login" || url === "/Register")) {
