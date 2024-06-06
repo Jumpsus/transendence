@@ -73,12 +73,12 @@ label::after {
 }
 
 [data-bs-theme="light"] {
-  --bs-body-bg: #a0a69b;
+  --bs-body-bg: #a5b796;
   --bs-border-color: rgb(80, 109, 85);
   --bs-body-color: hsla(131, 22%, 20%);
   --bs-secondary-bg: #cfcfcf;
-  --my-primary-color: rgb(43, 86, 52);
-  --my-secondary-color: rgb(95, 115, 98);
+  --my-primary-color: rgb(51 51 51);
+  --my-secondary-color: rgb(102 131 106);
   --my-tertiary-color: hsl(130, 17%, 14%);
   --my-danger-color: hsl(130, 17%, 14%);
   --logo-color-one: #304e35;
@@ -87,10 +87,6 @@ label::after {
   #content-wrapper,
   #navigation-wrapper {
     filter: drop-shadow(2px 2px rgba(0, 0, 0, 0.15));
-  }
-
-  body {
-    /* box-shadow: inset 0 0 1vw rgb(0, 0, 0); */
   }
 
   .form-floating > input {
@@ -172,7 +168,7 @@ label::after {
   }
 
   .profile-img {
-    -webkit-filter: grayscale(0%) brightness(1) contrast(10) saturate(1000);
+    filter: grayscale(20%) brightness(1) contrast(40);
   }
 
   body::before {
@@ -196,13 +192,6 @@ label::after {
     z-index: 5000;
     background-size: 100% 2px, 3px 100%;
     pointer-events: none;
-  }
-
-  #shadow-overlay {
-    /* box-shadow: inset 0px 0px 20px 0px rgb(75 12 207); */
-    z-index: 5000;
-    pointer-events: none;
-    /* filter: drop-shadow(0px 0px 3px white); */
   }
 
   .menu-item.active {
@@ -358,7 +347,7 @@ body {
   height: 100%;
   left: 0;
   top: 0;
-  -webkit-transition: 100ms -webkit-filter linear;
+  transition: 100ms filter linear;
   z-index: 1;
 }
 
@@ -438,15 +427,15 @@ body {
 
 #change-pic-svg {
   position: absolute;
-  bottom: -100%;
+  bottom: -60px;
   z-index: 10000;
-  fill: var(--logo-color-two);
-  background-color: var(--logo-color-one);
+  fill: var(--bs-body-bg);
+  background-color: var(--my-secondary-color);
   width: 100%;
   display: flex;
   justify-content: center;
   align-self: center;
-  transition: bottom 0.3s;
+  transition: bottom 0.2s ease-out;
 }
 
 #change-pic-svg.appear {
