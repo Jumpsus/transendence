@@ -34,6 +34,10 @@ label::after {
   border-right: 2px solid var(--dark-border);
 }
 
+#moonIcon {
+  transform: translateY(4px) !important;
+}
+
 .menu-item.active .icon-border {
   display: none;
 }
