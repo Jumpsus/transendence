@@ -22,7 +22,7 @@ create_token () {
 }
 
 enable_secret () {
-   vault secrets enable -version=2 kv
+   vault secrets enable -version=2 -path=secret kv
 }
 
 if [ -s /vault/file/keys ]; then
