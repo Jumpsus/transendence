@@ -2,12 +2,12 @@
 
 :root {
   --bs-body-bg: #000000;
-  --bs-body-color: #eedfff;
-  /* --bs-border-color: rgb(255, 255, 255); */
+  --bs-body-color: #e2c8ff;
+  --bs-border-color: #320093;
   --semi-transparent-body-color: #f1e5ff39;
   --bs-secondary-bg: #140831;
-  --my-primary-color: #bb14f8;
-  --my-secondary-color: #00ffe5;
+  --my-primary-color: #5610ff;
+  --my-secondary-color: #42debe;
   --my-tertiary-color: #ffffff;
   --my-danger-color: #bb14f8;
   --logo-color-one: #6d00ff;
