@@ -38,6 +38,12 @@ label::after {
   display: none;
 }
 
+#project-title,
+.menu-item,
+#profileMenu .nav-link {
+  user-select: none;
+}
+
 #navigation-wrapper {
   transition-property: margin-left, margin-bottom;
   transition-duration: 0.4s;
