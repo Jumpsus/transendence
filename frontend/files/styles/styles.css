@@ -15,6 +15,7 @@
   --logo-shadow-color: #264688;
   --glow-inner-color: #84f2aa;
   --glow-outer-color: #00ffea;
+  --dark-border: #320093;
 }
 
 label::after {
@@ -30,7 +31,7 @@ label::after {
 }
 
 #homeNav {
-  border-right: 1px solid var(--bs-body-color);
+  border-right: 2px solid var(--dark-border);
 }
 
 .menu-item.active .icon-border {
@@ -44,7 +45,7 @@ label::after {
 }
 
 #profileMenu {
-  border-top: 3px dashed var(--bs-body-color);
+  border-top: 3px dashed var(--dark-border);
 }
 
 #message-button {
