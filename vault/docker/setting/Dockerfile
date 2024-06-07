@@ -8,4 +8,4 @@ COPY setting.py .
 
 RUN python3 -m venv venv
 RUN . venv/bin/activate
-RUN pip install hvac
+RUN pip install hvac django

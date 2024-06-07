@@ -3,6 +3,7 @@ import json
 import os
 import uuid
 import time
+from django.core.management.utils import get_random_secret_key
 
 def check_seal():
     client = hvac.Client(url = os.environ["VAULT_ADDR"], verify=False)
@@ -37,6 +38,10 @@ if secret_dict.get("api_key", "") == "":
 
 if secret_dict.get("jwt_secret", "") == "":
     secret_dict["jwt_secret"] = uuid.uuid4().hex
+    update = True
+
+if secret_dict.get("usermanagement_secret", "") == "":
+    secret_dict["usermanagement_secret"] = get_random_secret_key()
     update = True
 
 if update == True:

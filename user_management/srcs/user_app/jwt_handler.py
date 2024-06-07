@@ -1,5 +1,6 @@
 import jwt
 import uuid
+from user_project import settings
 from datetime import timezone, timedelta, datetime
 
 def generate_jti(username) -> (str):
@@ -9,14 +10,14 @@ def encode_user(user, jti) -> (str):
     encoded_data = jwt.encode(payload={ "username": user, 
                                         "jti": jti,
                                         "exp": datetime.now(tz=timezone.utc) + timedelta(minutes=1440)},
-                              key='secret',
+                              key=settings.JWT_SECRET,
                               algorithm="HS256")
 
     return encoded_data
 
 def decode_user(token: str):
     decoded_data = jwt.decode(jwt=token,
-                              key='secret',
+                              key=settings.JWT_SECRET,
                               algorithms=["HS256"])
 
     print(decoded_data)
@@ -38,7 +39,7 @@ def validate_jwt(headers) -> (bool, dict):
 
             try:
                 decoded_data = jwt.decode(jwt=split_token[1],
-                                  key='secret',
+                                  key=settings.JWT_SECRET,
                                   algorithms=["HS256"])
                 return True, decoded_data
             except:
