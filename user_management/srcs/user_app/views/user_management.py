@@ -259,7 +259,9 @@ def change_password(req):
     try:
         body = utils.getJsonBody(req.body)
         old_passwd = body ["old_password"]
+        old_passwd = str(hash(old_passwd + settings.SECRET_KEY))
         passwd = body["password"]
+        passwd = str(hash(passwd + settings.SECRET_KEY))
     except:
         return utils.responseJsonErrorMessage(400, "10", "Invalid request")
 
