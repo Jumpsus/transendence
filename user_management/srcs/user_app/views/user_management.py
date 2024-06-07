@@ -1,10 +1,11 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-from user_app.models import UserManagement
 from datetime import datetime
 from user_app import utils, database, jwt_handler
+from user_app.models import UserManagement
 from user_app.views import friend_management, validator
+from user_project import settings
 import json
 import requests
 
@@ -18,6 +19,7 @@ def login(req):
         body = utils.getJsonBody(req.body)
         user = body["username"]
         passwd = body["password"]
+        passwd = str(hash(passwd + settings.SECRET_KEY))
     except:
         return utils.responseJsonErrorMessage(400, "10", "Invalid request")
 
@@ -51,6 +53,7 @@ def register(req):
         body = utils.getJsonBody(req.body)
         user = body["username"]
         passwd = body["password"]
+        passwd = str(hash(passwd + settings.SECRET_KEY))
     except:
         return utils.responseJsonErrorMessage(400, "10", "Invalid request")
 
