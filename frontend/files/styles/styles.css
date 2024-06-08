@@ -219,13 +219,30 @@ label::after {
     filter: drop-shadow(0px 0px 8px var(--bs-btn-active-bg));
   }
 
+  .text-secondary {
+    color: var(--table-header-color) !important;
+  }
+
   .profile-img {
     filter: grayscale(20%) brightness(1) contrast(40);
   }
 
-  .history-table td,
-  .history-table th {
-    filter: drop-shadow(0px 0px 9px);
+  * {
+    text-shadow: 0px 0px 5px;
+  }
+
+  .btn-primary,
+  button,
+  .contestant-card div {
+    text-shadow: none;
+  }
+
+  svg:not(#change-pic-svg svg) {
+    filter: drop-shadow(0px 0px 2px);
+  }
+
+  .menu-item.active svg {
+    filter: drop-shadow(0px 0px 5px);
   }
 
   body::before {
@@ -253,7 +270,6 @@ label::after {
 
   .menu-item.active {
     color: var(--glow-inner-color);
-    filter: drop-shadow(0px 0px 3px var(--glow-outer-color));
   }
 
   .form-control:disabled {
@@ -379,7 +395,7 @@ body {
 @media (max-width: 575px) {
   .menu-nav {
     border: none !important;
-    border-top: 1.5px solid var(--bs-body-color) !important;
+    border-top: 2px solid var(--bs-border-color) !important;
     padding: 10px 20px !important;
   }
 }
