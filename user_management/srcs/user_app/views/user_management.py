@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from datetime import datetime
+from jsonschema import validate
 from user_app import utils, database, jwt_handler
 from user_app.models import UserManagement
 from user_app.views import friend_management, validator
@@ -17,10 +18,21 @@ def status(req):
 def login(req):
     try:
         body = utils.getJsonBody(req.body)
-        user = body["username"]
-        passwd = body["password"]
-        passwd = str(hash(passwd + settings.SECRET_KEY))
-    except:
+        schema = {
+            "type" : "object",
+            "properties" : {
+                "username": {"type" : "string"},
+                "password": {"type" : "string"},
+            },
+            "required": ["username", "password"]
+        }
+
+        validate(instance=body, schema=schema)
+        user = body.get("username")
+        pure_passwd = body.get("password")
+        passwd = str(hash(pure_passwd + settings.SECRET_KEY))
+    except Exception as e:
+        print(str(e))
         return utils.responseJsonErrorMessage(400, "10", "Invalid request")
 
     u = database.find_user_by_username_passwd(user, passwd)
@@ -29,8 +41,6 @@ def login(req):
         return utils.responseJsonErrorMessage(400, "11", "Mismatch username or password")
 
     response = utils.responseJsonErrorMessage(200, "00", "Success")
-    req.session["username"] = user
-    req.session.modified = True
 
     jti = jwt_handler.generate_jti(user)
     access_token = jwt_handler.encode_user(user, jti)
@@ -51,9 +61,19 @@ def login(req):
 def register(req):
     try:
         body = utils.getJsonBody(req.body)
-        user = body["username"]
-        passwd = body["password"]
-        passwd = str(hash(passwd + settings.SECRET_KEY))
+        schema = {
+            "type" : "object",
+            "properties" : {
+                "username": {"type" : "string"},
+                "password": {"type" : "string"},
+            },
+            "required": ["username", "password"]
+        }
+
+        validate(instance=body, schema=schema)
+        user = body.get("username")
+        pure_passwd = body.get("password")
+        passwd = str(hash(pure_passwd + settings.SECRET_KEY))
     except:
         return utils.responseJsonErrorMessage(400, "10", "Invalid request")
 
@@ -66,9 +86,6 @@ def register(req):
 
     if database.create_user(user, passwd, jti = jti) != True:
         return utils.responseJsonErrorMessage(500, "20", "Internal error")
-    
-    req.session["username"] = user
-    req.session.modified = True
 
     response_data = {
         "code": "00",
@@ -106,7 +123,7 @@ def user_list(req):
 
     try:
         body = utils.getJsonBody(req.body)
-        type = body["type"]
+        type = body.get("type", "")
     except:
         type = ""
 
@@ -192,25 +209,10 @@ def update_info(req):
     if len(u) == 0:
         return utils.responseJsonErrorMessage(400, "13", "User Not Found")
 
-    try:
-        name = body["name"]
-    except:
-        name = ""
-
-    try:
-        last_name = body["last_name"]
-    except:
-        last_name = ""
-
-    try:
-        phone_number = body["phone_number"]
-    except:
-        phone_number = ""
-
-    try:
-        tag = body["tag"]
-    except:
-        tag = ""
+    name = body.get("name","")
+    last_name = body.get("last_name","")
+    phone_number = body.get("phone_number","")
+    tag = body.get("tag","")
 
     if database.edit_user(u[0], name, last_name, phone_number, tag) != True:
         return utils.responseJsonErrorMessage(500, "20", "Internal error")
@@ -222,7 +224,16 @@ def get_other_info(req):
 
     try:
         body = utils.getJsonBody(req.body)
-        other_user = body["username"]
+        schema = {
+            "type" : "object",
+            "properties" : {
+                "username": {"type" : "string"},
+            },
+            "required": ["username"]
+        }
+
+        validate(instance=body, schema=schema)
+        other_user = body.get("username")
     except:
         return utils.responseJsonErrorMessage(400, "10", "Invalid request")
 
@@ -258,9 +269,19 @@ def get_other_info(req):
 def change_password(req):
     try:
         body = utils.getJsonBody(req.body)
-        old_passwd = body ["old_password"]
+        schema = {
+            "type" : "object",
+            "properties" : {
+                "password": {"type" : "string"},
+                "old_password": {"type" : "string"},
+            },
+            "required": ["password", "old_password"]
+        }
+
+        validate(instance=body, schema=schema)
+        old_passwd = body.get("old_password")
         old_passwd = str(hash(old_passwd + settings.SECRET_KEY))
-        passwd = body["password"]
+        passwd = body.get("password")
         passwd = str(hash(passwd + settings.SECRET_KEY))
     except:
         return utils.responseJsonErrorMessage(400, "10", "Invalid request")
