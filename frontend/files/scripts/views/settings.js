@@ -22,14 +22,13 @@ export class Settings extends Component {
 					</div>
 					<div class="col-sm-6">
 						<label for="personal-phone" class="form-label">Tel</label>
-						<input type="tel" class="form-control  rounded-0" id="personal-phone"
+						<input type="tel" class="form-control rounded-0" id="personal-phone"
 							disabled>
 					</div>
 					<div class="col-sm-6">
 						<label for="personal-tag" class="form-label">Tag</label>
 						<div>
 							<div class="input-group">
-								<span class="input-group-text rounded-0">@</span>
 								<input class="form-control  rounded-0" type="text" id="personal-tag" name="username"
 									disabled>
 							</div>
@@ -47,38 +46,38 @@ export class Settings extends Component {
 			<hr class="my-4">
 			<div class="col">
 				<h4 class="mb-4">Account information</h4>
-				<div class="row g-3">
-					<div class="col-sm-6">
-						<label for="profile-username" class="form-label">Username</label>
-						<input type="text" class="form-control  rounded-0" id="profile-username"
-							disabled>
-					</div>
-					<form class="col-sm-6">
-						<div id="old-password-div">
-							<label for="profile-password" class="form-label">Password</label>
-							<input type="password" class="form-control  rounded-0" id="profile-password" disabled>
+					<form class="row g-3">
+						<div class="col-sm-6">
+							<label for="profile-username" class="form-label">Username</label>
+							<input type="text" class="form-control  rounded-0" id="profile-username" autocomplete="username"
+								disabled>
 						</div>
-						<div class="mt-3 d-none" id="new-password-div">
-							<label for="new-profile-password" class="form-label">New password</label>
-							<input type="password" class="form-control  rounded-0" id="new-profile-password">
-						</div>
-						<div class="mt-3 d-none" id="new-password-2-div">
-							<label for="new-profile-password-2" class="form-label">Confirm new password</label>
-							<input type="password" class="form-control  rounded-0" id="new-profile-password-2">
-						</div>
-						<div class="text-danger" id="password-error"></div>
-						<div class="d-flex justify-content-end mt-3">
-							<button type="button" class="btn btn-secondary rounded-0" id="edit-password-button">Edit</button>
-							<button type="submit" class="btn btn-primary me-2 rounded-0" style="display: none;"
-								id="save-password-button">Save</button>
-							<button type="button" class="btn btn-secondary rounded-0" style="display: none;"
-								id="reset-password-button">Cancel</button>
+						<div class="col-sm-6">
+							<div id="old-password-div">
+								<label for="profile-password" class="form-label" >Password</label>
+								<input type="password" class="form-control  rounded-0" id="profile-password" autocomplete="old-password" disabled>
+							</div>
+							<div class="mt-3 d-none" id="new-password-div">
+								<label for="new-profile-password" class="form-label" >New password</label>
+								<input type="password" class="form-control  rounded-0" autocomplete="new-password" id="new-profile-password">
+							</div>
+							<div class="mt-3 d-none" id="new-password-2-div">
+								<label for="new-profile-password-2" class="form-label">Confirm new password</label>
+								<input type="password" class="form-control  rounded-0" autocomplete="new-password" id="new-profile-password-2">
+							</div>
+							<div class="text-danger" id="password-error"></div>
+							<div class="d-flex justify-content-end mt-3">
+								<button type="button" class="btn btn-secondary rounded-0" id="edit-password-button">Edit</button>
+								<button type="submit" class="btn btn-primary me-2 rounded-0" style="display: none;"
+									id="save-password-button">Save</button>
+								<button type="button" class="btn btn-secondary rounded-0" style="display: none;"
+									id="reset-password-button">Cancel</button>
+							</div>
 						</div>
 					</form>
-				</div>
 			</div>
 			<hr class="my-4">
-			<div class="d-flex justify-content-end">
+			<div class="d-flex justify-content-end mb-4">
 				<button type="button" class="btn btn-outline-danger rounded-0" id="logout-button">Log
 					out</button>
 			</div>

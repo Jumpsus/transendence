@@ -21,6 +21,12 @@
   overflow: hidden;
   margin: auto;
   border: 3px solid var(--game-ui-color);
+  /* border-radius: 20px; */
+  /* filter: drop-shadow(0 0 2px); */
+}
+
+#game-field * {
+  text-shadow: none !important;
 }
 
 .paddle {

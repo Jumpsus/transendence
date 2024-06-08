@@ -116,7 +116,7 @@ label::after {
   --logo-color-one: #304e35;
   --logo-color-two: #91ad98;
   --logo-shadow-color: #2e3e00;
-  --win-color: hsla(131, 22%, 20%);
+  --win-color: rgb(102 131 106);
   --lose-color: rgb(102 131 106);
   --table-header-color: hsla(131, 22%, 20%);
   --normal-table-color: rgb(102 131 106);
@@ -229,6 +229,11 @@ label::after {
 
   * {
     text-shadow: 0px 0px 5px;
+  }
+
+  hr {
+    color: var(--bs-border-color);
+    opacity: 1;
   }
 
   .btn-primary,
