@@ -5,17 +5,19 @@ export class Friends extends Component {
   constructor() {
     super(document.getElementById("profile-wrapper"));
     this.view = `
-	<div class="d-flex justify-content-between align-items-center">
-				<h4 class="" id="friend-count"></h4>
-				<form action="">
-					<input type="text" class="form-control rounded-0" placeholder="Find a friend" style="max-width: 200px;" id="find-friend">
-					</input>
-				</form>
-			</div>
-			<div class="d-flex flex-wrap mt-3 gap-3" id="friends-list">
-			</div>
-			<div class="d-flex flex-wrap mt-3 gap-3" id="search-list">
-			</div>
+	<div class="container friends-cont">
+		<div class="d-flex justify-content-between align-items-center">
+					<h4 class="" id="friend-count"></h4>
+					<form action="">
+						<input type="text" class="form-control rounded-0" placeholder="Find a friend" style="max-width: 200px;" id="find-friend">
+						</input>
+					</form>
+				</div>
+				<div class="d-flex flex-wrap mt-3 gap-3" id="friends-list">
+				</div>
+				<div class="d-flex flex-wrap mt-3 gap-3" id="search-list">
+				</div>
+	</div>
 		`;
     this.render();
     this.setupEventListeners();

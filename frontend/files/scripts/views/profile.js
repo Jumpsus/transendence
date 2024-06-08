@@ -56,7 +56,7 @@ export class Profile extends Component {
 				<a href="/${username.username}/Settings" class="nav-link" data-link>Settings</a>
 			</li>
 		</ul>
-		<div class="container-lg py-4 flex-grow-1" style="" id="profile-wrapper">
+		<div class="d-flex justify-content-center" style="" id="profile-wrapper">
 		</div>
 	`;
     this.render();
