@@ -39,7 +39,7 @@ def edit_user(user, name = "", last_name = "", phone_number = "", tag = ""):
     if phone_number != "":
         user.phone_number = phone_number
     
-    if user.tag != "":
+    if tag != "":
         user.tag = tag
 
     try: 
