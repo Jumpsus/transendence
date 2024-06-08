@@ -42,12 +42,9 @@ export class Friends extends Component {
           "friend-count"
         ).textContent = `${data.user_list.length} Friends`;
         data.user_list.forEach((friend) => {
-          const imgPath = friend.image
-            ? `http://${location.host}/image/${friend.image}`
-            : "/assets/profile.png";
           friendsList.innerHTML += `<div>
 					<a href="/${friend.username}" data-link><div class="profile-img-box position-relative rounded-0" style="width: 100px; height:100px;">
-						<img src=${imgPath} class="position-absolute object-fit-cover  profile-img rounded-0"
+						<img src="http://${location.host}/image/${friend.username}.png?t=${new Date().getTime()}" class="position-absolute object-fit-cover  profile-img rounded-0"
 								alt="...">
 					</div></a>
 					<div class="d-flex justify-content-center">
@@ -91,12 +88,9 @@ export class Friends extends Component {
               friend.username.startsWith(findFriend.value) &&
               friend.username != myUsername.username
             ) {
-              const imgPath = friend.image
-                ? `http://${location.host}/image/${friend.image}`
-                : "/assets/profile.png";
               searchList.innerHTML += `<div>
 				<a href="/${friend.username}" data-link><div class="profile-img-box position-relative rounded-0" style="width: 100px; height:100px;">
-				<img src=${imgPath} class="position-absolute object-fit-cover  profile-img rounded-0"
+				<img src="http://${location.host}/image/${friend.username}.png?t=${new Date().getTime()}" class="position-absolute object-fit-cover  profile-img rounded-0"
 						alt="...">
 			</div></a>
 				<div class="d-flex justify-content-center">
