@@ -26,12 +26,15 @@ DEFAULT_IMAGE_PATH = "/app/share-resource/image/"
 # SECURITY WARNING: keep the secret key used in production secret!
 vault_secret = vault_handler.init_vault()
 
-SECRET_KEY = vault_secret.get("usermanagement_secret", "")
-JWT_SECRET = vault_secret.get("jwt_secret", "")
-API_KEY = vault_secret.get("api_key", "")
+# SECRET_KEY = vault_secret.get("usermanagement_secret", "")
+SECRET_KEY = ""
+# JWT_SECRET = vault_secret.get("jwt_secret", "")
+JWT_SECRET = "secret"
+# API_KEY = vault_secret.get("api_key", "")
+API_KEY = "api_key"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 

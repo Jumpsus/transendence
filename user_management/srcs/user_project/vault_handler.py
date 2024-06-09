@@ -24,19 +24,16 @@ def init_vault():
 
     secret_dict = read_secret()
     while True:
+        print("in loop")
         if secret_dict.get("api_key", "") == "":
-            print("in loop 1")
             continue
         
         if secret_dict.get("jwt_secret", "") == "":
-            print("in loop 2")
             continue
 
         if secret_dict.get("usermanagement_secret", "") == "":
-            print("in loop 3")
             continue
     
-        print("in loop 4")
         break
     
     return secret_dict
