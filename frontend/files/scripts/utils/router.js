@@ -45,7 +45,7 @@ function getCorrectUrl(url) {
 }
 
 async function userExists(username) {
-  const resp = await fetch(`https://${location.host}:9000/user/loginlist`, {
+  const resp = await fetch(`https://${location.hostname}:9000/user/loginlist`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
