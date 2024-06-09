@@ -1,5 +1,3 @@
-FROM nginx:1.25-bookworm
+FROM owasp/modsecurity-crs:3.3.4-nginx-alpine-202301110601
 
-RUN mkdir -p /etc/nginx/ssl
-
-COPY nginx.conf /etc/nginx/nginx.conf
+COPY nginx.conf /etc/nginx/templates/conf.d/default.conf.template
