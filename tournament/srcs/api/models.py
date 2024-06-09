@@ -24,9 +24,9 @@ class BracketPair(models.Model):
     FINISHED=2
     
     player1 = models.ForeignKey(Player, related_name='player_1', null=True, on_delete=models.SET_NULL)
-    player1_score = models.IntegerField(null=True)
+    player1_score = models.IntegerField(default=0)
     player2 = models.ForeignKey(Player, related_name='player_2', null=True, on_delete=models.SET_NULL)
-    player2_score = models.IntegerField(null=True)
+    player2_score = models.IntegerField(default=0)
     winner = models.ForeignKey(Player, on_delete=models.SET_NULL, null=True, related_name='winner')
     match_id = models.IntegerField()
     tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE, related_name='brackets')

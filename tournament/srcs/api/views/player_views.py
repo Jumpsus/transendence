@@ -1,14 +1,9 @@
-from django.shortcuts import render
-from django.http import JsonResponse
-
-from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from api.models import Tournament, Player
 from api.serializer import PlayerSerializer
 from api.views.start_view import get_tournament_obj
-from api.get_user import get_user_id
 
 from typing import Optional
 
