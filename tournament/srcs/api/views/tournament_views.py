@@ -50,7 +50,7 @@ class TournamentView(APIView):
             return Response({'error': [str(e)]}, status=500)
 
 class ManageTournamentView(APIView):
-
+    #get detailed view of tournament
     def get(self, request, pk, format=None):
         obj = get_tournament_obj(self, pk)
 
@@ -59,17 +59,17 @@ class ManageTournamentView(APIView):
         except Exception as e:
             return Response({'error': [str(e)]}, status=500)
         return Response(obj_json.data, status=200)
-        
+    #edit detail of tournament    
     def patch(self, request, pk, format=None):
         obj = get_tournament_obj(self, pk)
-        obj_json = TournamentSerializer(obj)
+        obj_json = TournamentSerializer(obj, data=request.data, partial=True)
         if obj_json.is_valid():
             obj_json.save()
             return Response(obj_json.data, status=201)
         return Response({'error': 'bad request'}, status=400)
-
+    #delete tournament by id
     def delete(self, request, pk, format=None):
         obj = get_tournament_obj(self, pk)
         obj.delete()
-        return Response(status=204)
+        return Response({'Tournament `{pk}` has been deleted'}, status=204)
     

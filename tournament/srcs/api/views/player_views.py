@@ -2,7 +2,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from api.models import Tournament, Player
-from api.serializer import PlayerSerializer
+from api.serializer import TournamentSerializer, PlayerSerializer
 from api.views.start_view import get_tournament_obj
 
 from typing import Optional

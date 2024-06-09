@@ -2,6 +2,7 @@ from django.urls import path
 from api.views.tournament_views import TournamentView, ManageTournamentView
 from api.views.player_views import PlayerView
 from api.views.start_view import StartTournamentView
+from api.views.matches_view import MatchesView, ManageMatchView
 
 # API Endpoints (refered from https://github.com/david-torres/tournament-organizer)
 # Method 	Endpoint 	                    Description
@@ -19,6 +20,6 @@ urlpatterns = [
     path('<int:pk>/', ManageTournamentView.as_view(), name='manage_tournament'),
     path('<int:pk>/start', StartTournamentView.as_view(), name='tournament_start'),
     path('<int:pk>/players', PlayerView.as_view(), name='player'),
-    # path('<int:pk>/matches', MatchesView.as_view(), name='matches'),
-    # path('<int:pk>/matches/<int:id>', MatchManageView.as_view(), name='manage_match'),
+    path('<int:pk>/matches', MatchesView.as_view(), name='matches'),
+    path('<int:pk>/matches/<int:id>', ManageMatchView.as_view(), name='manage_match'),
 ]

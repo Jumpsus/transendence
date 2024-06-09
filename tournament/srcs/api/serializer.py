@@ -13,6 +13,16 @@ class BracketSerializer(serializers.ModelSerializer):
         model = BracketPair
         fields = '__all__'
 
+    def __init__(self, *args, **kwargs):
+        fields = kwargs.pop('fields', None)
+        super().__init__(*args, **kwargs)
+
+        if fields is not None:
+            allowed = set(fields)
+            existing = set(self.fields)
+            for field_name in existing - allowed:
+                self.fields.pop(field_name)
+
     def get_status(self, obj):
         status_string = ['Not_played', 'In progress', 'Finished']
         return status_string[obj.status]
@@ -25,7 +35,7 @@ class TournamentSerializer(serializers.ModelSerializer):
     """
     status = serializers.SerializerMethodField()
     players = PlayerSerializer(many=True)
-    brackets = BracketSerializer(many=True)
+    matches = BracketSerializer(many=True)
 
     class Meta:
         model = Tournament

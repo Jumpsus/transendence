@@ -25,32 +25,34 @@ class StartTournamentView(APIView):
         #     return Response({'error': [str(e)]}, status=500)
         # create match brackets
         random.shuffle(players)
-        matches = []
-        for i in range(0, 3, 1):
+        for i in range(0, 4, 1):
             player_1 = players[i]
-            player_2 = players[8-1]
-            matches.append(
-                BracketPair(
+            player_2 = players[7-i]
+            match = BracketPair(
                     player1 = player_1,
                     player2 = player_2,
                     tournament = tournament,
                     match_id = i + 1 #1, 2, 3, 4
-                ))
+                    )
+            match.save()
+        t_json = TournamentSerializer(tournament, many=False)
+        return Response(t_json.data, status=201)
 
     def patch(self, request, pk, format=None):
         tournament = get_tournament_obj(self, pk)
         try:
             players = tournament.players.all()
-            brackets = tournament.brackets.all()
+            brackets = tournament.matches.all()
         except Exception as e:
             return Response({'error': [str(e)]}, status=500)
         if tournament.status != Tournament.CREATED:
             return Response({'error': 'Tournament has been started'}, status=403)
         if len(players) != 8:
             return Response({'error': 'Tournament must have 8 players to start'}, status=403)
-        if len(brackets) == int(2 ** math.ceil(math.log2(len(players))) - 1):
+        if len(brackets) != 4:
             return Response({'error': 'Tournmanet matches not created'}, status=403)
         tournament.status = Tournament.IN_PROGRESS
+        return Response({'Tournament start'}, status=200)
 
     # @staticmethod
     # def sort_player(request, players: list[Player])->list[Player]:
