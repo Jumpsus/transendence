@@ -24,7 +24,7 @@ DEFAULT_IMAGE_PATH = "/app/share-resource/image/"
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-vault_secret = vault_handler.init_vault()
+#vault_secret = vault_handler.init_vault()
 
 # SECRET_KEY = vault_secret.get("usermanagement_secret", "")
 SECRET_KEY = ""
