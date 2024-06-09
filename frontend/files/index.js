@@ -34,7 +34,7 @@ window.addEventListener("popstate", () => {
 
 export async function setMyUsername() {
   if (localStorage.getItem("jwt") === null) return false;
-  const resp = await fetch(`https://${location.host}:9000/user/getinfo`, {
+  const resp = await fetch(`https://${location.hostname}:9000/user/getinfo`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
