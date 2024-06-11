@@ -34,13 +34,12 @@
   background-color: var(--game-ui-color);
 }
 
-#player-one {
-  --y: 50;
-}
-
-#player-two {
-  --y: 50;
-}
+/* :root {
+	--bufferWidth: 4;
+	--paddleWidth: 2;
+	--paddleHeight: 20;
+	--ballWidth: 3;
+} */
 
 #ball {
   aspect-ratio: 1/1;
@@ -48,6 +47,14 @@
   --x: 50;
   --y: 50;
   background-color: var(--game-ui-color);
+}
+
+#player-one {
+  --y: 50;
+}
+
+#player-two {
+  --y: 50;
 }
 
 .separator-chunk {
@@ -64,23 +71,26 @@
   #game-field {
     aspect-ratio: 4/3;
   }
-  .player-axis {
-    width: 2%;
+  .field-buffer {
+    background-color: red;
+    width: calc(var(--bufferWidth) * 1%);
+    height: 100%;
   }
   .paddle {
     width: 100%;
-    height: 20%;
+    height: calc(var(--paddleHeight) * 1%);
+    width: calc(var(--paddleWidth) * 1%);
     top: calc(var(--y) * 1%);
     transform: translateY(-50%);
   }
-  .player-axis:has(#player-one) {
-    margin-left: 4%;
+  .paddle#player-one {
+    left: calc(var(--bufferWidth) * 1%);
   }
-  .player-axis:has(#player-two) {
-    margin-right: 4%;
+  .paddle#player-two {
+    right: calc(var(--bufferWidth) * 1%);
   }
   #ball {
-    height: 3%;
+    height: calc(var(--ballWidth) * 1%);
     left: calc(var(--x) * 1%);
     top: calc(var(--y) * 1%);
     transform: translate(-50%, -50%);
@@ -140,22 +150,22 @@
     aspect-ratio: 3/4;
   }
   .player-axis {
-    height: 2%;
-  }
-  .player-axis:has(#player-one) {
-    margin-top: 4%;
-  }
-  .player-axis:has(#player-two) {
-    margin-bottom: 4%;
+    height: calc(var(--paddleWidth) * 1%);
   }
   .paddle {
-    width: 20%;
-    height: 100%;
+    width: calc(var(--paddleHeight) * 1%);
+    height: calc(var(--paddleWidth) * 1%);
     right: calc(var(--y) * 1%);
     transform: translateX(50%);
   }
+  .paddle#player-one {
+    top: calc(var(--bufferWidth) * 1%);
+  }
+  .paddle#player-two {
+    bottom: calc(var(--bufferWidth) * 1%);
+  }
   #ball {
-    width: 3%;
+    width: calc(var(--ballWidth) * 1%);
     top: calc(var(--x) * 1%);
     right: calc(var(--y) * 1%);
     transform: translate(50%, -50%);

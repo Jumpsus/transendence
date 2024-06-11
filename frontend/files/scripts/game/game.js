@@ -8,7 +8,23 @@ export const gameState = {
   hasCPU: false,
 };
 
+export const gameConfig = {
+  paddleWidth: 2,
+  paddleHeight: 20,
+  ballWidth: 3,
+  bufferWidth: 2,
+};
+
+function setDimensions() {
+  const root = document.documentElement;
+  root.style.setProperty("--paddleWidth", `${gameConfig.paddleWidth}`);
+  root.style.setProperty("--paddleHeight", `${gameConfig.paddleHeight}`);
+  root.style.setProperty("--ballWidth", `${gameConfig.ballWidth}`);
+  root.style.setProperty("--bufferWidth", `${gameConfig.bufferWidth}`);
+}
+
 export function init() {
+  setDimensions();
   const scoreOne = document.getElementById("score-one");
   const scoreTwo = document.getElementById("score-two");
   scoreOne.textContent = 0;
@@ -76,7 +92,7 @@ export function init() {
     setFieldBorders();
   });
 
-//   const debugConsole = document.querySelector("#debug-console");
+  //   const debugConsole = document.querySelector("#debug-console");
 
   if (gameState.isOnline) {
     setInterval(async () => {

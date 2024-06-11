@@ -1,6 +1,6 @@
-const INITIAL_VELOCITY = 0.1;
+const INITIAL_VELOCITY = 0.03;
 
-import { gameState } from "../game/game.js";
+import { gameState, gameConfig } from "../game/game.js";
 
 export default class Ball {
   constructor(ballElem, gameField) {
@@ -30,14 +30,15 @@ export default class Ball {
     this.x = 50;
     this.y = 50;
     if (gameState.isOnline) return;
-    this.direction = { x: 0 };
-    while (
-      Math.abs(this.direction.x) <= 0.2 ||
-      Math.abs(this.direction.x) >= 0.9
-    ) {
-      const heading = randomNumberBetween(0, 2 * Math.PI);
-      this.direction = { x: Math.cos(heading), y: Math.sin(heading) };
-    }
+    // this.direction = { x: 0, y: 0 };
+    // while (
+    //   Math.abs(this.direction.x) <= 0.2 ||
+    //   Math.abs(this.direction.x) >= 0.9
+    // ) {
+    //   const heading = randomNumberBetween(0, 2 * Math.PI);
+    //   this.direction = { x: Math.cos(heading), y: Math.sin(heading) };
+    // }
+    this.direction = { x: 1, y: 2.3 };
     this.velocity = INITIAL_VELOCITY;
   }
 
@@ -49,16 +50,41 @@ export default class Ball {
       rect.bottom >= this.gameField.getBoundingClientRect().bottom ||
       rect.top <= this.gameField.getBoundingClientRect().top
     ) {
-      if (gameState.isHorizontal) this.direction.y *= -1;
+      if (gameState.isHorizontal) {
+        this.direction.y *= -1;
+        if (rect.bottom >= this.gameField.getBoundingClientRect().bottom) {
+          this.y = 100 - gameConfig.ballWidth / 2;
+        } else {
+          this.y = gameConfig.ballWidth / 2;
+        }
+      }
     }
     if (
       rect.right >= this.gameField.getBoundingClientRect().right ||
       rect.left <= this.gameField.getBoundingClientRect().left
     ) {
-      if (!gameState.isHorizontal) this.direction.y *= -1;
+      if (!gameState.isHorizontal) {
+        this.direction.y *= -1;
+        if (rect.right >= this.gameField.getBoundingClientRect().right) {
+          this.y = gameConfig.ballWidth / 2;
+        } else {
+          this.y = 100 - gameConfig.ballWidth / 2;
+        }
+      }
     }
-    if (paddleRects.some((r) => isCollission(r, rect))) {
+    if (isCollission(paddleRects[0], rect)) {
       this.direction.x *= -1;
+      this.x =
+        gameConfig.bufferWidth +
+        gameConfig.paddleWidth +
+        gameConfig.ballWidth / 2;
+    } else if (isCollission(paddleRects[1], rect)) {
+      this.direction.x *= -1;
+      this.x =
+        100 -
+        (gameConfig.bufferWidth +
+          gameConfig.paddleWidth +
+          gameConfig.ballWidth / 2);
     }
   }
 
