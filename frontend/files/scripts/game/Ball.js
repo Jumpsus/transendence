@@ -1,4 +1,4 @@
-const INITIAL_VELOCITY = 0.03;
+const INITIAL_VELOCITY = 0.1;
 
 import { gameState, gameConfig } from "../game/game.js";
 
@@ -30,15 +30,14 @@ export default class Ball {
     this.x = 50;
     this.y = 50;
     if (gameState.isOnline) return;
-    // this.direction = { x: 0, y: 0 };
-    // while (
-    //   Math.abs(this.direction.x) <= 0.2 ||
-    //   Math.abs(this.direction.x) >= 0.9
-    // ) {
-    //   const heading = randomNumberBetween(0, 2 * Math.PI);
-    //   this.direction = { x: Math.cos(heading), y: Math.sin(heading) };
-    // }
-    this.direction = { x: 1, y: 2.3 };
+    this.direction = { x: 0 };
+    while (
+      Math.abs(this.direction.x) <= 0.2 ||
+      Math.abs(this.direction.x) >= 0.9
+    ) {
+      const heading = randomNumberBetween(0, 2 * Math.PI);
+      this.direction = { x: Math.cos(heading), y: Math.sin(heading) };
+    }
     this.velocity = INITIAL_VELOCITY;
   }
 
@@ -72,19 +71,27 @@ export default class Ball {
         }
       }
     }
-    if (isCollission(paddleRects[0], rect)) {
-      this.direction.x *= -1;
+    if (isCollission(paddleRects[0].rect(), rect)) {
       this.x =
         gameConfig.bufferWidth +
         gameConfig.paddleWidth +
         gameConfig.ballWidth / 2;
-    } else if (isCollission(paddleRects[1], rect)) {
-      this.direction.x *= -1;
+		calculateDirection(
+			{ x: this.x, y: this.y },
+			{ x: paddleRects[0].aimX, y: paddleRects[0].aimY },
+			this.direction
+		  );
+    } else if (isCollission(paddleRects[1].rect(), rect)) {
       this.x =
         100 -
         (gameConfig.bufferWidth +
           gameConfig.paddleWidth +
           gameConfig.ballWidth / 2);
+      calculateDirection(
+        { x: this.x, y: this.y },
+        { x: paddleRects[1].aimX, y: paddleRects[1].aimY },
+        this.direction
+      );
     }
   }
 
@@ -110,4 +117,22 @@ function isCollission(rect1, rect2) {
     rect1.top <= rect2.bottom &&
     rect1.bottom >= rect2.top
   );
+}
+
+function calculateDirection(ballPosition, aimPosition, ballDirection) {
+  // Calculate the direction vector
+  const directionX = aimPosition.x - ballPosition.x;
+  const directionY = aimPosition.y - ballPosition.y;
+
+  // Calculate the magnitude of the direction vector
+  const magnitude = Math.sqrt(
+    directionX * directionX + directionY * directionY
+  );
+
+  // Normalize the direction vector
+  const unitDirectionX = directionX / magnitude;
+  const unitDirectionY = directionY / magnitude;
+
+  ballDirection.x = unitDirectionX;
+  ballDirection.y = unitDirectionY;
 }

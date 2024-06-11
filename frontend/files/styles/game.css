@@ -23,6 +23,11 @@
   border: 3px solid var(--game-ui-color);
   /* border-radius: 20px; */
   /* filter: drop-shadow(0 0 2px); */
+  transition: all 300ms ease-out;
+}
+
+#game-field.paused {
+  opacity: 0.2;
 }
 
 #game-field * {
@@ -34,19 +39,17 @@
   background-color: var(--game-ui-color);
 }
 
-/* :root {
-	--bufferWidth: 4;
-	--paddleWidth: 2;
-	--paddleHeight: 20;
-	--ballWidth: 3;
-} */
-
 #ball {
   aspect-ratio: 1/1;
   transform: translate(-50%, 50%);
   --x: 50;
   --y: 50;
   background-color: var(--game-ui-color);
+}
+
+:root {
+  --paddle1Angle: 0;
+  --paddle2Angle: 0;
 }
 
 #player-one {
@@ -64,6 +67,60 @@
 #pause-area {
   cursor: pointer;
   z-index: 100;
+}
+
+#pause-text {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 10cqw;
+  font-weight: bold;
+  color: var(--game-ui-color);
+  opacity: 0;
+  transition: all 1000ms ease-out;
+}
+
+#pause-text.show {
+  opacity: 1;
+}
+
+.aim {
+  width: 3%;
+  aspect-ratio: 1/1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  opacity: 0.3;
+}
+
+#aim-one {
+  --x: 45;
+  --y: 50;
+}
+
+#aim-two {
+  --x: 55;
+  --y: 50;
+}
+
+.aim-part:nth-child(1) {
+  border-bottom: 1px solid var(--game-ui-color);
+  border-right: 1px solid var(--game-ui-color);
+}
+
+.aim-part:nth-child(2) {
+  border-bottom: 1px solid var(--game-ui-color);
+  border-left: 1px solid var(--game-ui-color);
+}
+
+.aim-part:nth-child(3) {
+  border-top: 1px solid var(--game-ui-color);
+  border-right: 1px solid var(--game-ui-color);
+}
+
+.aim-part:nth-child(4) {
+  border-top: 1px solid var(--game-ui-color);
+  border-left: 1px solid var(--game-ui-color);
 }
 
 /* horizontal */
@@ -88,6 +145,16 @@
   }
   .paddle#player-two {
     right: calc(var(--bufferWidth) * 1%);
+  }
+  #aim-one {
+    left: calc(var(--x) * 1%);
+    top: calc(var(--y) * 1%);
+    transform: translate(-50%, -50%);
+  }
+  #aim-two {
+    left: calc(var(--x) * 1%);
+    top: calc(var(--y) * 1%);
+    transform: translate(-50%, -50%);
   }
   #ball {
     height: calc(var(--ballWidth) * 1%);
@@ -163,6 +230,16 @@
   }
   .paddle#player-two {
     bottom: calc(var(--bufferWidth) * 1%);
+  }
+  #aim-one {
+    top: calc(var(--x) * 1%);
+    right: calc(var(--y) * 1%);
+    transform: translate(50%, -50%);
+  }
+  #aim-two {
+    top: calc(var(--x) * 1%);
+    right: calc(var(--y) * 1%);
+    transform: translate(50%, -50%);
   }
   #ball {
     width: calc(var(--ballWidth) * 1%);

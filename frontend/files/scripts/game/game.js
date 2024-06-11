@@ -27,8 +27,8 @@ export function init() {
   setDimensions();
   const scoreOne = document.getElementById("score-one");
   const scoreTwo = document.getElementById("score-two");
-  scoreOne.textContent = 0;
-  scoreTwo.textContent = 0;
+  scoreOne.textContent = "00";
+  scoreTwo.textContent = "00";
 
   const nameOne = document.getElementById("name-one");
   const nameTwo = document.getElementById("name-two");
@@ -37,9 +37,11 @@ export function init() {
   nameTwo.textContent = "Player2";
 
   const pauseArea = document.getElementById("pause-area");
+  const pauseText = document.getElementById("pause-text");
   homeNav.classList.toggle("hidden");
 
   const PLAYER_SPEED = 0.1;
+  const AIM_SPEED = 0.2;
   const CPU_TIME_TO_UPDATE = 1000;
 
   function setFieldBorders() {
@@ -82,8 +84,14 @@ export function init() {
 
   const keys = {};
   const ball = new Ball(document.getElementById("ball"), gameField);
-  const playerOne = new Paddle(document.getElementById("player-one"));
-  const playerTwo = new Paddle(document.getElementById("player-two"));
+  const playerOne = new Paddle(
+    document.getElementById("player-one"),
+    document.getElementById("aim-two")
+  );
+  const playerTwo = new Paddle(
+    document.getElementById("player-two"),
+    document.getElementById("aim-one")
+  );
 
   setFieldBorders();
 
@@ -107,7 +115,7 @@ export function init() {
         const delta = time - lastTime;
         // debugConsole.textContent = delta;
         updatePaddles(delta);
-        ball.update(delta, [playerOne.rect(), playerTwo.rect()]);
+        ball.update(delta, [playerOne, playerTwo]);
         if (gameState.hasCPU) updateCPU(delta);
         if (isLose()) {
           ball.reset();
@@ -150,6 +158,18 @@ export function init() {
       if (keys["ArrowDown"]) {
         playerTwo.y += PLAYER_SPEED * delta;
       }
+      //   if (keys["a"]) {
+      //     playerOne.aim -= AIM_SPEED * delta;
+      //   }
+      //   if (keys["d"]) {
+      //     playerOne.aim += AIM_SPEED * delta;
+      //   }
+      if (keys["a"]) {
+        playerTwo.aimY -= AIM_SPEED * delta;
+      }
+      if (keys["z"]) {
+        playerTwo.aimY += AIM_SPEED * delta;
+      }
     } else {
       if (keys["a"]) {
         playerOne.y += PLAYER_SPEED * delta;
@@ -163,55 +183,25 @@ export function init() {
       if (keys["ArrowRight"]) {
         playerTwo.y -= PLAYER_SPEED * delta;
       }
+      if (keys["x"]) {
+        playerTwo.aimY -= AIM_SPEED * delta;
+      }
+      if (keys["z"]) {
+        playerTwo.aimY += AIM_SPEED * delta;
+      }
     }
     playerOne.y = Math.max(10, Math.min(playerOne.y, 90));
     playerTwo.y = Math.max(10, Math.min(playerTwo.y, 90));
+    playerOne.aimY = Math.max(0, Math.min(playerOne.aimY, 100));
+    playerTwo.aimY = Math.max(0, Math.min(playerTwo.aimY, 100));
   }
 
   window.addEventListener("keydown", (event) => {
-    if (gameState.isHorizontal) {
-      if (
-        (!gameState.isOnline &&
-          !gameState.hasCPU &&
-          (event.key === "w" || event.key === "s")) ||
-        event.key === "ArrowUp" ||
-        event.key === "ArrowDown"
-      )
-        keys[event.key] = true;
-    } else {
-      if (
-        (!gameState.isOnline &&
-          !gameState.hasCPU &&
-          (event.key === "a" || event.key === "d")) ||
-        event.key === "ArrowLeft" ||
-        event.key === "ArrowRight"
-      ) {
-        keys[event.key] = true;
-      }
-    }
+    keys[event.key] = true;
   });
 
   window.addEventListener("keyup", (event) => {
-    if (gameState.isHorizontal) {
-      if (
-        (!gameState.isOnline &&
-          !gameState.hasCPU &&
-          (event.key === "w" || event.key === "s")) ||
-        event.key === "ArrowUp" ||
-        event.key === "ArrowDown"
-      )
-        keys[event.key] = false;
-    } else {
-      if (
-        (!gameState.isOnline &&
-          !gameState.hasCPU &&
-          (event.key === "a" || event.key === "d")) ||
-        event.key === "ArrowLeft" ||
-        event.key === "ArrowRight"
-      ) {
-        keys[event.key] = false;
-      }
-    }
+    keys[event.key] = false;
   });
 
   function calcBallTrajectory(delta) {
@@ -296,9 +286,19 @@ export function init() {
     //   // Continue updating the CPU's movements
     // }, holdTime);
   }
-
+  let pauseInterval;
   function pauseGame() {
     gameState.isPaused = !gameState.isPaused;
+    if (gameState.isPaused) {
+      pauseText.classList.toggle("show");
+      pauseInterval = setInterval(() => {
+        pauseText.classList.toggle("show");
+      }, 1000);
+    } else {
+      clearInterval(pauseInterval);
+      pauseText.classList.remove("show");
+    }
+    gameField.classList.toggle("paused");
     homeNav.classList.toggle("hidden");
     setTimeout(() => {
       setFieldBorders();
@@ -330,8 +330,10 @@ export function init() {
     for (let touch of event.changedTouches) {
       if (touch.identifier === paddle1TouchId) {
         movePaddle(playerOne, touch.clientX);
+        moveAim(playerOne, touch.clientY);
       } else if (touch.identifier === paddle2TouchId) {
         movePaddle(playerTwo, touch.clientX);
+        moveAim(playerTwo, touch.clientY);
       }
     }
   }
@@ -349,6 +351,14 @@ export function init() {
   function movePaddle(paddle, y) {
     const yPercent = ((window.innerWidth - y) / window.innerWidth) * 100;
     paddle.y = yPercent;
+  }
+
+  function moveAim(paddle, x) {
+    if (x > paddle.rect().top) {
+      x = window.innerHeight - x;
+      const xPercent = (x / (window.innerHeight - paddle.rect().top)) * 100;
+      paddle.aimY = xPercent;
+    }
   }
 
   const options = { passive: true };
