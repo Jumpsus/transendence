@@ -2,3 +2,6 @@ openssl req -x509 -nodes -days 365 -newkey rsa:4096  -keyout /app/ssl/private.ke
 
 openssl rsa -in /app/ssl/private.key -text > /app/ssl/private.pem
 openssl x509 -inform PEM -in /app/ssl/certificate.crt > /app/ssl/certificate.pem
+
+chmod 777 /app/ssl/private.pem
+chmod 777 /app/ssl/certificate.pem

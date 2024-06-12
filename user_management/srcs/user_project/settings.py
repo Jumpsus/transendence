@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
+from dotenv import load_dotenv
 import hvac
 from user_project import vault_handler
 
@@ -91,7 +92,7 @@ WSGI_APPLICATION = 'user_project.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
+load_dotenv(dotenv_path='/app/.env')
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',

@@ -78,7 +78,7 @@ export class Profile extends Component {
     let imgPath;
     makeLinkActive(document.getElementById("profileMenu"), false);
     const resp = await fetch(
-      `https://${location.hostname}:9000/user/getotherinfo`,
+      `http://${location.hostname}:8000/user/getotherinfo`,
       {
         method: "POST",
         headers: {
@@ -133,7 +133,7 @@ export class Profile extends Component {
           const formData = new FormData();
           formData.append("image", file);
           const response = await fetch(
-            `https://${location.hostname}:9000/user/uploadimage`,
+            `http://${location.hostname}:8000/user/uploadimage`,
             {
               method: "POST",
               body: formData,
@@ -163,7 +163,7 @@ export class Profile extends Component {
           action = "add";
           textContent = "Pending";
         } else return;
-        await fetch(`https://${location.hostname}:9000/user/makerelation`, {
+        await fetch(`http://${location.hostname}:8000/user/makerelation`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

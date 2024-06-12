@@ -1,8 +1,8 @@
 FROM debian:bookworm
 
-RUN apt update -y && \
-    apt upgrade -y && \
-    apt install -y openssl
+RUN apt-get update -y && \
+    apt-get upgrade -y && \
+    apt-get install -y openssl
 
 RUN mkdir -p /app/ssl
 

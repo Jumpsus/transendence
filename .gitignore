@@ -4,3 +4,4 @@ csr-vault.csr
 frontend-bak
 pgdata
 data
+cert

@@ -12,14 +12,6 @@ services:
       file: vault/docker/docker-compose.yml
       service: vault-service
 
-  vault-init:
-    restart: on-failure:10
-    extends:
-      file: vault/docker/docker-compose.yml
-      service: vault-init
-    depends_on:
-      - vault-service
-
   vault-setting:
     restart: on-failure:10
     extends:
@@ -27,38 +19,21 @@ services:
       service: vault-setting
     depends_on:
       - vault-service
-      - vault-init
 
   user-db:
     restart: always
     extends:
-      file: user_management/docker/docker-compose.yml
+      file: user_management/docker-compose.yml
       service: user-db
-
-  user-db-setup:
-    restart: on-failure:10
-    extends:
-      file: user_management/docker/docker-compose.yml
-      service: user-db-setup
-    depends_on:
-      - user-db
-
-  user-nginx:
-    restart: always
-    extends:
-      file: user_management/docker/docker-compose.yml
-      service: user-nginx
-    depends_on:
-      - user-management
 
   user-management:
     restart: always
     extends:
-      file: user_management/docker/docker-compose.yml
+      file: user_management/docker-compose.yml
       service: user-management
     depends_on:
-      - user-db-setup
       - vault-service
+      - user-db
 
 volumes:
   ssl_volume:
@@ -90,22 +65,7 @@ volumes:
     driver: local
     driver_opts:
       type: none
-      device: ./user_management/docker/postgres/pgdata
-      o: bind
-  user_srcs:
-    name: user_srcs
-    driver: local
-    driver_opts:
-      type: none
-      device: ./user_management/srcs
-      o: bind
-
-  common:
-    name: common
-    driver: local
-    driver_opts:
-      type: none
-      device: ./common
+      device: ./user_management/postgres/pgdata
       o: bind
 
 networks:

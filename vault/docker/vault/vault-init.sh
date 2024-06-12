@@ -1,6 +1,25 @@
 #!/usr/bin/env sh
 
-set -ex
+echo 'disable_mlock = true
+
+storage "file" {
+  path = "/vault/file"
+}
+
+listener "tcp" {
+  address     = "127.0.0.1:8200"
+  tls_disable = 1
+}' > tmp_file
+
+vault server -config=tmp_file &
+VAULT_PID=$!
+
+sleep 5
+
+VAULT_ADDR_TMP=$VAULT_ADDR
+export VAULT_ADDR='http://127.0.0.1:8200'
+
+set -x
 
 unseal () {
 vault operator unseal $(grep 'Key 1:' /vault/file/keys | awk '{print $NF}')
@@ -18,7 +37,7 @@ log_in () {
 }
 
 create_token () {
-   vault token create -id $MY_VAULT_TOKEN
+   vault token create -id=$MY_VAULT_TOKEN
 }
 
 enable_secret () {
@@ -36,3 +55,9 @@ else
 fi
 
 vault status > /vault/file/status
+
+
+kill "$VAULT_PID"
+
+rm tmp_file
+export VAULT_ADDR=VAULT_ADDR_TMP

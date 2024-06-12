@@ -26,7 +26,7 @@ export class Friends extends Component {
   async render() {
     super.render();
     const friendsList = document.getElementById("friends-list");
-    await fetch(`https://${location.hostname}:9000/user/userlist`, {
+    await fetch(`http://${location.hostname}:8000/user/userlist`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -65,7 +65,7 @@ export class Friends extends Component {
       const searchList = document.getElementById("search-list");
       friendsList.classList.add("d-none");
       friendsList.classList.remove("d-flex");
-      await fetch(`https://${location.hostname}:9000/user/userlist`, {
+      await fetch(`http://${location.hostname}:8000/user/userlist`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
