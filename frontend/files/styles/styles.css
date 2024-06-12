@@ -20,6 +20,7 @@
   --lose-color: #ff00b3;
   --table-header-color: rgb(255 231 0);
   --normal-table-color: var(--bs-body-color);
+  --bs-border-width: 3px;
 }
 
 label::after {
@@ -27,7 +28,7 @@ label::after {
 }
 
 * {
-  border-width: 3px !important;
+  border-width: 3px;
 }
 
 .form-control {

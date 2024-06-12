@@ -42,10 +42,10 @@ export class Game extends Component {
 						<div class=" separator-chunk"></div>
 						<div class=" separator-chunk"></div>
 					</div>
-					<div class="fs-1 position-absolute" id="score-one">00</div>
-					<div class="fs-1 position-absolute" id="score-two">00</div>
-					<div class="fs-4 position-absolute" id="name-one"></div>
-					<div class="fs-4 position-absolute" id="name-two"></div>
+					<div class="position-absolute score" id="score-one">00</div>
+					<div class="position-absolute score" id="score-two">00</div>
+					<div class="position-absolute player-name" id="name-one"></div>
+					<div class="position-absolute player-name" id="name-two"></div>
 				</div>
 				<div class=" position-absolute" id="ball"></div>
 				<div class=" paddle position-absolute" id="player-two">

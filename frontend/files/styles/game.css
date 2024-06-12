@@ -5,6 +5,9 @@
 }
 [data-bs-theme="dark"] {
   --game-ui-color: var(--bs-body-color);
+  #game-field {
+    filter: drop-shadow(0 0 2px);
+  }
 }
 
 #game-container {
@@ -18,12 +21,11 @@
   width: 100%;
   aspect-ratio: 3/4;
   object-fit: contain;
+  container-type: size;
   overflow: hidden;
   margin: auto;
-  border: 3px solid var(--game-ui-color);
-  /* border-radius: 20px; */
-  /* filter: drop-shadow(0 0 2px); */
   transition: all 300ms ease-out;
+  will-change: transform;
 }
 
 #game-field.paused {
@@ -90,7 +92,6 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
-  opacity: 0.3;
 }
 
 #aim-one {
@@ -104,29 +105,35 @@
 }
 
 .aim-part:nth-child(1) {
-  border-bottom: 1px solid var(--game-ui-color);
-  border-right: 1px solid var(--game-ui-color);
+  border-bottom: 3px solid var(--game-ui-color);
+  border-right: 3px solid var(--game-ui-color);
 }
 
 .aim-part:nth-child(2) {
-  border-bottom: 1px solid var(--game-ui-color);
-  border-left: 1px solid var(--game-ui-color);
+  border-bottom: 3px solid var(--game-ui-color);
+  border-left: 3px solid var(--game-ui-color);
 }
 
 .aim-part:nth-child(3) {
-  border-top: 1px solid var(--game-ui-color);
-  border-right: 1px solid var(--game-ui-color);
+  border-top: 3px solid var(--game-ui-color);
+  border-right: 3px solid var(--game-ui-color);
 }
 
 .aim-part:nth-child(4) {
-  border-top: 1px solid var(--game-ui-color);
-  border-left: 1px solid var(--game-ui-color);
+  border-top: 3px solid var(--game-ui-color);
+  border-left: 3px solid var(--game-ui-color);
 }
 
 /* horizontal */
 @media (min-width: 1200px) {
   #game-field {
     aspect-ratio: 4/3;
+  }
+  .score {
+    font-size: 5cqw;
+  }
+  .player-name {
+    font-size: 3cqw;
   }
   .field-buffer {
     background-color: red;
@@ -215,6 +222,12 @@
 @media (max-width: 1199px) {
   #game-field {
     aspect-ratio: 3/4;
+  }
+  .score {
+    font-size: 5cqh;
+  }
+  .player-name {
+    font-size: 3cqh;
   }
   .player-axis {
     height: calc(var(--paddleWidth) * 1%);

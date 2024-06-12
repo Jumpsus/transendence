@@ -1,4 +1,4 @@
-const INITIAL_VELOCITY = 0.1;
+const INITIAL_VELOCITY = 0.05;
 
 import { gameState, gameConfig } from "../game/game.js";
 
@@ -76,11 +76,12 @@ export default class Ball {
         gameConfig.bufferWidth +
         gameConfig.paddleWidth +
         gameConfig.ballWidth / 2;
-		calculateDirection(
-			{ x: this.x, y: this.y },
-			{ x: paddleRects[0].aimX, y: paddleRects[0].aimY },
-			this.direction
-		  );
+      calculateDirection(
+        { x: this.x, y: this.y },
+        { x: paddleRects[0].aimX, y: paddleRects[0].aimY },
+        this.direction
+      );
+      this.velocity = INITIAL_VELOCITY * 2;
     } else if (isCollission(paddleRects[1].rect(), rect)) {
       this.x =
         100 -
@@ -92,6 +93,7 @@ export default class Ball {
         { x: paddleRects[1].aimX, y: paddleRects[1].aimY },
         this.direction
       );
+      this.velocity = INITIAL_VELOCITY * 2;
     }
   }
 

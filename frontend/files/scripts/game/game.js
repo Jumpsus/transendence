@@ -6,11 +6,12 @@ export const gameState = {
   isOnline: false,
   isPaused: false,
   hasCPU: false,
+  isTouch: false,
 };
 
 export const gameConfig = {
   paddleWidth: 2,
-  paddleHeight: 20,
+  paddleHeight: 15,
   ballWidth: 3,
   bufferWidth: 2,
 };
@@ -23,8 +24,17 @@ function setDimensions() {
   root.style.setProperty("--bufferWidth", `${gameConfig.bufferWidth}`);
 }
 
+function isTouchDevice() {
+  return (
+    "ontouchstart" in window ||
+    navigator.maxTouchPoints > 0 ||
+    navigator.msMaxTouchPoints > 0
+  );
+}
+
 export function init() {
   setDimensions();
+  gameState.isTouch = isTouchDevice();
   const scoreOne = document.getElementById("score-one");
   const scoreTwo = document.getElementById("score-two");
   scoreOne.textContent = "00";
@@ -33,8 +43,10 @@ export function init() {
   const nameOne = document.getElementById("name-one");
   const nameTwo = document.getElementById("name-two");
   const homeNav = document.getElementById("navigation-wrapper");
-  nameOne.textContent = "Player1";
-  nameTwo.textContent = "Player2";
+  nameOne.textContent = "P1";
+  nameTwo.textContent = "P2";
+  let playerOneScore = 0;
+  let playerTwoScore = 0;
 
   const pauseArea = document.getElementById("pause-area");
   const pauseText = document.getElementById("pause-text");
@@ -45,34 +57,39 @@ export function init() {
   const CPU_TIME_TO_UPDATE = 1000;
 
   function setFieldBorders() {
-    if (gameContainer.offsetWidth == gameField.offsetWidth) {
-      gameField.style.setProperty("border-left", "none");
-      gameField.style.setProperty("border-right", "none");
+    let borderWidth;
+    if (
+      gameState.isHorizontal &&
+      gameContainer.offsetHeight != gameField.offsetHeight
+    ) {
+      borderWidth = gameContainer.offsetHeight / 80;
       gameField.style.setProperty(
         "border-top",
-        "3px solid var(--game-ui-color)"
+        `${borderWidth}px solid var(--game-ui-color)`
       );
       gameField.style.setProperty(
         "border-bottom",
-        "3px solid var(--game-ui-color)"
+        `${borderWidth}px solid var(--game-ui-color)`
       );
-    } else if (gameContainer.offsetHeight == gameField.offsetHeight) {
-      gameField.style.setProperty("border-top", "none");
-      gameField.style.setProperty("border-bottom", "none");
+      gameField.style.setProperty("border-left", "none");
+      gameField.style.setProperty("border-right", "none");
+    } else if (
+      !gameState.isHorizontal &&
+      gameContainer.offsetWidth != gameField.offsetWidth
+    ) {
+      borderWidth = gameContainer.offsetWidth / 50;
       gameField.style.setProperty(
         "border-left",
-        "3px solid var(--game-ui-color)"
+        `${borderWidth}px solid var(--game-ui-color)`
       );
       gameField.style.setProperty(
         "border-right",
-        "3px solid var(--game-ui-color)"
+        `${borderWidth}px solid var(--game-ui-color)`
       );
+      gameField.style.setProperty("border-top", "none");
+      gameField.style.setProperty("border-bottom", "none");
     } else {
-      gameField.style.removeProperty("border-top");
-      gameField.style.removeProperty("border-bottom");
-      gameField.style.removeProperty("border-left");
-      gameField.style.removeProperty("border-right");
-      gameField.style.setProperty("border", "3px solid var(--game-ui-color)");
+      gameField.style.setProperty("border", "none");
     }
   }
 
@@ -130,21 +147,21 @@ export function init() {
   }
 
   function isLose() {
-    const rect = ball.rect();
-    if (gameState.isHorizontal) {
-      return (
-        rect.right >= gameField.getBoundingClientRect().right ||
-        rect.left <= gameField.getBoundingClientRect().left
-      );
-    } else {
-      return (
-        rect.bottom >= gameField.getBoundingClientRect().bottom ||
-        rect.top <= gameField.getBoundingClientRect().top
-      );
+    if (ball.x <= 0) {
+      playerTwoScore++;
+      scoreTwo.textContent = playerTwoScore.toString().padStart(2, "0");
+      return true;
+    }
+    if (ball.x >= 100) {
+      playerOneScore++;
+      scoreOne.textContent = playerOneScore.toString().padStart(2, "0");
+      return true;
     }
   }
-
+  playerOne.angle = 0;
+  playerTwo.angle = 0;
   function updatePaddles(delta) {
+    const radius = 50 - gameConfig.bufferWidth;
     if (gameState.isHorizontal) {
       if (keys["w"]) {
         playerOne.y -= PLAYER_SPEED * delta;
@@ -158,18 +175,20 @@ export function init() {
       if (keys["ArrowDown"]) {
         playerTwo.y += PLAYER_SPEED * delta;
       }
-      //   if (keys["a"]) {
-      //     playerOne.aim -= AIM_SPEED * delta;
-      //   }
-      //   if (keys["d"]) {
-      //     playerOne.aim += AIM_SPEED * delta;
-      //   }
       if (keys["a"]) {
-        playerTwo.aimY -= AIM_SPEED * delta;
+        playerOne.angle -= AIM_SPEED * delta;
       }
-      if (keys["z"]) {
-        playerTwo.aimY += AIM_SPEED * delta;
+      if (keys["d"]) {
+        playerOne.angle += AIM_SPEED * delta;
       }
+      if (keys["ArrowLeft"]) {
+        playerTwo.angle += AIM_SPEED * delta;
+      }
+      if (keys["ArrowRight"]) {
+        playerTwo.angle -= AIM_SPEED * delta;
+      }
+      retractAim(keys["ArrowLeft"], keys["ArrowRight"], playerTwo);
+      retractAim(keys["a"], keys["d"], playerOne);
     } else {
       if (keys["a"]) {
         playerOne.y += PLAYER_SPEED * delta;
@@ -183,17 +202,46 @@ export function init() {
       if (keys["ArrowRight"]) {
         playerTwo.y -= PLAYER_SPEED * delta;
       }
-      if (keys["x"]) {
-        playerTwo.aimY -= AIM_SPEED * delta;
+      if (keys["ArrowUp"]) {
+        playerTwo.angle -= AIM_SPEED * delta;
       }
-      if (keys["z"]) {
-        playerTwo.aimY += AIM_SPEED * delta;
+      if (keys["ArrowDown"]) {
+        playerTwo.angle += AIM_SPEED * delta;
       }
+      if (keys["w"]) {
+        playerOne.angle += AIM_SPEED * delta;
+      }
+      if (keys["s"]) {
+        playerOne.angle -= AIM_SPEED * delta;
+      }
+      retractAim(keys["ArrowUp"], keys["ArrowDown"], playerTwo);
+      retractAim(keys["w"], keys["s"], playerOne);
     }
     playerOne.y = Math.max(10, Math.min(playerOne.y, 90));
     playerTwo.y = Math.max(10, Math.min(playerTwo.y, 90));
-    playerOne.aimY = Math.max(0, Math.min(playerOne.aimY, 100));
-    playerTwo.aimY = Math.max(0, Math.min(playerTwo.aimY, 100));
+    updateAim(playerOne, radius);
+    updateAim(playerTwo, radius);
+    function retractAim(left, right, player) {
+      if (gameState.isTouch) return;
+      if (!left && !right && player.angle != 0) {
+        if (player.angle > AIM_SPEED * delta) player.angle -= AIM_SPEED * delta;
+        else if (player.angle < -AIM_SPEED * delta)
+          player.angle += AIM_SPEED * delta;
+        else player.angle = 0;
+      }
+    }
+  }
+
+  function toRadians(angle) {
+    return (angle * Math.PI) / 180;
+  }
+
+  function updateAim(paddle, radius) {
+    let angle = toRadians(paddle.angle);
+    if (paddle.paddleElem.id === "player-one")
+      paddle.aimX = gameConfig.bufferWidth + radius * Math.cos(angle);
+    else paddle.aimX = 100 - gameConfig.bufferWidth - radius * Math.cos(angle);
+    paddle.aimY = 50 + radius * Math.sin(angle);
   }
 
   window.addEventListener("keydown", (event) => {
@@ -274,17 +322,6 @@ export function init() {
       keys[`${down}`] = false;
       keys[`${up}`] = true;
     }
-
-    // // Randomize the duration for how long a key is held down
-    // const holdTime = Math.random() * 300 + 200; // Random hold time between 200ms and 500ms
-
-    // // After the hold time, stop the key press to simulate a real player releasing the key
-    // setTimeout(() => {
-    //   keys[`${up}`] = false;
-    //   keys[`${down}`] = false;
-
-    //   // Continue updating the CPU's movements
-    // }, holdTime);
   }
   let pauseInterval;
   function pauseGame() {
@@ -305,6 +342,11 @@ export function init() {
     }, 300);
   }
 
+  document.addEventListener("keydown", (event) => {
+    if (event.key === " ") {
+      pauseGame();
+    }
+  });
   pauseArea.addEventListener("click", () => {
     pauseGame();
   });
@@ -354,10 +396,19 @@ export function init() {
   }
 
   function moveAim(paddle, x) {
-    if (x > paddle.rect().top) {
-      x = window.innerHeight - x;
-      const xPercent = (x / (window.innerHeight - paddle.rect().top)) * 100;
-      paddle.aimY = xPercent;
+    const gameRect = gameContainer.getBoundingClientRect();
+    if (paddle.paddleElem.id === "player-one") {
+		const playerZone = paddle.rect().top * 2;
+	  if (x < gameRect.top + playerZone && x > gameRect.top) {
+		x = playerZone / 2 - (x - gameRect.top);
+		paddle.angle = - (x / playerZone) * 2 * 100;
+	  }
+    } else {
+		const playerZone = (gameRect.bottom - paddle.rect().bottom) * 2;
+      if (x > gameRect.bottom - playerZone && x < gameRect.bottom) {
+        x = playerZone / 2 - (gameRect.bottom - x);
+        paddle.angle = (x / playerZone) * 2 * 100;
+      }
     }
   }
 

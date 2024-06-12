@@ -2,6 +2,15 @@ export default class Paddle {
   constructor(paddleElem, aimElem) {
     this.paddleElem = paddleElem;
     this.aimElem = aimElem;
+	this._angle = 0;
+  }
+
+  get angle() {
+	return this._angle;
+  }
+
+  set angle(value) {
+	this._angle = Math.max(-80, Math.min(value, 80));
   }
 
   get aimX() {
