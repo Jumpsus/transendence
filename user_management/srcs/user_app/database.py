@@ -1,6 +1,5 @@
 from django.db.models import Q
-from user_app.models import UserManagement
-from user_app.models import FriendManagement
+from user_app.models import UserManagement, FriendManagement, MatchHistory
 
 # USER_MANAGEMENT
 
@@ -140,3 +139,26 @@ def find_friends_by_action_user(user, action):
 
 def find_friends_by_actioned_user(user, action):
     return FriendManagement.objects.filter(user_b = user, action = action)
+
+# return True if "success" False if "fail"
+def create_match_history(user_w, user_l, score_w, score_l):
+    match_history = MatchHistory(  user_w = user_w, 
+                            user_l = user_l,
+                            score_w = score_w,
+                            score_l = score_l)
+
+    try: 
+        match_history.save()
+    except:
+        return False
+    return True
+
+# return win lose match of each user
+def find_user_win_lose_stats(user):
+    win_history = MatchHistory.objects.filter(user_w = user)
+    lose_history = MatchHistory.objects.filter(user_l = user)
+
+    return len(win_history), len(lose_history)
+
+def find_user_match_history(user):
+    return MatchHistory.objects.filter(Q(user_w = user) | Q(user_l = user)).order_bY('-created_at')

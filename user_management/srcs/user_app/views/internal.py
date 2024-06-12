@@ -2,18 +2,32 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
+from user_app import utils, database
+
+# validate via jwt
+@csrf_exempt
 def stamp_status(req):
+    found, u = validator.validate_user(req)
+    if found != True:
+        return utils.responseJsonErrorMessage(400, "30", "Invalid Session")
+
+    if len(u) == 0:
+        return utils.responseJsonErrorMessage(400, "13", "User Not Found")
+
     try:
         body = utils.getJsonBody(req.body)
-        user = body["username"]
+        schema = {
+            "type" : "object",
+            "properties" : {
+                "status": {"type" : "string"},
+            },
+            "required": ["status"]
+        }
+
+        validate(instance=body, schema=schema)
         status = body["status"]
     except:
         return utils.responseJsonErrorMessage(400, "10", "Invalid request")
-
-    u = database.find_user_by_username_passwd(user)
-
-    if len(u) == 0:
-        return utils.responseJsonErrorMessage(400, "11", "Mismatch username or password")
 
     match status:
         case "online":
