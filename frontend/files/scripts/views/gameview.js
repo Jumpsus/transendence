@@ -4,13 +4,26 @@ export class Game extends Component {
   constructor() {
     super(document.getElementById("content-wrapper"));
     this.view = `
-	<div class="w-100 h-100" id="game-container">
-			<div class="d-flex flex-column flex-xl-row justify-content-between position-relative"
+	<div class="w-100 h-100 position-relative" id="game-container">
+			<div class="position-absolute" id="pause-text">PAUSED</div>
+			<div class="d-flex flex-column flex-xl-row justify-content-center position-relative"
 				id="game-field">
-				<div class="position-relative player-axis">
-					<div class="paddle position-absolute" id="player-one"></div>
+				<div class="paddle position-absolute" id="player-one">
 				</div>
-				<div class="position-absolute" id="pause-area"></div>
+				<div class="position-absolute" id="pause-area">
+				</div>
+				<div class="aim position-absolute" id="aim-one">
+						<div class="aim-part"></div>
+						<div class="aim-part"></div>
+						<div class="aim-part"></div>
+						<div class="aim-part"></div>
+					</div>
+					<div class="aim position-absolute" id="aim-two">
+						<div class="aim-part"></div>
+						<div class="aim-part"></div>
+						<div class="aim-part"></div>
+						<div class="aim-part"></div>
+				</div>
 				<div class="position-relative" id="separator">
 					<div class="d-flex flex-xl-column justify-content-around flex-row w-100 h-100">
 						<div class=" separator-chunk"></div>
@@ -35,8 +48,7 @@ export class Game extends Component {
 					<div class="fs-4 position-absolute" id="name-two"></div>
 				</div>
 				<div class=" position-absolute" id="ball"></div>
-				<div class="position-relative player-axis">
-					<div class=" paddle position-absolute" id="player-two"></div>
+				<div class=" paddle position-absolute" id="player-two">
 				</div>
 			</div>
 		</div>
@@ -45,11 +57,13 @@ export class Game extends Component {
   }
   render() {
     super.render();
-    import("../game/game.js").then((module) => {
-		console.log("Game script loaded");
-		module.init();
-	}).catch((error) => {
-      console.error("Error loading Pong game script:", error);
-    });
+    import("../game/game.js")
+      .then((module) => {
+        console.log("Game script loaded");
+        module.init();
+      })
+      .catch((error) => {
+        console.error("Error loading Pong game script:", error);
+      });
   }
 }

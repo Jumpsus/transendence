@@ -23,6 +23,11 @@
   border: 3px solid var(--game-ui-color);
   /* border-radius: 20px; */
   /* filter: drop-shadow(0 0 2px); */
+  transition: all 300ms ease-out;
+}
+
+#game-field.paused {
+  opacity: 0.2;
 }
 
 #game-field * {
@@ -34,20 +39,25 @@
   background-color: var(--game-ui-color);
 }
 
-#player-one {
-  --y: 50;
-}
-
-#player-two {
-  --y: 50;
-}
-
 #ball {
   aspect-ratio: 1/1;
   transform: translate(-50%, 50%);
   --x: 50;
   --y: 50;
   background-color: var(--game-ui-color);
+}
+
+:root {
+  --paddle1Angle: 0;
+  --paddle2Angle: 0;
+}
+
+#player-one {
+  --y: 50;
+}
+
+#player-two {
+  --y: 50;
 }
 
 .separator-chunk {
@@ -59,28 +69,95 @@
   z-index: 100;
 }
 
+#pause-text {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 10cqw;
+  font-weight: bold;
+  color: var(--game-ui-color);
+  opacity: 0;
+  transition: all 1000ms ease-out;
+}
+
+#pause-text.show {
+  opacity: 1;
+}
+
+.aim {
+  width: 3%;
+  aspect-ratio: 1/1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  opacity: 0.3;
+}
+
+#aim-one {
+  --x: 45;
+  --y: 50;
+}
+
+#aim-two {
+  --x: 55;
+  --y: 50;
+}
+
+.aim-part:nth-child(1) {
+  border-bottom: 1px solid var(--game-ui-color);
+  border-right: 1px solid var(--game-ui-color);
+}
+
+.aim-part:nth-child(2) {
+  border-bottom: 1px solid var(--game-ui-color);
+  border-left: 1px solid var(--game-ui-color);
+}
+
+.aim-part:nth-child(3) {
+  border-top: 1px solid var(--game-ui-color);
+  border-right: 1px solid var(--game-ui-color);
+}
+
+.aim-part:nth-child(4) {
+  border-top: 1px solid var(--game-ui-color);
+  border-left: 1px solid var(--game-ui-color);
+}
+
 /* horizontal */
 @media (min-width: 1200px) {
   #game-field {
     aspect-ratio: 4/3;
   }
-  .player-axis {
-    width: 2%;
+  .field-buffer {
+    background-color: red;
+    width: calc(var(--bufferWidth) * 1%);
+    height: 100%;
   }
   .paddle {
     width: 100%;
-    height: 20%;
+    height: calc(var(--paddleHeight) * 1%);
+    width: calc(var(--paddleWidth) * 1%);
     top: calc(var(--y) * 1%);
     transform: translateY(-50%);
   }
-  .player-axis:has(#player-one) {
-    margin-left: 4%;
+  .paddle#player-one {
+    left: calc(var(--bufferWidth) * 1%);
   }
-  .player-axis:has(#player-two) {
-    margin-right: 4%;
+  .paddle#player-two {
+    right: calc(var(--bufferWidth) * 1%);
+  }
+  #aim-one {
+    left: calc(var(--x) * 1%);
+    top: calc(var(--y) * 1%);
+    transform: translate(-50%, -50%);
+  }
+  #aim-two {
+    left: calc(var(--x) * 1%);
+    top: calc(var(--y) * 1%);
+    transform: translate(-50%, -50%);
   }
   #ball {
-    height: 3%;
+    height: calc(var(--ballWidth) * 1%);
     left: calc(var(--x) * 1%);
     top: calc(var(--y) * 1%);
     transform: translate(-50%, -50%);
@@ -140,22 +217,32 @@
     aspect-ratio: 3/4;
   }
   .player-axis {
-    height: 2%;
-  }
-  .player-axis:has(#player-one) {
-    margin-top: 4%;
-  }
-  .player-axis:has(#player-two) {
-    margin-bottom: 4%;
+    height: calc(var(--paddleWidth) * 1%);
   }
   .paddle {
-    width: 20%;
-    height: 100%;
+    width: calc(var(--paddleHeight) * 1%);
+    height: calc(var(--paddleWidth) * 1%);
     right: calc(var(--y) * 1%);
     transform: translateX(50%);
   }
+  .paddle#player-one {
+    top: calc(var(--bufferWidth) * 1%);
+  }
+  .paddle#player-two {
+    bottom: calc(var(--bufferWidth) * 1%);
+  }
+  #aim-one {
+    top: calc(var(--x) * 1%);
+    right: calc(var(--y) * 1%);
+    transform: translate(50%, -50%);
+  }
+  #aim-two {
+    top: calc(var(--x) * 1%);
+    right: calc(var(--y) * 1%);
+    transform: translate(50%, -50%);
+  }
   #ball {
-    width: 3%;
+    width: calc(var(--ballWidth) * 1%);
     top: calc(var(--x) * 1%);
     right: calc(var(--y) * 1%);
     transform: translate(50%, -50%);

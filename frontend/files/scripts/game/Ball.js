@@ -1,6 +1,6 @@
 const INITIAL_VELOCITY = 0.1;
 
-import { gameState } from "../game/game.js";
+import { gameState, gameConfig } from "../game/game.js";
 
 export default class Ball {
   constructor(ballElem, gameField) {
@@ -49,16 +49,49 @@ export default class Ball {
       rect.bottom >= this.gameField.getBoundingClientRect().bottom ||
       rect.top <= this.gameField.getBoundingClientRect().top
     ) {
-      if (gameState.isHorizontal) this.direction.y *= -1;
+      if (gameState.isHorizontal) {
+        this.direction.y *= -1;
+        if (rect.bottom >= this.gameField.getBoundingClientRect().bottom) {
+          this.y = 100 - gameConfig.ballWidth / 2;
+        } else {
+          this.y = gameConfig.ballWidth / 2;
+        }
+      }
     }
     if (
       rect.right >= this.gameField.getBoundingClientRect().right ||
       rect.left <= this.gameField.getBoundingClientRect().left
     ) {
-      if (!gameState.isHorizontal) this.direction.y *= -1;
+      if (!gameState.isHorizontal) {
+        this.direction.y *= -1;
+        if (rect.right >= this.gameField.getBoundingClientRect().right) {
+          this.y = gameConfig.ballWidth / 2;
+        } else {
+          this.y = 100 - gameConfig.ballWidth / 2;
+        }
+      }
     }
-    if (paddleRects.some((r) => isCollission(r, rect))) {
-      this.direction.x *= -1;
+    if (isCollission(paddleRects[0].rect(), rect)) {
+      this.x =
+        gameConfig.bufferWidth +
+        gameConfig.paddleWidth +
+        gameConfig.ballWidth / 2;
+		calculateDirection(
+			{ x: this.x, y: this.y },
+			{ x: paddleRects[0].aimX, y: paddleRects[0].aimY },
+			this.direction
+		  );
+    } else if (isCollission(paddleRects[1].rect(), rect)) {
+      this.x =
+        100 -
+        (gameConfig.bufferWidth +
+          gameConfig.paddleWidth +
+          gameConfig.ballWidth / 2);
+      calculateDirection(
+        { x: this.x, y: this.y },
+        { x: paddleRects[1].aimX, y: paddleRects[1].aimY },
+        this.direction
+      );
     }
   }
 
@@ -84,4 +117,22 @@ function isCollission(rect1, rect2) {
     rect1.top <= rect2.bottom &&
     rect1.bottom >= rect2.top
   );
+}
+
+function calculateDirection(ballPosition, aimPosition, ballDirection) {
+  // Calculate the direction vector
+  const directionX = aimPosition.x - ballPosition.x;
+  const directionY = aimPosition.y - ballPosition.y;
+
+  // Calculate the magnitude of the direction vector
+  const magnitude = Math.sqrt(
+    directionX * directionX + directionY * directionY
+  );
+
+  // Normalize the direction vector
+  const unitDirectionX = directionX / magnitude;
+  const unitDirectionY = directionY / magnitude;
+
+  ballDirection.x = unitDirectionX;
+  ballDirection.y = unitDirectionY;
 }
