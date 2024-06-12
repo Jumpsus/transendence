@@ -1,7 +1,10 @@
 import Ball from "./Ball.js";
 import Paddle from "./Paddle.js";
 
+export let eventListenersSet = false;
+
 export const gameState = {
+  isOn: false,
   isHorizontal: true,
   isOnline: false,
   isPaused: false,
@@ -116,8 +119,6 @@ export function init() {
     gameState.isHorizontal = gameField.clientWidth > gameField.clientHeight;
     setFieldBorders();
   });
-
-  //   const debugConsole = document.querySelector("#debug-console");
 
   if (gameState.isOnline) {
     setInterval(async () => {
@@ -323,30 +324,39 @@ export function init() {
       keys[`${up}`] = true;
     }
   }
+
   let pauseInterval;
   function pauseGame() {
     gameState.isPaused = !gameState.isPaused;
+    console.log(gameState.isPaused);
+	const pauseText = document.getElementById("pause-text");
+	const gameField = document.getElementById("game-field");
     if (gameState.isPaused) {
-      pauseText.classList.toggle("show");
+      pauseText.classList.add("show");
+	  gameField.classList.add("paused");
+	  homeNav.classList.remove("hidden");
       pauseInterval = setInterval(() => {
         pauseText.classList.toggle("show");
       }, 1000);
     } else {
       clearInterval(pauseInterval);
       pauseText.classList.remove("show");
+	  gameField.classList.remove("paused");
+	  homeNav.classList.add("hidden");
     }
-    gameField.classList.toggle("paused");
-    homeNav.classList.toggle("hidden");
     setTimeout(() => {
       setFieldBorders();
     }, 300);
   }
 
-  document.addEventListener("keydown", (event) => {
-    if (event.key === " ") {
-      pauseGame();
-    }
-  });
+  if (!eventListenersSet) {
+    document.addEventListener("keydown", (event) => {
+      if (event.key === " ") {
+        pauseGame();
+      }
+    });
+    eventListenersSet = true;
+  }
   pauseArea.addEventListener("click", () => {
     pauseGame();
   });
@@ -398,13 +408,13 @@ export function init() {
   function moveAim(paddle, x) {
     const gameRect = gameContainer.getBoundingClientRect();
     if (paddle.paddleElem.id === "player-one") {
-		const playerZone = paddle.rect().top * 2;
-	  if (x < gameRect.top + playerZone && x > gameRect.top) {
-		x = playerZone / 2 - (x - gameRect.top);
-		paddle.angle = - (x / playerZone) * 2 * 100;
-	  }
+      const playerZone = paddle.rect().top * 2;
+      if (x < gameRect.top + playerZone && x > gameRect.top) {
+        x = playerZone / 2 - (x - gameRect.top);
+        paddle.angle = -(x / playerZone) * 2 * 100;
+      }
     } else {
-		const playerZone = (gameRect.bottom - paddle.rect().bottom) * 2;
+      const playerZone = (gameRect.bottom - paddle.rect().bottom) * 2;
       if (x > gameRect.bottom - playerZone && x < gameRect.bottom) {
         x = playerZone / 2 - (gameRect.bottom - x);
         paddle.angle = (x / playerZone) * 2 * 100;
