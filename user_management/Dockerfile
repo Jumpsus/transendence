@@ -1,13 +1,13 @@
 FROM python:3.10-slim
 
-RUN pip install --no-cache-dir --break-system-packages -r requirements.txt
-
 RUN mkdir -p /app/share-resource
 RUN mkdir -p /app/temp
 
 WORKDIR /app
 
 COPY requirements.txt .
+
+RUN pip install --no-cache-dir --break-system-packages -r requirements.txt
 
 EXPOSE 8000
 
