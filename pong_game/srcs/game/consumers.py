@@ -11,6 +11,7 @@ redis_instance = redis.StrictRedis(host='redis', port=6379, db=0, decode_respons
 
 class GameConsumer(AsyncWebsocketConsumer):
 	async def connect(self):
+		self.player_id = 0
 		self.game_id = str(self.scope['url_route']['kwargs']['game_id'])
 		if not cache.get(self.game_id):
 			return
@@ -45,12 +46,12 @@ class GameConsumer(AsyncWebsocketConsumer):
 		lock = redis_instance.lock(f"lock:{self.game_id}", timeout=5)
 		with lock:
 			active_connections = cache.get(self.game_id, 0)
-			if active_connections > 1:
+			if active_connections > 2:
 				# Decrement the connection count in the cache
 				cache.set(self.game_id, active_connections - 1, timeout=300)
-			else:
+			elif active_connections != 0:
 				# Remove the key if this is the last connection
-				cache.delete(self.game_id, 0)
+				cache.delete(self.game_id)
 			if self.player_id == 2 and cache.get("id_two_set"):
 				cache.delete("id_two_set")
 		await self.channel_layer.group_discard(
@@ -79,7 +80,7 @@ class GameConsumer(AsyncWebsocketConsumer):
 			self.game_state.from_json(str(cache.get(self.game_id+'game_state')))
 			self.game_state.game_loop(text_data_json['paddle_vel'], self.player_id)
 			message = self.game_state.to_json()
-			cache.set(self.game_id+'game_state', message, timeout=3600)
+			cache.set(self.game_id+'game_state', message, timeout=300)
 		finally:
 			lock.release()
 		await self.channel_layer.group_send(
