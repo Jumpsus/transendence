@@ -1,5 +1,6 @@
 import Ball from "./Ball.js";
 import Paddle from "./Paddle.js";
+import Collectible from "./Collectible.js";
 
 export let eventListenersSet = false;
 
@@ -10,13 +11,18 @@ export const gameState = {
   isPaused: false,
   hasCPU: false,
   isTouch: false,
+  collectible: null,
+  powerUp: { effect: null, player: null },
 };
 
 export const gameConfig = {
   paddleWidth: 2,
-  paddleHeight: 15,
+  paddleHeight: 20,
   ballWidth: 3,
   bufferWidth: 2,
+  ballSpeed1: 0.1,
+  ballSpeed2: 0.1,
+  collectibleChance: 100,
 };
 
 function setDimensions() {
@@ -134,17 +140,77 @@ export function init() {
         // debugConsole.textContent = delta;
         updatePaddles(delta);
         ball.update(delta, [playerOne, playerTwo]);
+        if (gameState.powerUp.effect) {
+          applyPowerUp();
+        }
         if (gameState.hasCPU) updateCPU(delta);
         if (isLose()) {
           ball.reset();
           playerOne.reset();
           playerTwo.reset();
+          const chance = Math.random();
+          if (
+            !gameState.collectible &&
+            chance < gameConfig.collectibleChance / 100
+          ) {
+            gameState.collectible = new Collectible(gameField);
+          }
         }
       }
       lastTime = time;
       window.requestAnimationFrame(update);
     }
     window.requestAnimationFrame(update);
+  }
+
+  function applyPowerUp() {
+    let saveConfig = { ...gameConfig };
+    console.log("applying powerup");
+    switch (gameState.powerUp.effect) {
+      case "speedy":
+        if (gameState.powerUp.player === 1) gameConfig.ballSpeed1 *= 2;
+        else if (gameState.powerUp.player === 2) gameConfig.ballSpeed2 *= 2;
+        break;
+      case "paddleReducer":
+        if (gameState.powerUp.player === 1)
+          playerTwo.paddleElem.style.setProperty(
+            "--paddleHeight",
+            `${gameConfig.paddleHeight / 2}`
+          );
+        else if (gameState.powerUp.player === 2)
+          playerOne.paddleElem.style.setProperty(
+            "--paddleHeight",
+            `${gameConfig.paddleHeight / 2}`
+          );
+        break;
+	case "paddleEnlarger":
+		if (gameState.powerUp.player === 1)
+		  playerTwo.paddleElem.style.setProperty(
+			"--paddleHeight",
+			`${gameConfig.paddleHeight * 2}`
+		  );
+		else if (gameState.powerUp.player === 2)
+		  playerOne.paddleElem.style.setProperty(
+			"--paddleHeight",
+			`${gameConfig.paddleHeight * 2}`
+		  );
+		break;
+      default:
+        break;
+    }
+    gameState.powerUp.effect = null;
+    gameState.powerUp.player = null;
+    setTimeout(() => {
+      Object.assign(gameConfig, saveConfig);
+      playerOne.paddleElem.style.setProperty(
+        "--paddleHeight",
+        `${gameConfig.paddleHeight}`
+      );
+      playerTwo.paddleElem.style.setProperty(
+        "--paddleHeight",
+        `${gameConfig.paddleHeight}`
+      );
+    }, 5000);
   }
 
   function isLose() {
@@ -328,21 +394,20 @@ export function init() {
   let pauseInterval;
   function pauseGame() {
     gameState.isPaused = !gameState.isPaused;
-    console.log(gameState.isPaused);
-	const pauseText = document.getElementById("pause-text");
-	const gameField = document.getElementById("game-field");
+    const pauseText = document.getElementById("pause-text");
+    const gameField = document.getElementById("game-field");
     if (gameState.isPaused) {
       pauseText.classList.add("show");
-	  gameField.classList.add("paused");
-	  homeNav.classList.remove("hidden");
+      gameField.classList.add("paused");
+      homeNav.classList.remove("hidden");
       pauseInterval = setInterval(() => {
         pauseText.classList.toggle("show");
       }, 1000);
     } else {
       clearInterval(pauseInterval);
       pauseText.classList.remove("show");
-	  gameField.classList.remove("paused");
-	  homeNav.classList.add("hidden");
+      gameField.classList.remove("paused");
+      homeNav.classList.add("hidden");
     }
     setTimeout(() => {
       setFieldBorders();

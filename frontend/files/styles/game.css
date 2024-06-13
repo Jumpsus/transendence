@@ -37,6 +37,7 @@
 }
 
 .paddle {
+  /* transition: all 100ms ease-out; */
   transition: all 100ms ease-out;
   background-color: var(--game-ui-color);
 }
@@ -84,6 +85,36 @@
 
 #pause-text.show {
   opacity: 1;
+}
+
+.collectible {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  --x: 100;
+  --y: 0;
+  --speedyColor: rgb(255, 40, 79);
+  --paddleReducerColor: rgb(0, 255, 242);
+  --reverseControlsColor: rgb(41, 255, 25);
+  left: calc(var(--x) * 1%);
+  top: calc(var(--y) * 1%);
+  transform: translate(-50%, -50%);
+  /* filter: drop-shadow(0 0 5px); */
+}
+
+.speedy {
+  color: var(--speedyColor);
+  background-color: var(--speedyColor);
+}
+
+.paddleReducer {
+  color: var(--paddleReducerColor);
+  background-color: var(--paddleReducerColor);
+}
+
+.paddleEnlarger {
+  color: var(--reverseControlsColor);
+  background-color: var(--reverseControlsColor);
 }
 
 .aim {

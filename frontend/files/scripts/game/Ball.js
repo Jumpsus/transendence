@@ -6,6 +6,7 @@ export default class Ball {
   constructor(ballElem, gameField) {
     this.ballElem = ballElem;
     this.gameField = gameField;
+    this.hitByPaddle = null;
     this.reset();
   }
 
@@ -81,7 +82,8 @@ export default class Ball {
         { x: paddleRects[0].aimX, y: paddleRects[0].aimY },
         this.direction
       );
-      this.velocity = INITIAL_VELOCITY * 2;
+      this.velocity = gameConfig.ballSpeed1;
+      this.hitByPaddle = 1;
     } else if (isCollission(paddleRects[1].rect(), rect)) {
       this.x =
         100 -
@@ -93,7 +95,17 @@ export default class Ball {
         { x: paddleRects[1].aimX, y: paddleRects[1].aimY },
         this.direction
       );
-      this.velocity = INITIAL_VELOCITY * 2;
+      this.velocity = gameConfig.ballSpeed2;
+      this.hitByPaddle = 2;
+    }
+    if (this.hitByPaddle &&
+      gameState.collectible &&
+      isCollission(gameState.collectible.rect(), rect)
+    ) {
+	  gameState.powerUp.effect = gameState.collectible.type;
+	  gameState.powerUp.player = this.hitByPaddle;
+      gameState.collectible.element.remove();
+      gameState.collectible = null;
     }
   }
 
