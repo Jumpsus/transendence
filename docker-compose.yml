@@ -78,7 +78,13 @@ volumes:
       type: none
       device: ./user_management/postgres/pgdata
       o: bind
-
+  common:
+      name: common
+      driver: local
+      driver_opts:
+        type: none
+        device: ./common
+        o: bind
 networks:
   user-network:
     driver: bridge
