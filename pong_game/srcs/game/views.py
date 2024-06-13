@@ -1,7 +1,9 @@
 from django.http import JsonResponse
 from django.core.cache import cache
 import uuid
+from django.views.decorators.csrf import csrf_exempt
 
+@csrf_exempt
 def generate_game_id(request):
 	unique_id = uuid.uuid4()  # Generates a unique UUID
 	cache.set(str(unique_id), 1, timeout=300)  # Store in cache for 5 mins
