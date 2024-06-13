@@ -6,6 +6,4 @@ WORKDIR /app
 
 COPY setting.py .
 
-RUN python3 -m venv venv
-RUN . venv/bin/activate
-RUN pip install hvac django
+RUN pip install --no-cache-dir --break-system-packages hvac django
