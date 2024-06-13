@@ -9,13 +9,16 @@ export const gameState = {
   isHorizontal: true,
   isOnline: false,
   isPaused: false,
-  hasCPU: false,
   isTouch: false,
   collectible: null,
   powerUp: { effect: null, player: null },
 };
 
 export const gameConfig = {
+  hasCPU: true,
+  hasPowerUps: false,
+  hasAim: false,
+  CPULevel: 1,
   paddleWidth: 2,
   paddleHeight: 20,
   ballWidth: 3,
@@ -143,7 +146,7 @@ export function init() {
         if (gameState.powerUp.effect) {
           applyPowerUp();
         }
-        if (gameState.hasCPU) updateCPU(delta);
+        if (gameConfig.hasCPU) updateCPU(delta);
         if (isLose()) {
           ball.reset();
           playerOne.reset();
@@ -183,18 +186,18 @@ export function init() {
             `${gameConfig.paddleHeight / 2}`
           );
         break;
-	case "paddleEnlarger":
-		if (gameState.powerUp.player === 1)
-		  playerTwo.paddleElem.style.setProperty(
-			"--paddleHeight",
-			`${gameConfig.paddleHeight * 2}`
-		  );
-		else if (gameState.powerUp.player === 2)
-		  playerOne.paddleElem.style.setProperty(
-			"--paddleHeight",
-			`${gameConfig.paddleHeight * 2}`
-		  );
-		break;
+      case "paddleEnlarger":
+        if (gameState.powerUp.player === 1)
+          playerTwo.paddleElem.style.setProperty(
+            "--paddleHeight",
+            `${gameConfig.paddleHeight * 2}`
+          );
+        else if (gameState.powerUp.player === 2)
+          playerOne.paddleElem.style.setProperty(
+            "--paddleHeight",
+            `${gameConfig.paddleHeight * 2}`
+          );
+        break;
       default:
         break;
     }

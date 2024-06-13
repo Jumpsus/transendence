@@ -47,6 +47,14 @@ label::after {
   display: none;
 }
 
+.game-menu {
+  margin-top: 40vh;
+}
+
+.game-options {
+  color: var(--bs-body-color);
+}
+
 #project-title,
 .menu-item,
 #profileMenu .nav-link {
@@ -521,6 +529,21 @@ body {
   display: grid;
   gap: 50px;
   grid-template-columns: 1fr 150px 1fr;
+}
+
+.settings-switch {
+  border: 3px solid var(--my-primary-color);
+  color: var(--my-primary-color);
+}
+
+.settings-switch:hover {
+	border: 3px solid var(--my-primary-color);
+	color: var(--my-primary-color);
+}
+
+.settings-switch.on {
+  background-color: var(--my-primary-color);
+  color: var(--bs-body-bg);
 }
 
 tr,
