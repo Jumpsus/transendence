@@ -166,18 +166,22 @@ def user_list(req):
         case _:
            return utils.responseJsonErrorMessage(400, "10", "Invalid request")
 
-    response_data = {}
-    response_data["code"] = "00"
-    response_data["user_list"] = user_list
+    response_data = {
+        "code": "00",
+        "user_list": user_list,
+    }
     return HttpResponse(json.dumps(response_data), content_type="application/json", status=200)
 
 def get_info(req):
+
     found, u = validator.validate_user(req)
     if found != True:
         return utils.responseJsonErrorMessage(400, "30", "Invalid Session")
 
     if len(u) == 0:
         return utils.responseJsonErrorMessage(400, "13", "User Not Found")
+
+    win, lose = database.find_user_win_lose_stats(u[0])
 
     response_data = {
         "code" : "00",
@@ -187,37 +191,12 @@ def get_info(req):
         "phone_number" : u[0].phone_number,
         "tag" : u[0].tag,
         "image" : u[0].image,
-        "win" : 0,
-        "lose" : 0,
+        "win" : win,
+        "lose" : lose,
         "level" : 0,
     }
 
     return HttpResponse(json.dumps(response_data), content_type="application/json", status=200)
-
-@csrf_exempt
-def update_info(req):
-
-    try:
-        body = utils.getJsonBody(req.body)
-    except:
-        return utils.responseJsonErrorMessage(400, "10", "Invalid request")
-
-    found, u = validator.validate_user(req)
-    if found != True:
-        return utils.responseJsonErrorMessage(400, "30", "Invalid Session")
-
-    if len(u) == 0:
-        return utils.responseJsonErrorMessage(400, "13", "User Not Found")
-
-    name = body.get("name","")
-    last_name = body.get("last_name","")
-    phone_number = body.get("phone_number","")
-    tag = body.get("tag","")
-
-    if database.edit_user(u[0], name, last_name, phone_number, tag) != True:
-        return utils.responseJsonErrorMessage(500, "20", "Internal error")
-
-    return utils.responseJsonErrorMessage(200, "00", "Success")
 
 @csrf_exempt
 def get_other_info(req):
@@ -249,20 +228,87 @@ def get_other_info(req):
         return utils.responseJsonErrorMessage(400, "13", "User Not Found")
 
     relation = friend_management.map_relation(u[0], other_u[0])
+    win, lose = database.find_user_win_lose_stats(other_u[0])
 
-    response_data = {}
-    response_data["code"] = "00"
-    response_data["username"] = other_u[0].username
-    response_data["name"] = other_u[0].name
-    response_data["last_name"] = other_u[0].last_name
-    response_data["phone_number"] = other_u[0].phone_number
-    response_data["tag"] = other_u[0].tag
-    response_data["image"] = other_u[0].image
-    response_data["win"] = 0
-    response_data["lose"] = 0
-    response_data["level"] = 0
-    response_data["relation"] = relation
-    response_data["status"] = "offline" # TODO handle this case
+    response_data = {
+        "code": "00",
+        "username": other_u[0].username,
+        "name": other_u[0].name,
+        "last_name": other_u[0].last_name,
+        "phone_number": other_u[0].phone_number,
+        "tag": other_u[0].tag,
+        "image": other_u[0].image,
+        "win": win,
+        "lose": lose,
+        "level": 0,
+        "relation": relation,
+        "status": "offline", # TODO handle this case
+    }
+
+    return HttpResponse(json.dumps(response_data), content_type="application/json", status=200)
+
+@csrf_exempt
+def update_info(req):
+
+    try:
+        body = utils.getJsonBody(req.body)
+    except:
+        return utils.responseJsonErrorMessage(400, "10", "Invalid request")
+
+    found, u = validator.validate_user(req)
+    if found != True:
+        return utils.responseJsonErrorMessage(400, "30", "Invalid Session")
+
+    if len(u) == 0:
+        return utils.responseJsonErrorMessage(400, "13", "User Not Found")
+
+    name = body.get("name","")
+    last_name = body.get("last_name","")
+    phone_number = body.get("phone_number","")
+    tag = body.get("tag","")
+
+    if database.edit_user(u[0], name, last_name, phone_number, tag) != True:
+        return utils.responseJsonErrorMessage(500, "20", "Internal error")
+
+    return utils.responseJsonErrorMessage(200, "00", "Success")
+
+@csrf_exempt
+def get_relation(req):
+
+    try:
+        body = utils.getJsonBody(req.body)
+        schema = {
+            "type" : "object",
+            "properties" : {
+                "username": {"type" : "string"},
+            },
+            "required": ["username"]
+        }
+
+        validate(instance=body, schema=schema)
+        other_user = body.get("username")
+    except:
+        return utils.responseJsonErrorMessage(400, "10", "Invalid request")
+
+    other_u = database.find_user_by_username(other_user)
+    if len(other_u) == 0:
+        return utils.responseJsonErrorMessage(400, "13", "User Not Found")
+
+    found, u = validator.validate_user(req)
+    if found != True:
+        return utils.responseJsonErrorMessage(400, "30", "Invalid Session")
+
+    if len(u) == 0:
+        return utils.responseJsonErrorMessage(400, "13", "User Not Found")
+
+    relation = friend_management.map_relation(u[0], other_u[0])
+
+    response_data = {
+        "code": "00",
+        "username": other_u[0].username,
+        "relation": relation,
+    }
+    
     return HttpResponse(json.dumps(response_data), content_type="application/json", status=200)
 
 @csrf_exempt
@@ -303,6 +349,42 @@ def change_password(req):
     if database.update_password(u[0], passwd) == False:
         return utils.responseJsonErrorMessage(500, "20", "Internal error")
     
+    return utils.responseJsonErrorMessage(200, "00", "Success")
+
+@csrf_exempt
+def stamp_status(req):
+    found, u = validator.validate_user(req)
+    if found != True:
+        return utils.responseJsonErrorMessage(400, "30", "Invalid Session")
+
+    if len(u) == 0:
+        return utils.responseJsonErrorMessage(400, "13", "User Not Found")
+
+    try:
+        body = utils.getJsonBody(req.body)
+        schema = {
+            "type" : "object",
+            "properties" : {
+                "status": {"type" : "string"},
+            },
+            "required": ["status"]
+        }
+
+        validate(instance=body, schema=schema)
+        status = body["status"]
+    except:
+        return utils.responseJsonErrorMessage(400, "10", "Invalid request")
+
+    match status:
+        case "online":
+            if database.update_status(u[0], status) == False:
+                return utils.responseJsonErrorMessage(500, "20", "Internal error")
+        case "offline":
+            if database.update_status(u[0], status) == False:
+                return utils.responseJsonErrorMessage(500, "20", "Internal error")
+        case _:
+            return utils.responseJsonErrorMessage(400, "10", "Invalid request")
+
     return utils.responseJsonErrorMessage(200, "00", "Success")
 
 @csrf_exempt
