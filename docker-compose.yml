@@ -35,6 +35,17 @@ services:
       - vault-service
       - user-db
 
+  pong_game:
+    restart: always
+    extends:
+      file: pong_game/docker-compose.yml
+      service: pong_game
+
+  redis:
+    restart: always
+    extends:
+      file: pong_game/docker-compose.yml
+      service: redis
 volumes:
   ssl_volume:
     name: ssl_volume
