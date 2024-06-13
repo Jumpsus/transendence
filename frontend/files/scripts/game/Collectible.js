@@ -22,7 +22,7 @@ export default class Collectible {
   }
 
   setPosition() {
-    const voidZone = gameConfig.bufferWidth + gameConfig.paddleWidth + 10;
+    const voidZone = gameConfig.bufferWidth + gameConfig.paddleWidth + 30;
     const x = Math.random() * (100 - voidZone) + voidZone;
     const y = Math.random() * (100 - voidZone) + voidZone;
     this.element.style.setProperty("--x", x);
@@ -34,9 +34,9 @@ export default class Collectible {
   }
 
   delete() {
-	setTimeout(() => {
-	  this.element.remove();
-	}, gameConfig.collectibleTimeout);
+    setTimeout(() => {
+      this.element.remove();
+    }, gameConfig.collectibleTimeout);
   }
 
   rect() {
