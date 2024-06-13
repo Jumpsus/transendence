@@ -40,7 +40,8 @@ fclean: clean
 # List of base images to retain
 BASE_IMAGES = owasp/modsecurity-crs:3.3.4-nginx-alpine-202301110601 \
               postgres:16.3 \
-              python:3.10-slim
+              python:3.10-slim \
+			  redis:latest
 
 # Define a rule to list base images (for reference)
 list_base_images:
@@ -48,8 +49,9 @@ list_base_images:
 
 # Define a rule to clean image caches but retain base images
 clean_cache:
+	@docker system prune -f
 	# Save base images to a file
-	echo $(BASE_IMAGES) | tr ' ' '\n' > base_images.txt
+	@echo $(BASE_IMAGES) | tr ' ' '\n' > base_images.txt
 
 	# List all Docker images
 	@docker images --format '{{.Repository}}:{{.Tag}}' > all_images.txt
@@ -61,7 +63,7 @@ clean_cache:
 	@xargs -r docker rmi < removable_images.txt
 
 	# Clean up temporary files
-	rm base_images.txt all_images.txt removable_images.txt
+	@rm base_images.txt all_images.txt removable_images.txt
 
 .PHONY: all create_dir re up down clean fclean list_base_images clean_cache
 

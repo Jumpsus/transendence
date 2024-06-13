@@ -1,17 +1,13 @@
 FROM python:3.10-slim
 
-RUN mkdir -p /app/share-resource
-RUN mkdir -p /app/temp
-
 WORKDIR /app
 
 COPY requirements.txt .
 
-EXPOSE 8000
+EXPOSE 8001
 
-COPY .env-app /app/.env
-COPY user_script.sh /usr/bin/user_script.sh
-RUN chmod 777 /usr/bin/user_script.sh
+COPY pong_game_script.sh /usr/bin/pong_game_script.sh
+RUN chmod 777 /usr/bin/pong_game_script.sh
 # Install pip packages
 RUN pip install --no-cache-dir --break-system-packages -r requirements.txt
 
@@ -19,4 +15,4 @@ RUN pip install --no-cache-dir --break-system-packages -r requirements.txt
 COPY srcs .
 
 # Expose the port Django will run on
-ENTRYPOINT [ "/usr/bin/user_script.sh" ]
+ENTRYPOINT [ "/usr/bin/pong_game_script.sh" ]
