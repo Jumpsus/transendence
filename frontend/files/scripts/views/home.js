@@ -3,22 +3,37 @@ import { gameState, gameConfig } from "../game/game.js";
 import { pushHistoryAndGoTo, replaceHistoryAndGoTo } from "../utils/router.js";
 import { myUsername } from "../../index.js";
 import { isLoggedIn } from "../../index.js";
-import { setupDarkModeToggle } from "../utils/darkmode.js";
 
 export class Home extends Component {
   constructor() {
     super(document.getElementById("content-wrapper"));
     this.view = `
-	<div class="w-100 h-100 d-flex flex-column align-items-center gap-3 game-menu-container">
-	<h1 class="align-self-center" id="project-title">PONG</h1>
-			<div class="d-flex flex-column gap-3 px-3 game-menu pb-5">
-				<div class="fs-5 text-danger d-none text-center" id="sock-err-msg"></div>
-				<button class="btn btn-primary rounded-0 fs-5" id="start-btn">Start</button>
-				<a href="/Options" class="btn btn-primary rounded-0 fs-5" data-link>Options</a>
-				<a href="/${myUsername.username}" class="btn btn-primary rounded-0 fs-5" data-link>Profile</a>
-				<button class="btn btn-primary rounded-0 fs-5" id="logout-button">Exit</button>
-			</div>
+	<div class="d-flex flex-column justify-content-end align-self-center" id="title-container">
+		<h1 id="project-title">PONG</h1>
+	</div>
+	<div class="d-flex flex-column px-3 game-menu pb-5 align-self-center">
+		<div class="fs-5 text-danger d-none text-center" id="sock-err-msg"></div>
+		<div class="menu-btn" id="start-btn">
+			<div class="mini-paddle p1"></div>
+			Start
+			<div class="mini-paddle p2"></div>
 		</div>
+		<a href="/Options" class="menu-btn" data-link>
+			<div class="mini-paddle p2"></div>
+			Options
+			<div class="mini-paddle p1"></div>
+		</a>
+		<a href="/${myUsername.username}" class="menu-btn" data-link>
+			<div class="mini-paddle p1"></div>
+			Profile
+			<div class="mini-paddle p2"></div>
+		</a>
+		<div class="menu-btn" id="logout-button">
+			<div class="mini-paddle p2"></div>
+			Exit
+			<div class="mini-paddle p1"></div>
+		</div>
+	</div>
 	`;
     this.render();
     this.addEventListeners();

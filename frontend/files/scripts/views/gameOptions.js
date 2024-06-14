@@ -1,17 +1,19 @@
 import { Component } from "../library/component.js";
-import { gameState, gameConfig } from "../game/game.js";
+import { gameConfig } from "../game/game.js";
 import { Home } from "./home.js";
+import { setupDarkModeToggle } from "../utils/darkmode.js";
+
 
 export class GameOptions extends Component {
   constructor() {
     console.log("GameOptions");
-	const gameMenu = document.querySelector(".game-menu");
-	if (!gameMenu) {
-		new Home();
-	}
+    const gameMenu = document.querySelector(".game-menu");
+    if (!gameMenu) {
+      new Home();
+    }
     super(document.querySelector(".game-menu"));
     this.view = `
-	<a href="/" id="back-button" class="btn rounded-0 align-self-end" data-link><</a>
+	<a href="/" id="back-button" class="btn rounded-0 align-self-start fs-5" data-link >< Back</a>
 	<div class="game-options d-flex flex-column align-items-stretch gap-3">
 					<div class="fs-5 d-flex align-items-center gap-3">
 						<div class="w-50 d-flex justify-content-end">players</div>
