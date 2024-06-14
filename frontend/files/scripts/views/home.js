@@ -32,7 +32,7 @@ export class Home extends Component {
       if (gameConfig.isOnline) {
         gameConfig.roomId = document.getElementById("room-ID").value;
         gameConfig.ws = new WebSocket(
-          `ws://${location.hostname}:8001/${gameConfig.roomId}/`
+          `wss://${location.hostname}/ws/game/${gameConfig.roomId}/`
         );
         gameConfig.ws.onopen = () => {
           console.log("connected");
