@@ -3,7 +3,6 @@ import { gameConfig } from "../game/game.js";
 import { Home } from "./home.js";
 import { setupDarkModeToggle } from "../utils/darkmode.js";
 
-
 export class GameOptions extends Component {
   constructor() {
     console.log("GameOptions");
@@ -15,6 +14,18 @@ export class GameOptions extends Component {
     this.view = `
 	<a href="/" id="back-button" class="btn rounded-0 align-self-start fs-5" data-link >< Back</a>
 	<div class="game-options d-flex flex-column align-items-stretch gap-3">
+						<div class="fs-3 m-0 mt-sm-auto d-flex align-items-center justify-content-end  menu-item position-relative" id="modeSwitch">
+						<svg height="40" width="40" xmlns="http://www.w3.org/2000/svg" id="sunIcon"  viewBox="0 0 24 24" id="Weather-Cloud-Sun-Fine--Streamline-Pixel" fill="currentColor" style="display:none"><desc>Weather Cloud Sun Fine Streamline Icon: https://streamlinehq.com</desc><title>weather-cloud-sun-fine</title><g><path d="M22.8525 14.29125H24v4.5675h-1.1475Z"  stroke-width="1"></path><path d="M21.7125 8.57625H24v1.1400000000000001h-2.2874999999999996Z"  stroke-width="1"></path><path d="M21.7125 18.85875h1.1400000000000001v1.1475h-1.1400000000000001Z"  stroke-width="1"></path><path d="M21.7125 13.143749999999999h1.1400000000000001v1.1475h-1.1400000000000001Z"  stroke-width="1"></path><path d="M21.7125 2.86125h1.1400000000000001v1.1400000000000001h-1.1400000000000001Z"  stroke-width="1"></path><path d="M20.572499999999998 20.00625h1.1400000000000001v1.1400000000000001h-1.1400000000000001Z"  stroke-width="1"></path><path d="M20.572499999999998 12.00375h1.1400000000000001v1.1400000000000001h-1.1400000000000001Z"  stroke-width="1"></path><path d="M20.572499999999998 4.00125h1.1400000000000001v1.1475h-1.1400000000000001Z"  stroke-width="1"></path><path d="M2.2874999999999996 21.146250000000002h18.285v1.1400000000000001H2.2874999999999996Z"  stroke-width="1"></path><path d="M15.997499999999999 12.00375h1.1400000000000001v1.1400000000000001h-1.1400000000000001Z"  stroke-width="1"></path><path d="M15.997499999999999 1.71375h1.1400000000000001v2.2874999999999996h-1.1400000000000001Z"  stroke-width="1"></path><path d="M14.857499999999998 13.143749999999999h1.1400000000000001v1.1475h-1.1400000000000001Z"  stroke-width="1"></path><path d="M11.43 4.00125h1.1400000000000001v1.1475h-1.1400000000000001Z"  stroke-width="1"></path><path d="M10.2825 2.86125h1.1475v1.1400000000000001h-1.1475Z"  stroke-width="1"></path><path d="m10.2825 7.428749999999999 3.4275 0 0 1.1475 2.2874999999999996 0 0 1.1400000000000001 1.1400000000000001 0 0 2.2874999999999996 3.435 0 0 -4.574999999999999 -1.1475 0 0 -1.1400000000000001 -1.1400000000000001 0 0 -1.1400000000000001 -3.4275 0 0 1.1400000000000001 -5.715 0 0 1.1400000000000001 -1.1475 0 0 1.1475 2.2874999999999996 0 0 -1.1475z"  stroke-width="1"></path><path d="M7.995 14.29125h1.1475v1.1400000000000001h-1.1475Z"  stroke-width="1"></path><path d="M6.855 13.143749999999999h1.1400000000000001v1.1475H6.855Z"  stroke-width="1"></path><path d="M6.855 8.57625h1.1400000000000001v1.1400000000000001H6.855Z"  stroke-width="1"></path><path d="m6.855 13.143749999999999 0 -3.4275 -1.1400000000000001 0 0 2.2874999999999996 -3.4275 0 0 1.1400000000000001 4.5675 0z"  stroke-width="1"></path><path d="M1.1400000000000001 20.00625h1.1475v1.1400000000000001H1.1400000000000001Z"  stroke-width="1"></path><path d="M1.1400000000000001 13.143749999999999h1.1475v1.1475H1.1400000000000001Z"  stroke-width="1"></path><path d="M0 14.29125h1.1400000000000001v5.715H0Z"  stroke-width="1"></path></g></svg>
+					<svg width="40" height="40" viewBox="0 0 28 30" fill="currentColor" id="moonIcon"
+						transform="translate(0, 10)" xmlns="http://www.w3.org/2000/svg">
+						<path fill-rule="evenodd" clip-rule="evenodd"
+							d="M8 2H16V4H14V6H12V4H8V2ZM6 6V4H8V6H6ZM6 16H4V6H6V16ZM8 18H6V16H8V18ZM10 20H8V18H10V20ZM20 20V22H10V20H20ZM22 18V20H20V18H22ZM20 14H22V18H24V10H22V12H20V14ZM14 14V16H20V14H14ZM12 12H14V14H12V12ZM12 12V6H10V12H12Z" />
+					</svg>
+						<div class="ms-3 fs-5 d-lg-block d-none" id="theme-name"></div>
+						<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" class="ms-auto menu-selector" xmlns="http://www.w3.org/2000/svg">
+							<path fill-rule="evenodd" clip-rule="evenodd" d="M10 20H8V4H10V6H12V9H14V11H16V13H14V15H12V18H10V20Z"/>
+						</svg>
+					</div>
 					<div class="fs-5 d-flex align-items-center gap-3">
 						<div class="w-50 d-flex justify-content-end">players</div>
 						<div class="btn-group w-50" role="group" id="players-number-group"><button
@@ -110,6 +121,8 @@ export class GameOptions extends Component {
   }
 
   addEventListeners() {
+    const themeName = document.getElementById("theme-name");
+    setupDarkModeToggle(themeName);
     const options = document.querySelector(".game-options");
     this.online.forEach((btn, index) => {
       btn.addEventListener("click", () => {
