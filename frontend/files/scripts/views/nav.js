@@ -6,7 +6,7 @@ export class Nav extends Component {
   constructor() {
     super(document.getElementById("navigation-wrapper"));
     this.view = `
-			<nav class="menu-nav d-flex flex-grow-1 rounded-0 me-sm-0 sticky-md-top sticky-bottom flex-sm-column flex-row p-2 py-sm-5 px-4 justify-content-sm-start justify-content-between gap-lg-4 gap-sm-5"
+			<nav class="menu-nav d-flex flex-grow-1 rounded-0 sticky-bottom flex-row pb-sm-4 p-2  px-4 justify-content-sm-center justify-content-between gap-lg-4 gap-sm-5"
 			id="homeNav">
 				<a href="/" class="nav-link d-flex justify-content-lg-start justify-content-center menu-item position-relative" data-link>
 					<div class="icon-border"></div>

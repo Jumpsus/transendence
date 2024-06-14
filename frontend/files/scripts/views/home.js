@@ -1,6 +1,8 @@
 import { Component } from "../library/component.js";
 import { gameState, gameConfig } from "../game/game.js";
 import { pushHistoryAndGoTo } from "../utils/router.js";
+import { myUsername } from "../../index.js";
+import { setupDarkModeToggle } from "../utils/darkmode.js";
 
 export class Home extends Component {
   constructor() {
@@ -45,11 +47,12 @@ export class Home extends Component {
 								class="btn rounded-0 fs-5 settings-switch">no</button></div>
 					</div>
 					<div class="d-flex flex-column gap-3 d-none" id="id-group">
-					<input type="text" class="form-control rounded-0 fs-5" placeholder="Room ID" id="room-ID"/>
-					<button class="btn btn-primary rounded-0 fs-5" id="create-room-btn">Create</button>
-					<div class="fs-5 text-danger d-none text-center" id="sock-err-msg"></div>
+						<input type="text" class="form-control rounded-0 fs-5" placeholder="Room ID" id="room-ID"/>
+						<button class="btn btn-primary rounded-0 fs-5" id="create-room-btn">Create</button>
+						<div class="fs-5 text-danger d-none text-center" id="sock-err-msg"></div>
+					</div>
 				</div>
-				</div>
+				<a href="/${myUsername.username}" class="btn btn-primary rounded-0 fs-5" id="options-btn">profile</a>
 			</div>
 		</div>
 	`;
@@ -59,6 +62,8 @@ export class Home extends Component {
 
   render() {
     super.render();
+    // const themeName = document.getElementById("theme-name");
+    // setupDarkModeToggle(themeName);
     this.idGroup = document.getElementById("id-group");
     this.online = document.querySelectorAll("#online-group .settings-switch");
     this.cpuOptions = document.getElementById("cpu-options");

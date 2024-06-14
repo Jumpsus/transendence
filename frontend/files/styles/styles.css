@@ -35,10 +35,6 @@ label::after {
   background-color: transparent;
 }
 
-#homeNav {
-  border-right: 2px solid var(--dark-border);
-}
-
 #moonIcon {
   transform: translateY(4px) !important;
 }
@@ -88,13 +84,8 @@ label::after {
   border: 3px solid var(--my-tertiary-color);
 }
 
-#block-button {
-  fill: var(--bs-body-color);
-  opacity: 60%;
-  position: absolute;
-  top: 24px;
-  right: 20px;
-  cursor: pointer;
+#back-button {
+  color: var(--bs-body-color);
 }
 
 .btn-primary,
@@ -192,10 +183,6 @@ label::after {
     outline: none;
     box-shadow: none;
     border: 3px solid var(--bs-border-color);
-  }
-
-  #homeNav {
-    border-right: 3px solid var(--my-secondary-color);
   }
 
   #profileMenu {
@@ -462,20 +449,15 @@ body {
   transform: rotate(180deg);
 }
 
-@media (width < 576px) {
-  #navigation-wrapper.hidden {
-    margin-bottom: -75px;
-  }
-}
-
-@media (576px <= width <= 991px) {
-  #navigation-wrapper.hidden {
-    margin-left: -91px;
-  }
+#navigation-wrapper.hidden {
+  margin-bottom: -75px;
 }
 
 @media (min-width: 992px) {
-  .menu-item:hover .menu-selector {
+  /* .menu-item {
+    width: 200px;
+  } */
+  /* .menu-item:hover .menu-selector {
     display: block;
   }
   .menu-item.active {
@@ -483,13 +465,7 @@ body {
       display: block;
       animation: rotate 0.6s infinite;
     }
-  }
-  #navigation-wrapper.hidden {
-    margin-left: -263.15px;
-  }
-  #homeNav {
-    width: 230px;
-  }
+  } */
 }
 
 .form-floating > input {
