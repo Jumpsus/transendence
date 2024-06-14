@@ -141,7 +141,8 @@ export function init() {
   if (gameConfig.isOnline) {
     gameConfig.ws.onmessage = (event) => {
       const data = JSON.parse(event.data);
-      console.log("recieved data:" + data);
+      console.log("recieved data:");
+      console.log(data);
     };
     console.log(gameConfig.ws);
     gameConfig.ws.onclose = () => {
