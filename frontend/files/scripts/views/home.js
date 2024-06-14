@@ -46,7 +46,7 @@ export class Home extends Component {
 					<div class="d-flex flex-column gap-3 d-none" id="id-group">
 					<input type="text" class="form-control rounded-0 fs-5" placeholder="Room ID" id="room-ID"/>
 					<button class="btn btn-primary rounded-0 fs-5" id="create-room-btn">Create</button>
-					<div class="fs-5 text-danger d-none" id="sock-err-msg"></div>
+					<div class="fs-5 text-danger d-none text-center" id="sock-err-msg"></div>
 				</div>
 				</div>
 			</div>
@@ -112,7 +112,7 @@ export class Home extends Component {
 
   addEventListeners() {
     const startBtn = document.getElementById("start-btn");
-	const sockErrMsg = document.getElementById("sock-err-msg");
+    const sockErrMsg = document.getElementById("sock-err-msg");
     startBtn.addEventListener("click", () => {
       if (gameConfig.isOnline) {
         gameConfig.roomId = document.getElementById("room-ID").value;
@@ -123,13 +123,13 @@ export class Home extends Component {
         gameConfig.ws.onopen = () => {
           console.log("connected");
           pushHistoryAndGoTo("/Game");
-		  sockErrMsg.classList.add("d-none");
-		  sockErrMsg.innerText = "";
+          sockErrMsg.classList.add("d-none");
+          sockErrMsg.innerText = "";
         };
         gameConfig.ws.onerror = (error) => {
           console.error("WebSocket error:", error);
-		  sockErrMsg.classList.remove("d-none");
-		  sockErrMsg.innerText = "Room not found";
+          sockErrMsg.classList.remove("d-none");
+          sockErrMsg.innerText = "Room not found";
         };
       } else {
         pushHistoryAndGoTo("/Game");
