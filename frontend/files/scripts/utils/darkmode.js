@@ -1,12 +1,11 @@
 const getStoredTheme = () => localStorage.getItem("theme");
 const setStoredTheme = (theme) => localStorage.setItem("theme", theme);
 
-const getPreferredTheme = () => {
+export const getPreferredTheme = () => {
   const storedTheme = getStoredTheme();
   if (storedTheme) {
     return storedTheme;
   }
-
   const ret = window.matchMedia("(prefers-color-scheme: dark)").matches
     ? "dark"
     : "light";
@@ -22,31 +21,30 @@ export function setupDarkMode() {
   window
     .matchMedia("(prefers-color-scheme: dark)")
     .addEventListener("change", () => {
-      if (!getStoredTheme()) setTheme(getPreferredTheme());
+      setTheme(getPreferredTheme());
     });
 }
 
-export function setupDarkModeToggle() {
-  const modeSwitch = document.getElementById("modeSwitch");
+function changeIcon(theme, label = null) {
   const moon = document.getElementById("moonIcon");
   const sun = document.getElementById("sunIcon");
-  if (getPreferredTheme() === "dark") {
+  if (theme === "dark") {
     moon.style.display = "block";
     sun.style.display = "none";
   } else {
     sun.style.display = "block";
     moon.style.display = "none";
   }
+  if (label) label.textContent = theme;
+}
+
+export function setupDarkModeToggle(label = null) {
+  const modeSwitch = document.getElementById("modeSwitch");
+  changeIcon(getPreferredTheme(), label);
 
   modeSwitch.addEventListener("click", () => {
-    const theme = moon.style.display == "block" ? "light" : "dark";
-    if (theme === "dark") {
-      moon.style.display = "block";
-      sun.style.display = "none";
-    } else {
-      sun.style.display = "block";
-      moon.style.display = "none";
-    }
+    const theme = getPreferredTheme() == "light" ? "dark" : "light";
+    changeIcon(theme, label);
     setStoredTheme(theme);
     setTheme(theme);
   });
@@ -54,14 +52,6 @@ export function setupDarkModeToggle() {
   window
     .matchMedia("(prefers-color-scheme: dark)")
     .addEventListener("change", () => {
-      if (!getStoredTheme()) {
-        if (getPreferredTheme() === "dark") {
-          moon.style.display = "block";
-          sun.style.display = "none";
-        } else {
-          sun.style.display = "block";
-          moon.style.display = "none";
-        }
-      }
+      if (!getStoredTheme()) changeIcon(getPreferredTheme(), label);
     });
 }

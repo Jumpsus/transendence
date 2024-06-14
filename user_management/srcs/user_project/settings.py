@@ -11,6 +11,10 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import os
+from dotenv import load_dotenv
+import hvac
+from user_project import vault_handler
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,7 +25,14 @@ DEFAULT_IMAGE_PATH = "/app/share-resource/image/"
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-gu+rywsq(&h*r+b$row8jr^re4sdm9vn^+^ddu9=0xygost-0$'
+#vault_secret = vault_handler.init_vault()
+
+# SECRET_KEY = vault_secret.get("usermanagement_secret", "")
+SECRET_KEY = "secret"
+# JWT_SECRET = vault_secret.get("jwt_secret", "")
+JWT_SECRET = "secret"
+# API_KEY = vault_secret.get("api_key", "")
+API_KEY = "api_key"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -39,6 +50,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'corsheaders',
+    'rest_framework',
     'user_app.apps.UserAppConfig',
 ]
 
@@ -80,15 +92,15 @@ WSGI_APPLICATION = 'user_project.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
+load_dotenv(dotenv_path='/app/.env')
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
-        'USER': 'postgres',
-        'PASSWORD': 'mypassword',
-        'HOST': 'user-db',
-        'PORT': '5432',
+        'NAME': os.environ["POSTGRES_USER"],
+        'USER': os.environ["POSTGRES_USER"],
+        'PASSWORD': os.environ["POSTGRES_PASSWORD"],
+        'HOST': os.environ["POSTGRES_HOST"],
+        'PORT': os.environ["POSTGRES_PORT"],
     }
 }
 

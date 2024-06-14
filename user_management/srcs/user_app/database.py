@@ -1,6 +1,5 @@
 from django.db.models import Q
-from user_app.models import UserManagement
-from user_app.models import FriendManagement
+from user_app.models import UserManagement, FriendManagement, MatchHistory
 
 # USER_MANAGEMENT
 
@@ -11,14 +10,15 @@ def find_user_by_username_passwd(username, password):
     return UserManagement.objects.filter(username = username, password = password)
 
 # return True if "success" False if "fail"
-def create_user(username, password, name = "", last_name = "", phone_number = "", tag = ""):
+def create_user(username, password, name = "", last_name = "", phone_number = "", tag = "", jti = ""):
     user = UserManagement(  username = username, 
                             password = password,
                             name = name,
                             last_name = last_name,
                             phone_number = phone_number,
                             image = "default.png",
-                            tag = tag)
+                            tag = tag,
+                            jti = jti)
 
     try: 
         user.save()
@@ -38,7 +38,7 @@ def edit_user(user, name = "", last_name = "", phone_number = "", tag = ""):
     if phone_number != "":
         user.phone_number = phone_number
     
-    if user.tag != "":
+    if tag != "":
         user.tag = tag
 
     try: 
@@ -68,9 +68,27 @@ def update_password(user, passwd):
         return False
     return True
 
+def update_status(user, status):
+    user.status = status
+
+    try:
+        user.save()
+    except:
+        return False
+    return True
+
 def set_image(user, image):
     user.image = image
 
+    try: 
+        user.save()
+    except:
+        return False
+    return True
+
+def stamp_jti(user, jti):
+    user.jti = jti
+    
     try: 
         user.save()
     except:
@@ -121,3 +139,26 @@ def find_friends_by_action_user(user, action):
 
 def find_friends_by_actioned_user(user, action):
     return FriendManagement.objects.filter(user_b = user, action = action)
+
+# return True if "success" False if "fail"
+def create_match_history(user_w, user_l, score_w, score_l):
+    match_history = MatchHistory(  user_w = user_w, 
+                            user_l = user_l,
+                            score_w = score_w,
+                            score_l = score_l)
+
+    try: 
+        match_history.save()
+    except:
+        return False
+    return True
+
+# return win lose match of each user
+def find_user_win_lose_stats(user):
+    win_history = MatchHistory.objects.filter(user_w = user)
+    lose_history = MatchHistory.objects.filter(user_l = user)
+
+    return len(win_history), len(lose_history)
+
+def find_user_match_history(user):
+    return MatchHistory.objects.filter(Q(user_w = user) | Q(user_l = user)).order_bY('-created_at')

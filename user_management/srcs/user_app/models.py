@@ -13,6 +13,7 @@ class UserManagement(models.Model):
     experience = models.CharField(max_length=50)
     image = models.CharField(max_length=50)
     status = models.CharField(max_length=10)
+    jti = models.CharField(max_length=100)
     last_activity = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now_add=True)

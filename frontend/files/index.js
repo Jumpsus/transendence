@@ -5,6 +5,24 @@ import {
   goTo,
 } from "./scripts/utils/router.js";
 
+export let isLoggedIn = { status: false };
+
+export const myUsername = { username: "" };
+
+document.addEventListener("keypress", (event) => {
+  if (event.key === "F" || event.key === "f") {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch((err) => {
+        console.log(
+          `Error attempting to enable full-screen mode: ${err.message} (${err.name})`
+        );
+      });
+    } else {
+      document.exitFullscreen();
+    }
+  }
+});
+
 window.addEventListener("popstate", () => {
   const url = window.location.pathname;
   if (isLoggedIn.status && (url === "/Login" || url === "/Register")) {
@@ -14,39 +32,26 @@ window.addEventListener("popstate", () => {
   } else goTo(url);
 });
 
-export let isLoggedIn = { status: false };
-
-export const myUsername = { username: "" };
-
-export async function getLoggedInStatus() {
-  return await fetch(`https://${location.host}:9000/user/getinfo`, {
+export async function setMyUsername() {
+  if (localStorage.getItem("jwt") === null) return false;
+  const resp = await fetch(`http://${location.hostname}:8000/user/getinfo`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("jwt")}`,
     },
-    credentials: "include",
-  })
-    .then((response) => {
-      return response.json();
-    })
-    .then((data) => {
-      if (data.username === undefined) {
-        return false;
-      } else {
-        myUsername.username = data.username;
-        return true;
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+  });
+  const data = await resp.json();
+  //   console.log(data);
+  if (data.username === undefined) return false;
+  myUsername.username = data.username;
+  return true;
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
-  isLoggedIn.status = await getLoggedInStatus();
+  isLoggedIn.status = await setMyUsername();
   setupDarkMode();
   setupNavigation();
-  //   console.log(isLoggedIn.status);
   replaceHistoryAndGoTo(window.location.pathname);
 });
 
@@ -60,7 +65,3 @@ function setupNavigation() {
     }
   });
 }
-
-// window.addEventListener("load", function () {
-//   console.log("All resources have finished loading");
-// });

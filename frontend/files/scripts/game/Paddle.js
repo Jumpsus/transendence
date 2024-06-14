@@ -1,6 +1,32 @@
 export default class Paddle {
-  constructor(paddleElem) {
+  constructor(paddleElem, aimElem) {
     this.paddleElem = paddleElem;
+    this.aimElem = aimElem;
+	this._angle = 0;
+  }
+
+  get angle() {
+	return this._angle;
+  }
+
+  set angle(value) {
+	this._angle = Math.max(-80, Math.min(value, 80));
+  }
+
+  get aimX() {
+    return parseFloat(getComputedStyle(this.aimElem).getPropertyValue("--x"));
+  }
+
+  set aimX(value) {
+    this.aimElem.style.setProperty("--x", value);
+  }
+
+  get aimY() {
+    return parseFloat(getComputedStyle(this.aimElem).getPropertyValue("--y"));
+  }
+
+  set aimY(value) {
+    this.aimElem.style.setProperty("--y", value);
   }
 
   get y() {
@@ -31,12 +57,12 @@ export default class Paddle {
   }
 
   async sendUpdate() {
-	await fetch("/paddle", {
-	  method: "POST",
-	  headers: {
-		"Content-Type": "application/json",
-	  },
-	  body: JSON.stringify({ y: this.y }),
-	});
+    await fetch("/paddle", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ y: this.y }),
+    });
   }
 }

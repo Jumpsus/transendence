@@ -3,55 +3,174 @@ import { isLoggedIn } from "../../index.js";
 import { replaceHistoryAndGoTo } from "../utils/router.js";
 import { Nav } from "./nav.js";
 import { setupDarkModeToggle } from "../utils/darkmode.js";
-import { getLoggedInStatus } from "../../index.js";
+import { setMyUsername } from "../../index.js";
 
 export class Register extends Component {
   constructor() {
     super(document.getElementById("content-wrapper"));
     this.view = `
-			<div class="d-flex h-100 align-items-center justify-content-center">
-				<div class="card rounded-5" style="width: 324px">
-					<div class="card-header rounded-top-5 rounded-bottom-5">
-						<h1 class="mt-5 mb-3 mx-4 d-flex justify-content-between">Sign up<span>🏓</span></h1>
+	<div class="d-flex h-100 justify-content-center">
+		<div style="width: 324px">
+			<div class="d-flex flex-column justify-content-end login-header">
+				<div class="fs-1 mb-3 mx-4 d-flex justify-content-between align-items-center">Sign up
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+						id="Content-Files-Quill-Ink--Streamline-Pixel" fill="currentColor" height="40" width="40">
+						<desc>Content Files Quill Ink Streamline Icon: https://streamlinehq.com</desc>
+						<title>content-files-quill-ink</title>
+						<g>
+							<path
+								d="m20.576249999999998 2.2874999999999996 1.1400000000000001 0 0 -1.1475 1.1400000000000001 0 0 -1.1400000000000001 -6.855 0 0 1.1400000000000001 4.574999999999999 0 0 1.1475z"
+								stroke-width="1"></path>
+							<path d="M19.42875 2.2874999999999996h1.1475v1.1400000000000001h-1.1475Z"
+								stroke-width="1"></path>
+							<path d="M18.28875 3.4275h1.1400000000000001V4.574999999999999h-1.1400000000000001Z"
+								stroke-width="1"></path>
+							<path
+								d="M17.14875 4.574999999999999h1.1400000000000001v1.1400000000000001h-1.1400000000000001Z"
+								stroke-width="1"></path>
+							<path d="M16.00125 5.715h1.1475v2.2874999999999996h-1.1475Z" stroke-width="1"></path>
+							<path d="M16.00125 2.2874999999999996h1.1475v1.1400000000000001h-1.1475Z"
+								stroke-width="1"></path>
+							<path
+								d="M14.861250000000002 8.0025h1.1400000000000001v1.1400000000000001h-1.1400000000000001Z"
+								stroke-width="1"></path>
+							<path
+								d="M14.861250000000002 3.4275h1.1400000000000001V4.574999999999999h-1.1400000000000001Z"
+								stroke-width="1"></path>
+							<path
+								d="M13.713750000000001 1.1400000000000001h2.2874999999999996v1.1475h-2.2874999999999996Z"
+								stroke-width="1"></path>
+							<path d="M13.713750000000001 4.574999999999999h1.1475v1.1400000000000001h-1.1475Z"
+								stroke-width="1"></path>
+							<path d="M12.57375 9.1425h2.2874999999999996v1.1475h-2.2874999999999996Z"
+								stroke-width="1"></path>
+							<path d="M12.57375 5.715h1.1400000000000001v1.1400000000000001h-1.1400000000000001Z"
+								stroke-width="1"></path>
+							<path
+								d="M12.57375 2.2874999999999996h1.1400000000000001v1.1400000000000001h-1.1400000000000001Z"
+								stroke-width="1"></path>
+							<path
+								d="M2.2912500000000002 24h10.2825v-1.1400000000000001h1.1400000000000001v-4.574999999999999h-1.1400000000000001v1.1475h-5.715v-1.1475H4.574999999999999v-1.1400000000000001H2.2912500000000002v1.1400000000000001h-1.1475v4.574999999999999h1.1475Zm1.1400000000000001 -4.5675H4.574999999999999v2.2800000000000002h2.2874999999999996v1.1475H4.574999999999999v-1.1475H3.4312500000000004Z"
+								stroke-width="1"></path>
+							<path d="M11.43375 6.855h1.1400000000000001v1.1475h-1.1400000000000001Z"
+								stroke-width="1"></path>
+							<path d="M11.43375 3.4275h1.1400000000000001V4.574999999999999h-1.1400000000000001Z"
+								stroke-width="1"></path>
+							<path
+								d="M10.286249999999999 17.145h2.2874999999999996v1.1400000000000001h-2.2874999999999996Z"
+								stroke-width="1"></path>
+							<path
+								d="m12.57375 10.290000000000001 -2.2874999999999996 0 0 -1.1475 -1.1400000000000001 0 0 -1.1400000000000001 -1.1400000000000001 0 0 3.4275 4.5675 0 0 -1.1400000000000001z"
+								stroke-width="1"></path>
+							<path d="M10.286249999999999 8.0025h1.1475v1.1400000000000001h-1.1475Z"
+								stroke-width="1"></path>
+							<path d="M10.286249999999999 4.574999999999999h1.1475v1.1400000000000001h-1.1475Z"
+								stroke-width="1"></path>
+							<path d="M9.14625 5.715h1.1400000000000001v2.2874999999999996h-1.1400000000000001Z"
+								stroke-width="1"></path>
+							<path
+								d="m5.71875 14.857499999999998 3.4275 0 0 2.2874999999999996 1.1400000000000001 0 0 -2.2874999999999996 1.1475 0 0 -1.1400000000000001 -3.4275 0 0 -2.2874999999999996 -1.1475 0 0 2.2874999999999996 -3.4275 0 0 1.1400000000000001 1.1400000000000001 0 0 2.2874999999999996 1.1475 0 0 -2.2874999999999996z"
+								stroke-width="1"></path>
+						</g>
+					</svg>
+				</div>
+			</div>
+			<div class="">
+				<form id="registerForm" novalidate>
+					<div class="form-floating">
+						<input type="text" id="signup-username" class="form-control rounded-0 ps-4"
+							placeholder="username" required autocomplete="username" name="username">
+						<label for="signup-username" class="form-label ps-4">Username</label>
 					</div>
-					<div class="card-body">
-						<form id="registerForm" novalidate>
-							<div class="form-floating mb-2">
-								<input type="text" id="signup-username" class="form-control rounded-pill ps-4"
-									placeholder="username" required autocomplete="username" name="username">
-								<label for="signup-username" class="form-label ps-4">Username</label>
-							</div>
-							<div class="form-floating mb-2">
-								<input type="password" id="signup-password" class="form-control rounded-pill ps-4"
-									placeholder="password" required autocomplete="new-password" name="password">
-								<label for="signup-password" class="form-label ps-4">Password</label>
-								<div class="ms-4 invalid-feedback">Password must be at least 5 characters</div>
-							</div>
-							<div class="form-floating mb-3">
-								<input type="password" id="signup-password-confirm" class="form-control rounded-pill ps-4"
-									placeholder="confirm password" required autocomplete="new-password" name="passwordRepeated">
-								<label for="signup-password-confirm" class="form-label ps-4">Confirm
-									password</label>
-								<div class="ms-4 invalid-feedback">Passwords do not match</div>
-							</div>
-							<button class="btn btn-outline-primary rounded-pill p-3 w-100 fw-bold">Sign in</button>
-						</form>
-						<div class="mt-4 mb-2 mx-4 text-secondary">Already have an account? <a href="/Login" class="fw-semibold"
-							data-link>Sign&nbsp;in</a></div>
-						<div class="d-flex justify-content-center" id="modeSwitch">
-							<div class="bg-body-tertiary rounded-circle p-3">
-								<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-sun" id="sunIcon" viewBox="0 0 16 16">
-									<path d="M8 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6m0 1a4 4 0 1 0 0-8 4 4 0 0 0 0 8M8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0m0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13m8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5M3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8m10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0m-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0m9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707M4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708"/>
-															</svg>
-								<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="grey" class="bi bi-moon-stars" id="moonIcon" viewBox="0 0 16 16">
-								  <path d="M6 .278a.77.77 0 0 1 .08.858 7.2 7.2 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277q.792-.001 1.533-.16a.79.79 0 0 1 .81.316.73.73 0 0 1-.031.893A8.35 8.35 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.75.75 0 0 1 6 .278M4.858 1.311A7.27 7.27 0 0 0 1.025 7.71c0 4.02 3.279 7.276 7.319 7.276a7.32 7.32 0 0 0 5.205-2.162q-.506.063-1.029.063c-4.61 0-8.343-3.714-8.343-8.29 0-1.167.242-2.278.681-3.286"/>
-								  <path d="M10.794 3.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387a1.73 1.73 0 0 0-1.097 1.097l-.387 1.162a.217.217 0 0 1-.412 0l-.387-1.162A1.73 1.73 0 0 0 9.31 6.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387a1.73 1.73 0 0 0 1.097-1.097zM13.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.16 1.16 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.16 1.16 0 0 0-.732-.732l-.774-.258a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732z"/>
-								</svg>
-							</div>
-						</div>
+					<div class="form-floating">
+						<input type="password" id="signup-password" class="form-control rounded-0 ps-4 border-top-0"
+							placeholder="password" required autocomplete="new-password" name="password">
+						<label for="signup-password" class="form-label ps-4">Password</label>
+						<div class="ms-4 invalid-feedback">Password must be at least 5 characters</div>
+					</div>
+					<div class="form-floating mb-3">
+						<input type="password" id="signup-password-confirm"
+							class="form-control rounded-0 ps-4 border-top-0" placeholder="confirm password" required
+							autocomplete="new-password" name="passwordRepeated">
+						<label for="signup-password-confirm" class="form-label ps-4">Confirm
+							password</label>
+						<div class="ms-4 invalid-feedback">Passwords do not match</div>
+					</div>
+					<button class="btn btn-outline-primary rounded-0 p-3 w-100 big-btn">Sign up</button>
+				</form>
+				<div class="mt-4 mb-2 mx-4 text-secondary d-flex flex-column align-items-center">Already have an
+					account? <a href="/Login" class="link-text" data-link>Sign&nbsp;in</a></div>
+				<div class="d-flex justify-content-center" id="modeSwitch">
+					<div class="p-1">
+						<svg xmlns="http://www.w3.org/2000/svg" id="sunIcon" viewBox="0 0 24 24"
+							id="Weather-Cloud-Sun-Fine--Streamline-Pixel" fill="currentColor" height="40" width="40"
+							style="display:none">
+							<desc>Weather Cloud Sun Fine Streamline Icon: https://streamlinehq.com</desc>
+							<title>weather-cloud-sun-fine</title>
+							<g>
+								<path d="M22.8525 14.29125H24v4.5675h-1.1475Z" stroke-width="1"></path>
+								<path d="M21.7125 8.57625H24v1.1400000000000001h-2.2874999999999996Z"
+									stroke-width="1"></path>
+								<path d="M21.7125 18.85875h1.1400000000000001v1.1475h-1.1400000000000001Z"
+									stroke-width="1"></path>
+								<path d="M21.7125 13.143749999999999h1.1400000000000001v1.1475h-1.1400000000000001Z"
+									stroke-width="1"></path>
+								<path
+									d="M21.7125 2.86125h1.1400000000000001v1.1400000000000001h-1.1400000000000001Z"
+									stroke-width="1"></path>
+								<path
+									d="M20.572499999999998 20.00625h1.1400000000000001v1.1400000000000001h-1.1400000000000001Z"
+									stroke-width="1"></path>
+								<path
+									d="M20.572499999999998 12.00375h1.1400000000000001v1.1400000000000001h-1.1400000000000001Z"
+									stroke-width="1"></path>
+								<path d="M20.572499999999998 4.00125h1.1400000000000001v1.1475h-1.1400000000000001Z"
+									stroke-width="1"></path>
+								<path
+									d="M2.2874999999999996 21.146250000000002h18.285v1.1400000000000001H2.2874999999999996Z"
+									stroke-width="1"></path>
+								<path
+									d="M15.997499999999999 12.00375h1.1400000000000001v1.1400000000000001h-1.1400000000000001Z"
+									stroke-width="1"></path>
+								<path
+									d="M15.997499999999999 1.71375h1.1400000000000001v2.2874999999999996h-1.1400000000000001Z"
+									stroke-width="1"></path>
+								<path
+									d="M14.857499999999998 13.143749999999999h1.1400000000000001v1.1475h-1.1400000000000001Z"
+									stroke-width="1"></path>
+								<path d="M11.43 4.00125h1.1400000000000001v1.1475h-1.1400000000000001Z"
+									stroke-width="1"></path>
+								<path d="M10.2825 2.86125h1.1475v1.1400000000000001h-1.1475Z" stroke-width="1">
+								</path>
+								<path
+									d="m10.2825 7.428749999999999 3.4275 0 0 1.1475 2.2874999999999996 0 0 1.1400000000000001 1.1400000000000001 0 0 2.2874999999999996 3.435 0 0 -4.574999999999999 -1.1475 0 0 -1.1400000000000001 -1.1400000000000001 0 0 -1.1400000000000001 -3.4275 0 0 1.1400000000000001 -5.715 0 0 1.1400000000000001 -1.1475 0 0 1.1475 2.2874999999999996 0 0 -1.1475z"
+									stroke-width="1"></path>
+								<path d="M7.995 14.29125h1.1475v1.1400000000000001h-1.1475Z" stroke-width="1">
+								</path>
+								<path d="M6.855 13.143749999999999h1.1400000000000001v1.1475H6.855Z"
+									stroke-width="1"></path>
+								<path d="M6.855 8.57625h1.1400000000000001v1.1400000000000001H6.855Z"
+									stroke-width="1"></path>
+								<path
+									d="m6.855 13.143749999999999 0 -3.4275 -1.1400000000000001 0 0 2.2874999999999996 -3.4275 0 0 1.1400000000000001 4.5675 0z"
+									stroke-width="1"></path>
+								<path d="M1.1400000000000001 20.00625h1.1475v1.1400000000000001H1.1400000000000001Z"
+									stroke-width="1"></path>
+								<path d="M1.1400000000000001 13.143749999999999h1.1475v1.1475H1.1400000000000001Z"
+									stroke-width="1"></path>
+								<path d="M0 14.29125h1.1400000000000001v5.715H0Z" stroke-width="1"></path>
+							</g>
+						</svg>
+						<svg width="40" height="40" viewBox="0 0 28 30" fill="currentColor" id="moonIcon"
+							transform="translate(0, 3)" xmlns="http://www.w3.org/2000/svg">
+							<path fill-rule="evenodd" clip-rule="evenodd"
+								d="M8 2H16V4H14V6H12V4H8V2ZM6 6V4H8V6H6ZM6 16H4V6H6V16ZM8 18H6V16H8V18ZM10 20H8V18H10V20ZM20 20V22H10V20H20ZM22 18V20H20V18H22ZM20 14H22V18H24V10H22V12H20V14ZM14 14V16H20V14H14ZM12 12H14V14H12V12ZM12 12V6H10V12H12Z" />
+						</svg>
 					</div>
 				</div>
 			</div>
+		</div>
+	</div>
 			`;
     this.render();
     this.setupEventListeners();
@@ -69,7 +188,7 @@ export class Register extends Component {
         "signup-password-confirm"
       );
 
-      const username = usernameElm.value;
+      const username = usernameElm.value.toLowerCase();
       const password = passwordElm.value;
       const passwordConfirm = passwordConfirmElm.value;
       let formIsValid = true;
@@ -101,13 +220,12 @@ export class Register extends Component {
         password: password,
       };
 
-      fetch(`https://${location.host}:9000/user/register`, {
+      fetch(`http://${location.hostname}:8000/user/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(requestBody),
-		credentials: "include",
       })
         .then((response) => {
           return response.json();
@@ -121,13 +239,14 @@ export class Register extends Component {
             errorAlert.textContent = data.message;
             registerForm.insertAdjacentElement("afterend", errorAlert);
           } else {
-            return getLoggedInStatus();
+            localStorage.setItem("jwt", data.token);
+            return setMyUsername();
           }
         })
         .then((resp) => {
-			isLoggedIn.status = resp;
-			if (isLoggedIn.status) replaceHistoryAndGoTo("/");
-			else console.log("register failed");
+          isLoggedIn.status = resp;
+          if (isLoggedIn.status) replaceHistoryAndGoTo("/");
+          else console.log("register failed");
         })
         .catch((error) => {
           console.error("There was a problem with the fetch operation:", error);

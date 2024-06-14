@@ -2,46 +2,43 @@ import { Component } from "../library/component.js";
 import { makeLinkActive } from "../utils/other.js";
 import { isLoggedIn } from "../../index.js";
 import { replaceHistoryAndGoTo } from "../utils/router.js";
-import { myUsername } from "../../index.js";
-import { NotExist } from "./404.js";
 
 export class Settings extends Component {
   constructor() {
     super(document.getElementById("profile-wrapper"));
     this.view = `
-		<div class="container mt-3">
+		<div class="container m-0 p-0 settings-cont">
 			<div class="col">
 				<h4 class="mb-4">Personal information</h4>
 				<form class="row g-3">
 					<div class="col-sm-6">
 						<label for="personal-name" class="form-label">First Name</label>
-						<input type="text" class="form-control text-body-tertiary" id="personal-name" disabled>
+						<input type="text" class="form-control  rounded-0" id="personal-name" disabled>
 					</div>
 					<div class="col-sm-6">
 						<label for="personal-lastname" class="form-label">Last name</label>
-						<input type="text" class="form-control text-body-tertiary" id="personal-lastname"
+						<input type="text" class="form-control  rounded-0" id="personal-lastname"
 							disabled>
 					</div>
 					<div class="col-sm-6">
 						<label for="personal-phone" class="form-label">Tel</label>
-						<input type="tel" class="form-control text-body-tertiary" id="personal-phone"
+						<input type="tel" class="form-control rounded-0" id="personal-phone"
 							disabled>
 					</div>
 					<div class="col-sm-6">
 						<label for="personal-tag" class="form-label">Tag</label>
 						<div>
 							<div class="input-group">
-								<span class="input-group-text">@</span>
-								<input class="form-control text-body-tertiary" type="text" id="personal-tag" name="username"
+								<input class="form-control  rounded-0" type="text" id="personal-tag" name="username"
 									disabled>
 							</div>
 						</div>
 					</div>
 					<div class="d-flex justify-content-end">
-						<button type="button" class="btn btn-secondary" id="edit-button">Edit</button>
-						<button type="submit" class="btn btn-primary me-2" style="display: none;"
+						<button type="button" class="btn btn-secondary rounded-0" id="edit-button">Edit</button>
+						<button type="submit" class="btn btn-primary me-2 rounded-0" style="display: none;"
 							id="save-button">Save</button>
-						<button type="button" class="btn btn-secondary" style="display: none;"
+						<button type="button" class="btn btn-secondary rounded-0" style="display: none;"
 							id="reset-button">Cancel</button>
 					</div>
 				</form>
@@ -49,39 +46,39 @@ export class Settings extends Component {
 			<hr class="my-4">
 			<div class="col">
 				<h4 class="mb-4">Account information</h4>
-				<div class="row g-3">
-					<div class="col-sm-6">
-						<label for="profile-username" class="form-label">Username</label>
-						<input type="text" class="form-control text-body-tertiary" id="profile-username"
-							disabled>
-					</div>
-					<form class="col-sm-6">
-						<div id="old-password-div">
-							<label for="profile-password" class="form-label">Password</label>
-							<input type="password" class="form-control text-body-tertiary" id="profile-password" disabled>
+					<form class="row g-3">
+						<div class="col-sm-6">
+							<label for="profile-username" class="form-label">Username</label>
+							<input type="text" class="form-control  rounded-0" id="profile-username" autocomplete="username"
+								disabled>
 						</div>
-						<div class="mt-3 d-none" id="new-password-div">
-							<label for="new-profile-password" class="form-label">New password</label>
-							<input type="password" class="form-control text-body-tertiary" id="new-profile-password">
-						</div>
-						<div class="mt-3 d-none" id="new-password-2-div">
-							<label for="new-profile-password-2" class="form-label">Confirm new password</label>
-							<input type="password" class="form-control text-body-tertiary" id="new-profile-password-2">
-						</div>
-						<div class="text-danger" id="password-error"></div>
-						<div class="d-flex justify-content-end mt-3">
-							<button type="button" class="btn btn-secondary" id="edit-password-button">Edit</button>
-							<button type="submit" class="btn btn-primary me-2" style="display: none;"
-								id="save-password-button">Save</button>
-							<button type="button" class="btn btn-secondary" style="display: none;"
-								id="reset-password-button">Cancel</button>
+						<div class="col-sm-6">
+							<div id="old-password-div">
+								<label for="profile-password" class="form-label" >Password</label>
+								<input type="password" class="form-control  rounded-0" id="profile-password" autocomplete="old-password" disabled>
+							</div>
+							<div class="mt-3 d-none" id="new-password-div">
+								<label for="new-profile-password" class="form-label" >New password</label>
+								<input type="password" class="form-control  rounded-0" autocomplete="new-password" id="new-profile-password">
+							</div>
+							<div class="mt-3 d-none" id="new-password-2-div">
+								<label for="new-profile-password-2" class="form-label">Confirm new password</label>
+								<input type="password" class="form-control  rounded-0" autocomplete="new-password" id="new-profile-password-2">
+							</div>
+							<div class="text-danger" id="password-error"></div>
+							<div class="d-flex justify-content-end mt-3">
+								<button type="button" class="btn btn-secondary rounded-0" id="edit-password-button">Edit</button>
+								<button type="submit" class="btn btn-primary me-2 rounded-0" style="display: none;"
+									id="save-password-button">Save</button>
+								<button type="button" class="btn btn-secondary rounded-0" style="display: none;"
+									id="reset-password-button">Cancel</button>
+							</div>
 						</div>
 					</form>
-				</div>
 			</div>
 			<hr class="my-4">
-			<div class="d-flex justify-content-end">
-				<button type="button" class="btn btn-outline-danger" id="logout-button">Log
+			<div class="d-flex justify-content-end mb-4">
+				<button type="button" class="btn btn-outline-danger rounded-0" id="logout-button">Log
 					out</button>
 			</div>
 		</div>
@@ -91,12 +88,7 @@ export class Settings extends Component {
   }
 
   render() {
-    if (
-      myUsername.username != location.pathname.split("/")[1] &&
-      location.pathname.split("/")[1] != ""
-    )
-      new NotExist();
-    else super.render();
+    super.render();
     makeLinkActive(document.getElementById("profileMenu"));
   }
 
@@ -123,12 +115,12 @@ export class Settings extends Component {
 
     const fieldsArray = [nameField, lastNameField, phoneField, tagField];
 
-    await fetch(`https://${location.host}:9000/user/getinfo`, {
+    await fetch(`http://${location.hostname}:8000/user/getinfo`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
       },
-      credentials: "include",
     })
       .then((response) => {
         return response.json();
@@ -191,10 +183,11 @@ export class Settings extends Component {
     saveButton.addEventListener("click", async (e) => {
       e.preventDefault();
       toggleEditMode(fieldsArray, editButton, saveButton, cancelButton);
-      await fetch(`https://${location.host}:9000/user/updateinfo`, {
+      await fetch(`http://${location.hostname}:8000/user/updateinfo`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("jwt")}`,
         },
         body: JSON.stringify({
           name: nameField.value,
@@ -202,7 +195,6 @@ export class Settings extends Component {
           phone_number: phoneField.value,
           tag: tagField.value,
         }),
-        credentials: "include",
       })
         .then((response) => {
           return response.json();
@@ -240,16 +232,16 @@ export class Settings extends Component {
         passwordErrorMsg.innerText = "Passwords do not match";
         return;
       } else {
-        await fetch(`https://${location.host}:9000/user/changepassword`, {
+        await fetch(`http://${location.hostname}:8000/user/changepassword`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("jwt")}`,
           },
           body: JSON.stringify({
             old_password: passwordField.value,
             password: newPassDiv.querySelector("input").value,
           }),
-          credentials: "include",
         })
           .then((response) => {
             return response.json();
@@ -264,13 +256,13 @@ export class Settings extends Component {
             passwordErrorMsg.innerText = "Password updated";
             passwordErrorMsg.classList.remove("text-danger");
             passwordErrorMsg.classList.add("text-success");
-			toggleEditMode(
-				[passwordField],
-				editPasswordButton,
-				savePasswordButton,
-				cancelPasswordButton,
-				true
-			  );
+            toggleEditMode(
+              [passwordField],
+              editPasswordButton,
+              savePasswordButton,
+              cancelPasswordButton,
+              true
+            );
           })
           .catch((error) => {
             passwordErrorMsg.innerText = "Error reaching the server";
@@ -290,18 +282,18 @@ export class Settings extends Component {
     });
 
     logoutButton.addEventListener("click", async () => {
-      await fetch(`https://${location.host}:9000/user/logout`, {
+      await fetch(`http://${location.hostname}:8000/user/logout`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("jwt")}`,
         },
-        credentials: "include",
       })
         .then((response) => {
           return response.json();
         })
         .then((data) => {
-          console.log("we have data: ", data);
+          localStorage.removeItem("jwt");
           isLoggedIn.status = false;
           document.querySelector("nav").innerHTML = "";
           replaceHistoryAndGoTo("/Login");
