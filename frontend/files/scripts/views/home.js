@@ -7,6 +7,7 @@ export class Home extends Component {
     super(document.getElementById("content-wrapper"));
     this.view = `
 	<div class="w-100 h-100 d-flex flex-column align-items-center gap-3 game-menu-container">
+	<h1 class="align-self-center" id="project-title">PONG</h1>
 			<div class="d-flex flex-column gap-3 px-3 game-menu pb-5">
 				<button class="btn btn-primary rounded-0 fs-5" id="start-btn">Start</button>
 				<button class="btn btn-primary rounded-0 fs-5" id="options-btn">options</button>
