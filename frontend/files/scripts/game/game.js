@@ -64,7 +64,7 @@ export function init() {
 
   const pauseArea = document.getElementById("pause-area");
   const pauseText = document.getElementById("pause-text");
-  homeNav.classList.toggle("hidden");
+
 
   const PLAYER_SPEED = 0.1;
   const AIM_SPEED = 0.2;
@@ -132,7 +132,7 @@ export function init() {
 
   function sendPaddlePos() {
     const message = JSON.stringify({
-		paddle_vel: playerOne.y,
+		paddle_pos: playerOne.y,
     });
     console.log(message);
     gameConfig.ws.send(message);

@@ -35,11 +35,11 @@ services:
       - vault-service
       - user-db
 
-  pong_game:
+  pong-game:
     restart: always
     extends:
       file: pong_game/docker-compose.yml
-      service: pong_game
+      service: pong-game
 
   redis:
     restart: always

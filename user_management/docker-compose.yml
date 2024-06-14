@@ -7,8 +7,6 @@ services:
         dockerfile: Dockerfile
     env_file:
       - .env-app
-    ports:
-      - "8000:8000"
     volumes:
       - common:/app/share-resource
   user-db:

@@ -15,5 +15,4 @@ RUN chmod 777 /usr/bin/pong_game_script.sh
 # Copy the Django project into the container
 COPY srcs .
 
-# Expose the port Django will run on
 ENTRYPOINT [ "/usr/bin/pong_game_script.sh" ]

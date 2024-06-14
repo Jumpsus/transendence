@@ -123,7 +123,7 @@ export class Home extends Component {
       if (gameConfig.isOnline) {
         gameConfig.roomId = document.getElementById("room-ID").value;
         gameConfig.ws = new WebSocket(
-          `ws://${location.hostname}:8001/${gameConfig.roomId}/`
+          `wss://${location.hostname}/ws/game/${gameConfig.roomId}/`
         );
         gameConfig.ws.onopen = () => {
           console.log("connected");
@@ -208,7 +208,7 @@ export class Home extends Component {
     const createRoomBtn = document.getElementById("create-room-btn");
     const inputID = document.getElementById("room-ID");
     createRoomBtn.addEventListener("click", () => {
-      fetch(`http://${location.hostname}:8001/create-game/`, {
+      fetch(`https://${location.hostname}/game/create-game/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

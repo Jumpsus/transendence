@@ -115,7 +115,7 @@ export class Settings extends Component {
 
     const fieldsArray = [nameField, lastNameField, phoneField, tagField];
 
-    await fetch(`http://${location.hostname}:8000/user/getinfo`, {
+    await fetch(`https://${location.hostname}/user-management/user/getinfo`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -183,7 +183,7 @@ export class Settings extends Component {
     saveButton.addEventListener("click", async (e) => {
       e.preventDefault();
       toggleEditMode(fieldsArray, editButton, saveButton, cancelButton);
-      await fetch(`http://${location.hostname}:8000/user/updateinfo`, {
+      await fetch(`https://${location.hostname}/user-management/user/updateinfo`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -232,7 +232,7 @@ export class Settings extends Component {
         passwordErrorMsg.innerText = "Passwords do not match";
         return;
       } else {
-        await fetch(`http://${location.hostname}:8000/user/changepassword`, {
+        await fetch(`https://${location.hostname}/user-management/user/changepassword`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -282,7 +282,7 @@ export class Settings extends Component {
     });
 
     logoutButton.addEventListener("click", async () => {
-      await fetch(`http://${location.hostname}:8000/user/logout`, {
+      await fetch(`https://${location.hostname}/user-management/user/logout`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
