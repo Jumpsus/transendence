@@ -48,7 +48,6 @@ function isTouchDevice() {
 
 export function init() {
   setDimensions();
-  console.log(gameConfig.roomId);
   gameState.isTouch = isTouchDevice();
   const scoreOne = document.getElementById("score-one");
   const scoreTwo = document.getElementById("score-two");
@@ -130,6 +129,28 @@ export function init() {
     gameState.isHorizontal = gameField.clientWidth > gameField.clientHeight;
     setFieldBorders();
   });
+
+  function sendPaddlePos() {
+    const message = JSON.stringify({
+		paddle_vel: playerOne.y,
+    });
+    console.log(message);
+    gameConfig.ws.send(message);
+  }
+
+  if (gameConfig.isOnline) {
+    gameConfig.ws.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      console.log("recieved data:" + data);
+    };
+    console.log(gameConfig.ws);
+    gameConfig.ws.onclose = () => {
+      console.log("WebSocket closed");
+    };
+    setTimeout(() => {
+      sendPaddlePos();
+    }, 16);
+  }
 
   if (!gameConfig.isOnline) {
     let lastTime;

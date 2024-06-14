@@ -116,7 +116,6 @@ export class Home extends Component {
     startBtn.addEventListener("click", () => {
       if (gameConfig.isOnline) {
         gameConfig.roomId = document.getElementById("room-ID").value;
-        console.log(gameState.roomId);
         gameConfig.ws = new WebSocket(
           `ws://${location.hostname}:8001/${gameConfig.roomId}/`
         );
@@ -162,7 +161,6 @@ export class Home extends Component {
     this.playersNumber.forEach((btn, index) => {
       btn.addEventListener("click", () => {
         gameConfig.hasCPU = index === 0;
-        console.log(gameConfig.hasCPU);
         btn.classList.add("on");
         if (gameConfig.hasCPU) {
           this.cpuOptions.classList.remove("d-none");
