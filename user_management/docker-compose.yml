@@ -9,6 +9,8 @@ services:
       - .env-app
     ports:
       - "8000:8000"
+    volumes:
+      - common:/app/share-resource
   user-db:
     networks:
       - user-network
