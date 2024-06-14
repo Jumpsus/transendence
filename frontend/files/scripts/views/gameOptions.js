@@ -11,7 +11,7 @@ export class GameOptions extends Component {
 	}
     super(document.querySelector(".game-menu"));
     this.view = `
-	<a href="/" id="back-button" class="btn rounded-0 align-self-end"><</a>
+	<a href="/" id="back-button" class="btn rounded-0 align-self-end" data-link><</a>
 	<div class="game-options d-flex flex-column align-items-stretch gap-3">
 					<div class="fs-5 d-flex align-items-center gap-3">
 						<div class="w-50 d-flex justify-content-end">players</div>

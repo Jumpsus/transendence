@@ -10,7 +10,7 @@ export class Profile extends Component {
     super(document.getElementById("content-wrapper"));
     this.view = `
 		<div class="container-lg d-flex flex-md-row flex-column align-items-md-end pt-4 pb-3 position-relative" id="profileHeader">
-		<a href="/" id="back-button" class="position-absolute top-0 end-0 me-3 mt-3	text-decoration-none">home</a>
+		<a href="/" id="back-button" class="position-absolute top-0 end-0 me-3 mt-3	text-decoration-none" data-link>home</a>
 			<div class="d-flex flex-column align-items-center">
 				<div class="profile-img-box position-relative" id="profile-img-box" style="width: 200px; height: 200px;">
 					<div id="change-pic-svg">

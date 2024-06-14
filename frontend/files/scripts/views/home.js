@@ -51,7 +51,7 @@ export class Home extends Component {
     });
 
     logoutButton.addEventListener("click", async () => {
-      await fetch(`http://${location.hostname}:8000/user/logout`, {
+      await fetch(`https://${location.hostname}/user-management/user/logout`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -408,6 +408,12 @@ body {
     border-top: 2px solid var(--bs-border-color) !important;
     padding: 10px 20px !important;
   }
+  .game-menu-container {
+    margin-top: 10vh;
+  }
+  #project-title {
+    font-size: 170px !important;
+  }
 }
 
 .profile-img-box::before {
@@ -483,7 +489,7 @@ body {
 #project-title {
   font-family: "Jersey 10", sans-serif;
   font-style: normal;
-  font-size: 200px !important;
+  font-size: 200px;
   background-image: linear-gradient(
     var(--logo-color-one) 40%,
     var(--logo-color-two) 80%
