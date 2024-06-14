@@ -86,14 +86,14 @@ class PongGame:
 			self.score1 = game_state['score1']
 			self.score2 = game_state['score2']
 
-	def game_loop(self, paddle_vel, player):
+	def game_loop(self, paddle_pos, player):
 		if player == 1:
 			# print("1P moves")
-			self.paddle1_pos = self.update_paddle(self.paddle1_pos, paddle_vel)
+			self.paddle1_pos = paddle_pos
 			# self.paddle1_pos = paddle_pos
 		elif player == 2:
 			# print("2P moves")
-			self.paddle2_pos = self.update_paddle(self.paddle2_pos, paddle_vel)
+			self.paddle2_pos = paddle_pos
 			# self.paddle2_pos = paddle_pos
 		self.update_ball()
 		self.detect_collisions()

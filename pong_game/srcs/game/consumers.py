@@ -78,7 +78,7 @@ class GameConsumer(AsyncWebsocketConsumer):
 			return
 		try:
 			self.game_state.from_json(str(cache.get(self.game_id+'game_state')))
-			self.game_state.game_loop(text_data_json['paddle_vel'], self.player_id)
+			self.game_state.game_loop(text_data_json['paddle_pos'], self.player_id)
 			message = self.game_state.to_json()
 			cache.set(self.game_id+'game_state', message, timeout=300)
 		finally:
