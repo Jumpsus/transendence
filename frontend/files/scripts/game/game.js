@@ -7,15 +7,20 @@ export let eventListenersSet = false;
 export const gameState = {
   isOn: false,
   isHorizontal: true,
-  isOnline: false,
   isPaused: false,
-  hasCPU: false,
   isTouch: false,
   collectible: null,
   powerUp: { effect: null, player: null },
 };
 
 export const gameConfig = {
+  isOnline: false,
+  roomId: null,
+  ws: null,
+  hasCPU: false,
+  hasPowerUps: false,
+  hasAim: false,
+  CPULevel: 1,
   paddleWidth: 2,
   paddleHeight: 20,
   ballWidth: 3,
@@ -105,7 +110,6 @@ export function init() {
   const gameContainer = document.getElementById("game-container");
   const gameField = document.getElementById("game-field");
   gameState.isHorizontal = gameField.clientWidth > gameField.clientHeight;
-  gameState.isOnline = false;
   gameState.isPaused = false;
 
   const keys = {};
@@ -126,13 +130,30 @@ export function init() {
     setFieldBorders();
   });
 
-  if (gameState.isOnline) {
-    setInterval(async () => {
-      await playerOne.sendUpdate();
-      await ball.fetchUpdate();
-      await playerTwo.fetchUpdate();
+  function sendPaddlePos() {
+    const message = JSON.stringify({
+		paddle_vel: playerOne.y,
+    });
+    console.log(message);
+    gameConfig.ws.send(message);
+  }
+
+  if (gameConfig.isOnline) {
+    gameConfig.ws.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      console.log("recieved data:");
+      console.log(data);
+    };
+    console.log(gameConfig.ws);
+    gameConfig.ws.onclose = () => {
+      console.log("WebSocket closed");
+    };
+    setTimeout(() => {
+      sendPaddlePos();
     }, 16);
-  } else {
+  }
+
+  if (!gameConfig.isOnline) {
     let lastTime;
     function update(time) {
       if (lastTime != undefined && !gameState.isPaused) {
@@ -143,7 +164,7 @@ export function init() {
         if (gameState.powerUp.effect) {
           applyPowerUp();
         }
-        if (gameState.hasCPU) updateCPU(delta);
+        if (gameConfig.hasCPU) updateCPU(delta);
         if (isLose()) {
           ball.reset();
           playerOne.reset();
@@ -183,18 +204,18 @@ export function init() {
             `${gameConfig.paddleHeight / 2}`
           );
         break;
-	case "paddleEnlarger":
-		if (gameState.powerUp.player === 1)
-		  playerTwo.paddleElem.style.setProperty(
-			"--paddleHeight",
-			`${gameConfig.paddleHeight * 2}`
-		  );
-		else if (gameState.powerUp.player === 2)
-		  playerOne.paddleElem.style.setProperty(
-			"--paddleHeight",
-			`${gameConfig.paddleHeight * 2}`
-		  );
-		break;
+      case "paddleEnlarger":
+        if (gameState.powerUp.player === 1)
+          playerOne.paddleElem.style.setProperty(
+            "--paddleHeight",
+            `${gameConfig.paddleHeight * 2}`
+          );
+        else if (gameState.powerUp.player === 2)
+          playerTwo.paddleElem.style.setProperty(
+            "--paddleHeight",
+            `${gameConfig.paddleHeight * 2}`
+          );
+        break;
       default:
         break;
     }

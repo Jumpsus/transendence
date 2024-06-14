@@ -61,8 +61,6 @@ async function pathToView(url) {
   let route;
   let viewArr = [];
   if (isLoggedIn.status) {
-    if (!document.getElementById("homeNav")) new Nav();
-	makeLinkActive(document.getElementById("homeNav"), true);
     let parts = arrayFromMultiPath(url);
     for (let i = 0; i < parts.length; i++) {
       route = routes.find((route) => route.path === parts[i]);

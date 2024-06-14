@@ -35,16 +35,29 @@ label::after {
   background-color: transparent;
 }
 
-#homeNav {
-  border-right: 2px solid var(--dark-border);
-}
-
 #moonIcon {
   transform: translateY(4px) !important;
 }
 
 .menu-item.active .icon-border {
   display: none;
+}
+
+.game-menu-container {
+  margin-top: 30vh;
+}
+
+.game-menu {
+  width: 100%;
+  max-width: 400px;
+}
+
+.game-options {
+  color: var(--bs-body-color);
+}
+
+.game-options [role="group"].locked {
+  --my-primary-color: grey;
 }
 
 #project-title,
@@ -71,13 +84,8 @@ label::after {
   border: 3px solid var(--my-tertiary-color);
 }
 
-#block-button {
-  fill: var(--bs-body-color);
-  opacity: 60%;
-  position: absolute;
-  top: 24px;
-  right: 20px;
-  cursor: pointer;
+#back-button {
+  color: var(--bs-body-color);
 }
 
 .btn-primary,
@@ -175,10 +183,6 @@ label::after {
     outline: none;
     box-shadow: none;
     border: 3px solid var(--bs-border-color);
-  }
-
-  #homeNav {
-    border-right: 3px solid var(--my-secondary-color);
   }
 
   #profileMenu {
@@ -445,20 +449,15 @@ body {
   transform: rotate(180deg);
 }
 
-@media (width < 576px) {
-  #navigation-wrapper.hidden {
-    margin-bottom: -75px;
-  }
-}
-
-@media (576px <= width <= 991px) {
-  #navigation-wrapper.hidden {
-    margin-left: -91px;
-  }
+#navigation-wrapper.hidden {
+  margin-bottom: -75px;
 }
 
 @media (min-width: 992px) {
-  .menu-item:hover .menu-selector {
+  /* .menu-item {
+    width: 200px;
+  } */
+  /* .menu-item:hover .menu-selector {
     display: block;
   }
   .menu-item.active {
@@ -466,10 +465,7 @@ body {
       display: block;
       animation: rotate 0.6s infinite;
     }
-  }
-  #navigation-wrapper.hidden {
-    margin-left: -263.15px;
-  }
+  } */
 }
 
 .form-floating > input {
@@ -487,7 +483,7 @@ body {
 #project-title {
   font-family: "Jersey 10", sans-serif;
   font-style: normal;
-  font-size: 120px !important;
+  font-size: 200px !important;
   background-image: linear-gradient(
     var(--logo-color-one) 40%,
     var(--logo-color-two) 80%
@@ -496,8 +492,9 @@ body {
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
-  transform: skewX(-15deg);
+  transform: perspective(200px) rotateX(10deg);
   filter: drop-shadow(0px 10px var(--logo-shadow-color));
+  margin: 0;
 }
 
 .profile-img-box {
@@ -521,6 +518,21 @@ body {
   display: grid;
   gap: 50px;
   grid-template-columns: 1fr 150px 1fr;
+}
+
+.settings-switch {
+  border: 3px solid var(--my-primary-color);
+  color: var(--my-primary-color);
+}
+
+.settings-switch:hover {
+  border: 3px solid var(--my-primary-color);
+  color: var(--my-primary-color);
+}
+
+.settings-switch.on {
+  background-color: var(--my-primary-color);
+  color: var(--bs-body-bg);
 }
 
 tr,
