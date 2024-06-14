@@ -47,12 +47,21 @@ label::after {
   display: none;
 }
 
-.game-menu {
+.game-menu-container {
   margin-top: 40vh;
+}
+
+.game-menu {
+  width: 100%;
+  max-width: 400px;
 }
 
 .game-options {
   color: var(--bs-body-color);
+}
+
+.game-options [role="group"].locked {
+  --my-primary-color: grey;
 }
 
 #project-title,
@@ -537,8 +546,8 @@ body {
 }
 
 .settings-switch:hover {
-	border: 3px solid var(--my-primary-color);
-	color: var(--my-primary-color);
+  border: 3px solid var(--my-primary-color);
+  color: var(--my-primary-color);
 }
 
 .settings-switch.on {

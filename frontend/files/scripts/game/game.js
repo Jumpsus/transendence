@@ -7,7 +7,6 @@ export let eventListenersSet = false;
 export const gameState = {
   isOn: false,
   isHorizontal: true,
-  isOnline: false,
   isPaused: false,
   isTouch: false,
   collectible: null,
@@ -15,7 +14,10 @@ export const gameState = {
 };
 
 export const gameConfig = {
-  hasCPU: true,
+  isOnline: false,
+  roomId: null,
+  ws: null,
+  hasCPU: false,
   hasPowerUps: false,
   hasAim: false,
   CPULevel: 1,
@@ -46,6 +48,7 @@ function isTouchDevice() {
 
 export function init() {
   setDimensions();
+  console.log(gameConfig.roomId);
   gameState.isTouch = isTouchDevice();
   const scoreOne = document.getElementById("score-one");
   const scoreTwo = document.getElementById("score-two");
@@ -108,7 +111,6 @@ export function init() {
   const gameContainer = document.getElementById("game-container");
   const gameField = document.getElementById("game-field");
   gameState.isHorizontal = gameField.clientWidth > gameField.clientHeight;
-  gameState.isOnline = false;
   gameState.isPaused = false;
 
   const keys = {};
@@ -129,13 +131,7 @@ export function init() {
     setFieldBorders();
   });
 
-  if (gameState.isOnline) {
-    setInterval(async () => {
-      await playerOne.sendUpdate();
-      await ball.fetchUpdate();
-      await playerTwo.fetchUpdate();
-    }, 16);
-  } else {
+  if (!gameConfig.isOnline) {
     let lastTime;
     function update(time) {
       if (lastTime != undefined && !gameState.isPaused) {
@@ -188,12 +184,12 @@ export function init() {
         break;
       case "paddleEnlarger":
         if (gameState.powerUp.player === 1)
-          playerTwo.paddleElem.style.setProperty(
+          playerOne.paddleElem.style.setProperty(
             "--paddleHeight",
             `${gameConfig.paddleHeight * 2}`
           );
         else if (gameState.powerUp.player === 2)
-          playerOne.paddleElem.style.setProperty(
+          playerTwo.paddleElem.style.setProperty(
             "--paddleHeight",
             `${gameConfig.paddleHeight * 2}`
           );
