@@ -56,7 +56,6 @@ export function init() {
 
   const nameOne = document.getElementById("name-one");
   const nameTwo = document.getElementById("name-two");
-  const homeNav = document.getElementById("navigation-wrapper");
   nameOne.textContent = "P1";
   nameTwo.textContent = "P2";
   let playerOneScore = 0;
@@ -64,7 +63,6 @@ export function init() {
 
   const pauseArea = document.getElementById("pause-area");
   const pauseText = document.getElementById("pause-text");
-  homeNav.classList.toggle("hidden");
 
   const PLAYER_SPEED = 0.1;
   const AIM_SPEED = 0.2;
@@ -132,7 +130,7 @@ export function init() {
 
   function sendPaddlePos() {
     const message = JSON.stringify({
-		paddle_vel: playerOne.y,
+		paddle_pos: playerOne.y,
     });
     console.log(message);
     gameConfig.ws.send(message);
@@ -420,7 +418,6 @@ export function init() {
     if (gameState.isPaused) {
       pauseText.classList.add("show");
       gameField.classList.add("paused");
-      homeNav.classList.remove("hidden");
       pauseInterval = setInterval(() => {
         pauseText.classList.toggle("show");
       }, 1000);
@@ -428,7 +425,6 @@ export function init() {
       clearInterval(pauseInterval);
       pauseText.classList.remove("show");
       gameField.classList.remove("paused");
-      homeNav.classList.add("hidden");
     }
     setTimeout(() => {
       setFieldBorders();

@@ -1,6 +1,5 @@
 import { Component } from "../library/component.js";
 import { makeLinkActive } from "../utils/other.js";
-import { isLoggedIn } from "../../index.js";
 import { replaceHistoryAndGoTo } from "../utils/router.js";
 
 export class Settings extends Component {
@@ -76,11 +75,6 @@ export class Settings extends Component {
 						</div>
 					</form>
 			</div>
-			<hr class="my-4">
-			<div class="d-flex justify-content-end mb-4">
-				<button type="button" class="btn btn-outline-danger rounded-0" id="logout-button">Log
-					out</button>
-			</div>
 		</div>
 		`;
     this.render();
@@ -107,7 +101,6 @@ export class Settings extends Component {
     const cancelPasswordButton = document.getElementById(
       "reset-password-button"
     );
-    const logoutButton = document.getElementById("logout-button");
     const oldPassDiv = document.getElementById("old-password-div");
     let newPassDiv = document.getElementById("new-password-div");
     let newPass2Div = document.getElementById("new-password-2-div");
@@ -279,28 +272,6 @@ export class Settings extends Component {
         cancelPasswordButton,
         true
       );
-    });
-
-    logoutButton.addEventListener("click", async () => {
-      await fetch(`http://${location.hostname}:8000/user/logout`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-        },
-      })
-        .then((response) => {
-          return response.json();
-        })
-        .then((data) => {
-          localStorage.removeItem("jwt");
-          isLoggedIn.status = false;
-          document.querySelector("nav").innerHTML = "";
-          replaceHistoryAndGoTo("/Login");
-        })
-        .catch((error) => {
-          console.log("we got an error: ", error);
-        });
     });
   }
 }

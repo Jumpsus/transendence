@@ -10,6 +10,7 @@ import { Nav } from "../views/nav.js";
 import { NotExist } from "../views/404.js";
 import { Game } from "../views/gameview.js";
 import { arrayFromMultiPath, makeLinkActive } from "./other.js";
+import { GameOptions } from "../views/gameOptions.js";
 
 export let username = { username: "" };
 let lastViewedUser = "";
@@ -21,6 +22,7 @@ const routes = [
   { path: "/Friends", view: Friends },
   { path: "/Settings", view: Settings },
   { path: "/Game", view: Game },
+  { path: "/Options", view: GameOptions },
 ];
 
 const routesLoggedOut = [
