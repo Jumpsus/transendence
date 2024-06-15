@@ -52,8 +52,6 @@ class PongGame:
 			'paddle2_pos': self.paddle2_pos,
 			'ball_pos': self.ball_pos,
 			'ball_vel': self.ball_vel,
-			'paddle1_vel': self.paddle1_vel,
-			'paddle2_vel': self.paddle2_vel,
 			'score1': self.score1,
 			'score2': self.score2
 		}
@@ -70,8 +68,6 @@ class PongGame:
 			self.paddle2_pos = game_state['paddle2_pos']
 			self.ball_pos = game_state['ball_pos']
 			self.ball_vel = game_state['ball_vel']
-			self.paddle1_vel = game_state['paddle1_vel']
-			self.paddle2_vel = game_state['paddle2_vel']
 			self.score1 = game_state['score1']
 			self.score2 = game_state['score2']
 
