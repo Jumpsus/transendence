@@ -5,6 +5,9 @@ services:
     extends:
       file: frontend/docker/docker-compose.yml
       service: front-nginx
+    depends_on:
+      - user-management
+      - pong_game
 
   vault-service:
     restart: on-failure:10
