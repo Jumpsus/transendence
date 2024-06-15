@@ -13,19 +13,8 @@ class PongGame:
 		self.ball_pos = [self.WIDTH // 2, self.HEIGHT // 2]
 		self.ball_vel = [4, -4]
 
-		self.paddle1_vel = 0
-		self.paddle2_vel = 0
-
 		self.score1 = 0
 		self.score2 = 0
-
-	def update_paddle(self, paddle_pos, paddle_vel):
-		paddle_pos += paddle_vel
-		if paddle_pos < 0:
-			paddle_pos = 0
-		elif paddle_pos > self.HEIGHT - self.PADDLE_HEIGHT:
-			paddle_pos = self.HEIGHT - self.PADDLE_HEIGHT
-		return paddle_pos
 
 	def update_ball(self):
 		self.ball_pos[0] += self.ball_vel[0]
@@ -88,13 +77,9 @@ class PongGame:
 
 	def game_loop(self, paddle_pos, player):
 		if player == 1:
-			# print("1P moves")
 			self.paddle1_pos = paddle_pos
-			# self.paddle1_pos = paddle_pos
 		elif player == 2:
-			# print("2P moves")
 			self.paddle2_pos = paddle_pos
-			# self.paddle2_pos = paddle_pos
 		self.update_ball()
 		self.detect_collisions()
 		self.check_score()
