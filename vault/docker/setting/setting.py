@@ -9,7 +9,6 @@ from django.core.management.utils import get_random_secret_key
 
 urllib3.disable_warnings()
 client = hvac.Client(url = os.environ["VAULT_ADDR"], verify=False)
-# os.environ["VAULT_TOKEN"] = os.environ["MY_VAULT_TOKEN"]
 
 def get_unseal_key(pattern):
     file = open(os.environ["KEY_PATH"], "r")
