@@ -83,6 +83,9 @@ class GameConsumer(AsyncWebsocketConsumer):
 			cache.set(self.game_id+'game_state', message, timeout=300)
 		finally:
 			lock.release()
+		message_dict = json.loads(message)
+		message_dict['player_id'] = self.player_id
+		message = json.dumps(message_dict)
 		await self.channel_layer.group_send(
 			self.game_id,
 			{

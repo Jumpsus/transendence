@@ -23,6 +23,8 @@ services:
         build:
             context: setting
             dockerfile: Dockerfile
+        volumes:
+            - vault_data:/vault/file/
         env_file:
             - .env-vault
         command: python3 /app/setting.py

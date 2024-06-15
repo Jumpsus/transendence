@@ -1,12 +1,12 @@
 FROM hashicorp/vault
 
-RUN mkdir -p /vault/
+RUN mkdir -p /vault
 
 COPY vault-init.sh /usr/local/bin/vault-init.sh
 
 COPY config.hcl /vault/config/config.hcl
 
-RUN chmod 777 /usr/local/bin/vault-init.sh
+RUN chmod 755 /usr/local/bin/vault-init.sh
 
 RUN [ "/usr/local/bin/vault-init.sh" ]
 

@@ -28,7 +28,10 @@ down:
 	@docker compose down
 
 
-re: down up
+re: down
+	docker compose build --no-cache
+	docker compose up -d
+
 
 clean: down
 	docker compose down --rmi all -v --remove-orphans
