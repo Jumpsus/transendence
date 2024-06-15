@@ -6,7 +6,6 @@ import { host } from "../../index.js"
 
 export class GameOptions extends Component {
   constructor() {
-    console.log("GameOptions");
     const gameMenu = document.querySelector(".game-menu");
     if (!gameMenu) {
       new Home();
@@ -185,7 +184,6 @@ export class GameOptions extends Component {
     const createRoomBtn = document.getElementById("create-room-btn");
     const inputID = document.getElementById("room-ID");
     inputID.addEventListener("change", () => {
-      console.log(inputID.value);
       gameConfig.roomId = inputID.value;
     })
     createRoomBtn.addEventListener("click", () => {

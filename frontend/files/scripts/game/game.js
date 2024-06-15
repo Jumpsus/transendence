@@ -130,25 +130,31 @@ export function init() {
 
   function sendPaddlePos() {
     const message = JSON.stringify({
-		paddle_pos: playerOne.y,
+      paddle_pos: playerOne.y,
     });
-    console.log(message);
     gameConfig.ws.send(message);
   }
 
   if (gameConfig.isOnline) {
+    let lastTime;
     gameConfig.ws.onmessage = (event) => {
       const data = JSON.parse(event.data);
-      console.log("recieved data:");
-      console.log(data);
+      const myID = data.ID;
     };
     console.log(gameConfig.ws);
     gameConfig.ws.onclose = () => {
       console.log("WebSocket closed");
     };
-    setTimeout(() => {
-      sendPaddlePos();
-    }, 16);
+    function update(time) {
+      if (lastTime != undefined && !gameState.isPaused) {
+        const delta = time - lastTime;
+        updatePaddles(delta);
+        sendPaddlePos();
+      }
+      lastTime = time;
+      window.requestAnimationFrame(update);
+    }
+    window.requestAnimationFrame(update);
   }
 
   if (!gameConfig.isOnline) {
