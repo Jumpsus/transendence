@@ -18,7 +18,8 @@ def create_user(username, password, name = "", last_name = "", phone_number = ""
                             phone_number = phone_number,
                             image = "default.png",
                             tag = tag,
-                            jti = jti)
+                            jti = jti,
+                            status = "online")
 
     try: 
         user.save()

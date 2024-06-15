@@ -48,6 +48,8 @@ def login(req):
     if database.stamp_jti(u[0], jti) != True:
         return utils.responseJsonErrorMessage(500, "20", "Internal error")
 
+    if database.update_status(u[0], "online") != True:
+        return utils.responseJsonErrorMessage(500, "20", "Internal error")
     response_data = {
         "code": "00",
         "message": "Success",
@@ -133,34 +135,34 @@ def user_list(req):
         case "":
             users = UserManagement.objects.all()
             for user in users:
-                d = {"username": user.username, "image": user.image ,"status": "offline"}
+                d = {"username": user.username, "image": user.image ,"status": "offline" if user.status == "" else user.status}
                 user_list.append(d)
         
         case "friend":
             friends = database.find_friend(u[0])
             for friend in friends:
                 if friend.user_a == u[0]:
-                    d = {"username": friend.user_b.username, "image": friend.user_b.image ,"status": "offline"}
+                    d = {"username": friend.user_b.username, "image": friend.user_b.image ,"status": "offline" if friend.user_b.status == "" else friend.user_b.status}
                 else:
-                    d = {"username": friend.user_a.username, "image": friend.user_a.image ,"status": "offline"}
+                    d = {"username": friend.user_a.username, "image": friend.user_a.image ,"status": "offline" if friend.user_a.status == "" else friend.user_a.status}
                 user_list.append(d)
         
         case "add":
             friends = database.find_friends_by_action_user(u[0], "pending")
             for friend in friends:
-                d = {"username": friend.user_b.username, "image": friend.user_b.image ,"status": "offline"}
+                d = {"username": friend.user_b.username, "image": friend.user_b.image ,"status": "offline" if friend.user_b.status == "" else friend.user_b.status}
                 user_list.append(d)
         
         case "pending":
             friends = database.find_friends_by_actioned_user(u[0], "pending")
             for friend in friends:
-                d = {"username": friend.user_a.username, "image": friend.user_a.image ,"status": "offline"}
+                d = {"username": friend.user_a.username, "image": friend.user_a.image ,"status": "offline" if friend.user_a.status == "" else friend.user_a.status}
                 user_list.append(d)
         
         case "block":
             friends = database.find_friends_by_action_user(u[0], "block")
             for friend in friends:
-                d = {"username": friend.user_b.username, "image": friend.user_b.image ,"status": "offline"}
+                d = {"username": friend.user_b.username, "image": friend.user_b.image ,"status": "offline" if friend.user_b.status == "" else friend.user_b.status}
                 user_list.append(d)
         
         case _:
@@ -242,7 +244,7 @@ def get_other_info(req):
         "lose": lose,
         "level": 0,
         "relation": relation,
-        "status": "offline", # TODO handle this case
+        "status": "offline" if u[0].status == "" else u[0].status
     }
 
     return HttpResponse(json.dumps(response_data), content_type="application/json", status=200)
@@ -399,6 +401,9 @@ def logout(req):
 
     temp_jti = jwt_handler.generate_jti(u[0].username)
     if database.stamp_jti(u[0], temp_jti) != True:
+        return utils.responseJsonErrorMessage(500, "20", "Internal error")
+
+    if database.update_status(u[0], "offline") != True:
         return utils.responseJsonErrorMessage(500, "20", "Internal error")
     
     return utils.responseJsonErrorMessage(200, "00", "Success")

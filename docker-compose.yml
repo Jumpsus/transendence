@@ -7,7 +7,7 @@ services:
       service: front-nginx
     depends_on:
       - user-management
-      - pong_game
+      - pong-game
 
   vault-service:
     restart: on-failure:10
