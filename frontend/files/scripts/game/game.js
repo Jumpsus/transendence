@@ -139,9 +139,9 @@ export function init() {
     let lastTime;
     gameConfig.ws.onmessage = (event) => {
       const data = JSON.parse(event.data);
-      const myID = data.ID;
+      console.log(data.player_id);
+      const myID = data.player_id;
     };
-    console.log(gameConfig.ws);
     gameConfig.ws.onclose = () => {
       console.log("WebSocket closed");
     };
