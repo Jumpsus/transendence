@@ -46,7 +46,7 @@ class PongGame:
 		game_state = {
 			'PADDLE_HEIGHT': self.PADDLE_HEIGHT / self.HEIGHT * 100,
 			'paddle_pos': self.paddle_pos,
-			'ball_pos': self.ball_pos,
+			'ball_pos': [ self.ball_pos[0] / self.WIDTH * 100, self.ball_pos[1] / self.HEIGHT * 100],
 			'score1': self.score1,
 			'score2': self.score2
 		}
@@ -56,7 +56,8 @@ class PongGame:
 			game_state = json.loads(json_str)
 			self.PADDLE_HEIGHT = game_state['PADDLE_HEIGHT'] / 100 * self.HEIGHT
 			self.paddle_pos = game_state['paddle_pos']
-			self.ball_pos = game_state['ball_pos']
+			self.ball_pos[0] = game_state['ball_pos'][0] / 100 * self.WIDTH
+			self.ball_pos[1] = game_state['ball_pos'][1] / 100 * self.HEIGHT
 			self.score1 = game_state['score1']
 			self.score2 = game_state['score2']
 
