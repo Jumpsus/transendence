@@ -2,6 +2,7 @@ import { Component } from "../library/component.js";
 import { gameConfig } from "../game/game.js";
 import { Home } from "./home.js";
 import { setupDarkModeToggle } from "../utils/darkmode.js";
+import { host } from "../../index.js"
 
 export class GameOptions extends Component {
   constructor() {
@@ -183,8 +184,12 @@ export class GameOptions extends Component {
     });
     const createRoomBtn = document.getElementById("create-room-btn");
     const inputID = document.getElementById("room-ID");
+    inputID.addEventListener("change", () => {
+      console.log(inputID.value);
+      gameConfig.roomId = inputID.value;
+    })
     createRoomBtn.addEventListener("click", () => {
-      fetch(`http://${location.hostname}:8001/create-game/`, {
+      fetch(`https://${host}/game/create-game/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -194,6 +199,7 @@ export class GameOptions extends Component {
         .then((response) => response.json())
         .then((data) => {
           inputID.value = data.game_id;
+          gameConfig.roomId = data.game_id;
         });
     });
   }

@@ -44,7 +44,6 @@ export class Home extends Component {
     const logoutButton = document.getElementById("logout-button");
     startBtn.addEventListener("click", () => {
       if (gameConfig.isOnline) {
-        gameConfig.roomId = document.getElementById("room-ID").value;
         gameConfig.ws = new WebSocket(
           `wss://${host}/ws/game/${gameConfig.roomId}/`
         );
