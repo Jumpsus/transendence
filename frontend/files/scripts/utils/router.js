@@ -45,7 +45,7 @@ function getCorrectUrl(url) {
 }
 
 async function userExists(username) {
-  const resp = await fetch(`http://${location.hostname}:8000/user/loginlist`, {
+  const resp = await fetch(`https://${location.hostname}/user-management/user/loginlist`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -61,8 +61,6 @@ async function pathToView(url) {
   let route;
   let viewArr = [];
   if (isLoggedIn.status) {
-    if (!document.getElementById("homeNav")) new Nav();
-	makeLinkActive(document.getElementById("homeNav"), true);
     let parts = arrayFromMultiPath(url);
     for (let i = 0; i < parts.length; i++) {
       route = routes.find((route) => route.path === parts[i]);

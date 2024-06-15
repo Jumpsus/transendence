@@ -1,12 +1,10 @@
 services:
-  pong_game:
+  pong-game:
     networks:
         - user-network
     build:
         context: .
         dockerfile: Dockerfile
-    ports:
-      - "8001:8001"
   redis:
     networks:
       - user-network

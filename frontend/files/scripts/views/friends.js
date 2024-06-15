@@ -26,7 +26,7 @@ export class Friends extends Component {
   async render() {
     super.render();
     const friendsList = document.getElementById("friends-list");
-    await fetch(`http://${location.hostname}:8000/user/userlist`, {
+    await fetch(`https://${location.hostname}/user-management/user/userlist`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -44,7 +44,7 @@ export class Friends extends Component {
         data.user_list.forEach((friend) => {
           friendsList.innerHTML += `<div>
 					<a href="/${friend.username}" data-link><div class="profile-img-box position-relative rounded-0" style="width: 100px; height:100px;">
-						<img src="http://${location.hostname}/image/${friend.username}.png?t=${new Date().getTime()}" class="position-absolute object-fit-cover  profile-img rounded-0"
+						<img src="https://${location.hostname}/image/${friend.username}.png?t=${new Date().getTime()}" class="position-absolute object-fit-cover  profile-img rounded-0"
 								alt="...">
 					</div></a>
 					<div class="d-flex justify-content-center">
@@ -65,7 +65,7 @@ export class Friends extends Component {
       const searchList = document.getElementById("search-list");
       friendsList.classList.add("d-none");
       friendsList.classList.remove("d-flex");
-      await fetch(`http://${location.hostname}:8000/user/userlist`, {
+      await fetch(`https://${location.hostname}/user-management/user/userlist`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -90,7 +90,7 @@ export class Friends extends Component {
             ) {
               searchList.innerHTML += `<div>
 				<a href="/${friend.username}" data-link><div class="profile-img-box position-relative rounded-0" style="width: 100px; height:100px;">
-				<img src="http://${location.hostname}/image/${friend.username}.png?t=${new Date().getTime()}" class="position-absolute object-fit-cover  profile-img rounded-0"
+				<img src="https://${location.hostname}/image/${friend.username}.png?t=${new Date().getTime()}" class="position-absolute object-fit-cover  profile-img rounded-0"
 						alt="...">
 			</div></a>
 				<div class="d-flex justify-content-center">

@@ -220,7 +220,7 @@ export class Register extends Component {
         password: password,
       };
 
-      fetch(`http://${location.hostname}:8000/user/register`, {
+      fetch(`https://${location.hostname}/user-management/user/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
