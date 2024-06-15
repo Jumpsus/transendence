@@ -10,6 +10,14 @@ export let isLoggedIn = { status: false };
 export const myUsername = { username: "" };
 
 document.addEventListener("keypress", (event) => {
+  if (
+    event.target.tagName === "INPUT" ||
+    event.target.tagName === "TEXTAREA" ||
+    event.target.isContentEditable
+  ) {
+    return;
+  }
+
   if (event.key === "F" || event.key === "f") {
     if (!document.fullscreenElement) {
       document.documentElement.requestFullscreen().catch((err) => {
