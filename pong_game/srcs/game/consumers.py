@@ -65,7 +65,7 @@ class GameConsumer(AsyncWebsocketConsumer):
 	async def receive(self, text_data):
 		# lock = redis_instance.lock(f"lock:{self.game_id}", timeout=5)
 		# with lock:
-		if int(cache.get(self.game_id)) < 2:
+		if int(cache.get(self.game_id)) < 3:
 			return
 		# Send message to room group
 		text_data_json = json.loads(text_data)
@@ -83,9 +83,6 @@ class GameConsumer(AsyncWebsocketConsumer):
 			cache.set(self.game_id+'game_state', message, timeout=300)
 		finally:
 			lock.release()
-		message_dict = json.loads(message)
-		message_dict['player_id'] = self.player_id
-		message = json.dumps(message_dict)
 		await self.channel_layer.group_send(
 			self.game_id,
 			{
@@ -97,6 +94,8 @@ class GameConsumer(AsyncWebsocketConsumer):
 	# Receive message from room group
 	async def game_message(self, event):
 		message = event['message']
-
+		message_dict = json.loads(message)
+		message_dict['player_id'] = self.player_id
+		message = json.dumps(message_dict)
 		# Send message to WebSocket
 		await self.send(text_data=message)
