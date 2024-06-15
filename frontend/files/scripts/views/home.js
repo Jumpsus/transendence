@@ -1,8 +1,7 @@
 import { Component } from "../library/component.js";
 import { gameState, gameConfig } from "../game/game.js";
 import { pushHistoryAndGoTo, replaceHistoryAndGoTo } from "../utils/router.js";
-import { myUsername } from "../../index.js";
-import { isLoggedIn } from "../../index.js";
+import { myUsername, isLoggedIn, host } from "../../index.js";
 
 export class Home extends Component {
   constructor() {
@@ -47,7 +46,7 @@ export class Home extends Component {
       if (gameConfig.isOnline) {
         gameConfig.roomId = document.getElementById("room-ID").value;
         gameConfig.ws = new WebSocket(
-          `wss://${location.hostname}/ws/game/${gameConfig.roomId}/`
+          `wss://${host}/ws/game/${gameConfig.roomId}/`
         );
         gameConfig.ws.onopen = () => {
           console.log("connected");
@@ -66,7 +65,7 @@ export class Home extends Component {
     });
 
     logoutButton.addEventListener("click", async () => {
-      await fetch(`https://${location.hostname}/user-management/user/logout`, {
+      await fetch(`https://${host}/user-management/user/logout`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

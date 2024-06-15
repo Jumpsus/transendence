@@ -1,5 +1,5 @@
 import { Component } from "../library/component.js";
-import { isLoggedIn } from "../../index.js";
+import { isLoggedIn, host } from "../../index.js";
 import { replaceHistoryAndGoTo } from "../utils/router.js";
 import { Nav } from "./nav.js";
 import { setupDarkModeToggle } from "../utils/darkmode.js";
@@ -220,7 +220,7 @@ export class Register extends Component {
         password: password,
       };
 
-      fetch(`https://${location.hostname}/user-management/user/register`, {
+      fetch(`https://${host}/user-management/user/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

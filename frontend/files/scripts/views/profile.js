@@ -1,7 +1,7 @@
 import { Component } from "../library/component.js";
 import { makeLinkActive } from "../utils/other.js";
 import { username, newUserView } from "../utils/router.js";
-import { myUsername } from "../../index.js";
+import { myUsername, host } from "../../index.js";
 import { MatchHistory } from "./history.js";
 import { compressImage } from "../utils/compress.js";
 
@@ -16,7 +16,7 @@ export class Profile extends Component {
 					<div id="change-pic-svg">
 						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="60" height="60"><g><path d="m14.287500000000001 10.290000000000001 0 1.1400000000000001 1.1400000000000001 0 0 4.574999999999999 1.1400000000000001 0 0 -4.574999999999999 5.715 0 0 6.855 1.1475 0 0 -12.57 -1.1475 0 0 4.574999999999999 -7.995 0z"  stroke-width="1"></path><path d="M21.142500000000002 18.285h1.1400000000000001v1.1475h-1.1400000000000001Z"  stroke-width="1"></path><path d="M21.142500000000002 4.574999999999999h1.1400000000000001v1.1400000000000001h-1.1400000000000001Z"  stroke-width="1"></path><path d="M20.0025 6.862500000000001h1.1400000000000001v1.1400000000000001h-1.1400000000000001Z"  stroke-width="1"></path><path d="M2.8575 19.4325h18.285v1.1400000000000001H2.8575Z"  stroke-width="1"></path><path d="M16.5675 8.0025h3.435v1.1400000000000001h-3.435Z"  stroke-width="1"></path><path d="M16.5675 5.715h3.435v1.1475h-3.435Z"  stroke-width="1"></path><path d="M15.4275 6.862500000000001h1.1400000000000001v1.1400000000000001h-1.1400000000000001Z"  stroke-width="1"></path><path d="M14.287500000000001 16.005h1.1400000000000001v1.1400000000000001h-1.1400000000000001Z"  stroke-width="1"></path><path d="M13.14 3.4275h8.0025V4.574999999999999H13.14Z"  stroke-width="1"></path><path d="m10.86 16.005 2.2800000000000002 0 0 -1.1475 1.1475 0 0 -2.2874999999999996 -1.1475 0 0 1.1475 -1.1400000000000001 0 0 -1.1475 1.1400000000000001 0 0 -1.1400000000000001 -2.2800000000000002 0 0 1.1400000000000001 -1.1475 0 0 2.2874999999999996 1.1475 0 0 1.1475z"  stroke-width="1"></path><path d="M9.712499999999999 9.1425h4.574999999999999v1.1475h-4.574999999999999Z"  stroke-width="1"></path><path d="M9.712499999999999 17.145h4.574999999999999v1.1400000000000001h-4.574999999999999Z"  stroke-width="1"></path><path d="M12 4.574999999999999h1.1400000000000001v1.1400000000000001H12Z"  stroke-width="1"></path><path d="M8.5725 16.005h1.1400000000000001v1.1400000000000001h-1.1400000000000001Z"  stroke-width="1"></path><path d="M6.285 3.4275h3.4275V4.574999999999999H6.285Z"  stroke-width="1"></path><path d="M3.9975 8.0025h2.2874999999999996v1.1400000000000001H3.9975Z"  stroke-width="1"></path><path d="m12 6.862500000000001 0 -1.1475 -1.1400000000000001 0 0 -1.1400000000000001 -1.1475 0 0 1.1400000000000001 -3.4275 0 0 -1.1400000000000001 -1.1400000000000001 0 0 1.1400000000000001 -2.2874999999999996 0 0 1.1475 9.1425 0z"  stroke-width="1"></path><path d="M1.71 18.285h1.1475v1.1475H1.71Z"  stroke-width="1"></path><path d="M1.71 6.862500000000001h1.1475v1.1400000000000001H1.71Z"  stroke-width="1"></path><path d="m1.71 11.43 5.715 0 0 4.574999999999999 1.1475 0 0 -4.574999999999999 1.1400000000000001 0 0 -1.1400000000000001 -8.0025 0 0 -2.2874999999999996 -1.1400000000000001 0 0 10.2825 1.1400000000000001 0 0 -6.855z"  stroke-width="1"></path></g></svg>
 					</div>
-					<img src="https://${location.hostname}/image/${
+					<img src="https://${host}/image/${
       username.username
     }.png?t=${new Date().getTime()}" class="position-absolute object-fit-cover profile-img" id="profile-img" alt="">
 				</div>
@@ -80,7 +80,7 @@ export class Profile extends Component {
     let imgPath;
     makeLinkActive(document.getElementById("profileMenu"), false);
     const resp = await fetch(
-      `https://${location.hostname}/user-management/user/getotherinfo`,
+      `https://${host}/user-management/user/getotherinfo`,
       {
         method: "POST",
         headers: {
@@ -135,7 +135,7 @@ export class Profile extends Component {
           const formData = new FormData();
           formData.append("image", file);
           const response = await fetch(
-            `https://${location.hostname}/user-management/user/uploadimage`,
+            `https://${host}/user-management/user/uploadimage`,
             {
               method: "POST",
               body: formData,
@@ -165,7 +165,7 @@ export class Profile extends Component {
           action = "add";
           textContent = "Pending";
         } else return;
-        await fetch(`https://${location.hostname}/user-management/user/makerelation`, {
+        await fetch(`https://${host}/user-management/user/makerelation`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

@@ -5,7 +5,7 @@ import { Tournament } from "../views/tournament.js";
 import { Register } from "../views/register.js";
 import { Settings } from "../views/settings.js";
 import { Friends } from "../views/friends.js";
-import { isLoggedIn, myUsername } from "../../index.js";
+import { isLoggedIn, myUsername, host } from "../../index.js";
 import { Nav } from "../views/nav.js";
 import { NotExist } from "../views/404.js";
 import { Game } from "../views/gameview.js";
@@ -47,7 +47,7 @@ function getCorrectUrl(url) {
 }
 
 async function userExists(username) {
-  const resp = await fetch(`https://${location.hostname}/user-management/user/loginlist`, {
+  const resp = await fetch(`https://${host}/user-management/user/loginlist`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
