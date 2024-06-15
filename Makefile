@@ -28,7 +28,7 @@ down:
 	@docker compose down
 
 
-re: clean_cache all
+re: down up
 
 clean: down
 	docker compose down --rmi all -v --remove-orphans
@@ -38,11 +38,6 @@ clean: down
 fclean: clean
 	rm -rf $(PG_DIR) ./ssl/cert $(VAULT_DIR)
 
-clean_cache: down
-
-	@docker system prune -f
-
-	@docker images --format '{{.Repository}}:{{.Tag}}' | xargs -r docker rmi
 
 .PHONY: all create_dir re up down clean fclean list_base_images clean_cache
 

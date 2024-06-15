@@ -43,10 +43,6 @@ label::after {
   display: none;
 }
 
-.game-menu-container {
-  margin-top: 30vh;
-}
-
 .game-menu {
   width: 100%;
   max-width: 400px;
@@ -402,12 +398,68 @@ body {
   height: 100svh;
 }
 
+.menu-btn {
+  all: unset;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  font-size: 30px;
+  padding: 6px 0;
+}
+
+.mini-paddle {
+  height: 20px;
+  aspect-ratio: 1 / 4;
+  background-color: var(--bs-body-color);
+  display: none;
+}
+
+@keyframes move {
+  0% {
+    transform: translateY(0);
+  }
+  25% {
+    transform: translateY(-10px);
+  }
+  50% {
+    transform: translateY(0);
+  }
+  75% {
+    transform: translateY(10px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.menu-btn:hover {
+  justify-content: space-between;
+  .mini-paddle {
+    display: block;
+  }
+  .mini-paddle.p1 {
+    animation: move 1s infinite linear;
+  }
+  .mini-paddle.p2 {
+    animation: move 1s infinite linear;
+    animation-delay: -0.5s;
+  }
+}
+
 @media (max-width: 575px) {
   .menu-nav {
     border: none !important;
     border-top: 2px solid var(--bs-border-color) !important;
     padding: 10px 20px !important;
   }
+  #project-title {
+    font-size: 170px !important;
+  }
+}
+
+#title-container {
+  height: 50vh;
 }
 
 .profile-img-box::before {
@@ -483,7 +535,7 @@ body {
 #project-title {
   font-family: "Jersey 10", sans-serif;
   font-style: normal;
-  font-size: 200px !important;
+  font-size: 200px;
   background-image: linear-gradient(
     var(--logo-color-one) 40%,
     var(--logo-color-two) 80%
@@ -492,9 +544,9 @@ body {
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
-  transform: perspective(200px) rotateX(10deg);
+  transform: perspective(200px) rotateX(10deg) translateY(30px);
   filter: drop-shadow(0px 10px var(--logo-shadow-color));
-  margin: 0;
+  pointer-events: none;
 }
 
 .profile-img-box {

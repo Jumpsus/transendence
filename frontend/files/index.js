@@ -9,7 +9,17 @@ export let isLoggedIn = { status: false };
 
 export const myUsername = { username: "" };
 
+export let host;
+
 document.addEventListener("keypress", (event) => {
+  if (
+    event.target.tagName === "INPUT" ||
+    event.target.tagName === "TEXTAREA" ||
+    event.target.isContentEditable
+  ) {
+    return;
+  }
+
   if (event.key === "F" || event.key === "f") {
     if (!document.fullscreenElement) {
       document.documentElement.requestFullscreen().catch((err) => {
@@ -34,7 +44,7 @@ window.addEventListener("popstate", () => {
 
 export async function setMyUsername() {
   if (localStorage.getItem("jwt") === null) return false;
-  const resp = await fetch(`https://${location.hostname}/user-management/user/getinfo`, {
+  const resp = await fetch(`https://${host}/user-management/user/getinfo`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -49,6 +59,8 @@ export async function setMyUsername() {
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
+  const port = location.port ? `:${location.port}` : '';
+  host = `${location.hostname}${port}`;
   isLoggedIn.status = await setMyUsername();
   setupDarkMode();
   setupNavigation();
