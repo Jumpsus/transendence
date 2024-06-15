@@ -13,6 +13,10 @@ export const gameState = {
   powerUp: { effect: null, player: null },
 };
 
+export const online = {
+  gameField: 0,
+}
+
 export const gameConfig = {
   isOnline: false,
   roomId: null,
@@ -130,7 +134,7 @@ export function init() {
 
   function sendPaddlePos() {
     const message = JSON.stringify({
-      paddle_pos: playerOne.y,
+      paddle_pos: 100 / playerOne.y,
     });
     gameConfig.ws.send(message);
   }
