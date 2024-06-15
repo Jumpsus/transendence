@@ -2,6 +2,7 @@ export default class Paddle {
   constructor(paddleElem, aimElem) {
     this.paddleElem = paddleElem;
     this.aimElem = aimElem;
+    this.onY = 50;
 	this._angle = 0;
   }
 

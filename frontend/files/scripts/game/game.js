@@ -13,6 +13,12 @@ export const gameState = {
   powerUp: { effect: null, player: null },
 };
 
+export const online = {
+  gameField: null,
+  myID: null,
+  theirID: null
+}
+
 export const gameConfig = {
   isOnline: false,
   roomId: null,
@@ -129,18 +135,47 @@ export function init() {
   });
 
   function sendPaddlePos() {
+    let pos;
+    if (online.myID == 1)
+      pos = playerOne.onY;
+    else
+      pos = playerTwo.onY;
     const message = JSON.stringify({
-      paddle_pos: playerOne.y,
+      paddle_pos: pos,
     });
+    // console.log(pos);
     gameConfig.ws.send(message);
   }
 
+  // BALL_SIZE:10
+  // HEIGHT:600
+  // PADDLE_HEIGHT:100
+  // PADDLE_WIDTH:10
+  // WIDTH:800
+  // ball_pos:(2)[668, 32]
+  // ball_vel:(2)[4, -4]
+  // paddle_pos:(2)[2, 2]
+  // player_id:1
+  // score1:0
+  // score2:5
   if (gameConfig.isOnline) {
     let lastTime;
     gameConfig.ws.onmessage = (event) => {
       const data = JSON.parse(event.data);
-      console.log(data);
-      const myID = data.player_id;
+      if (!online.gameField) {
+        online.gameField = {
+          width: data.WIDTH,
+          height: data.HEIGHT
+        }
+      }
+      if (!online.myID) {
+        online.myID = data.player_id;
+        online.theirID = online.myID == 1 ? 2 : 1
+      }
+      playerOne.y = data.paddle_pos[online.theirID - 1];
+      playerTwo.y = data.paddle_pos[online.myID - 1];
+      ball.x = data.ball_pos[0];
+      ball.y = data.ball_pos[1];
     };
     gameConfig.ws.onclose = () => {
       console.log("WebSocket closed");
@@ -150,7 +185,6 @@ export function init() {
         const delta = time - lastTime;
         updatePaddles(delta);
         sendPaddlePos();
-      }
       lastTime = time;
       window.requestAnimationFrame(update);
     }
@@ -255,17 +289,37 @@ export function init() {
   function updatePaddles(delta) {
     const radius = 50 - gameConfig.bufferWidth;
     if (gameState.isHorizontal) {
-      if (keys["w"]) {
-        playerOne.y -= PLAYER_SPEED * delta;
+      if (gameConfig.isOnline) {
+        if (online.myID == 2) {
+          if (keys["ArrowUp"]) {
+            playerTwo.onY -= PLAYER_SPEED * delta;
+          }
+          if (keys["ArrowDown"]) {
+            playerTwo.onY += PLAYER_SPEED * delta;
+          }
+        }
+        else {
+          if (keys["w"]) {
+            playerOne.onY -= PLAYER_SPEED * delta;
+          }
+          if (keys["s"]) {
+            playerOne.onY += PLAYER_SPEED * delta;
+          }
+        }
       }
-      if (keys["s"]) {
-        playerOne.y += PLAYER_SPEED * delta;
-      }
-      if (keys["ArrowUp"]) {
-        playerTwo.y -= PLAYER_SPEED * delta;
-      }
-      if (keys["ArrowDown"]) {
-        playerTwo.y += PLAYER_SPEED * delta;
+      else {
+        if (keys["ArrowUp"]) {
+          playerTwo.y -= PLAYER_SPEED * delta;
+        }
+        if (keys["ArrowDown"]) {
+          playerTwo.y += PLAYER_SPEED * delta;
+        }
+        if (keys["w"]) {
+          playerOne.y -= PLAYER_SPEED * delta;
+        }
+        if (keys["s"]) {
+          playerOne.y += PLAYER_SPEED * delta;
+        }
       }
       if (keys["a"]) {
         playerOne.angle -= AIM_SPEED * delta;

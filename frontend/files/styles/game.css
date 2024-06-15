@@ -38,7 +38,7 @@
 
 .paddle {
   /* transition: all 100ms ease-out; */
-  transition: all 100ms ease-out;
+  /* transition: all 100ms ease-out; */
   background-color: var(--game-ui-color);
 }
 
