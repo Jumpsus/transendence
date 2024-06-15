@@ -24,12 +24,12 @@ class PongGame:
 		if self.ball_pos[1] <= 0 or self.ball_pos[1] >= self.HEIGHT - self.BALL_SIZE:
 			self.ball_vel[1] = -self.ball_vel[1]
 
-		if self.ball_pos[0] < self.PADDLE_WIDTH and self.paddle_pos[0] <= self.ball_pos[1] < self.paddle_pos[0] + self.PADDLE_HEIGHT:
+		if self.ball_pos[0] <= self.PADDLE_WIDTH and self.paddle_pos[0] <= self.ball_pos[1] <= self.paddle_pos[0] + self.PADDLE_HEIGHT:
 			self.ball_vel[0] = -self.ball_vel[0]
-			self.ball_pos[0] = self.PADDLE_WIDTH
-		elif self.ball_pos[0] > self.WIDTH - self.PADDLE_WIDTH - self.BALL_SIZE and self.paddle_pos[1] < self.ball_pos[1] < self.paddle_pos[1] + self.PADDLE_HEIGHT:
+			# self.ball_pos[0] = self.PADDLE_WIDTH
+		elif self.ball_pos[0] >= self.WIDTH - self.PADDLE_WIDTH - self.BALL_SIZE and self.paddle_pos[1] <= self.ball_pos[1] <= self.paddle_pos[1] + self.PADDLE_HEIGHT:
 			self.ball_vel[0] = -self.ball_vel[0]
-			self.ball_pos[0] = self.WIDTH - self.PADDLE_WIDTH 
+			# self.ball_pos[0] = self.WIDTH - self.PADDLE_WIDTH 
 	def check_score(self):
 		if self.ball_pos[0] <= 0:
 			self.score2 += 1
@@ -47,6 +47,7 @@ class PongGame:
 			'PADDLE_HEIGHT': self.PADDLE_HEIGHT / self.HEIGHT * 100,
 			'paddle_pos': self.paddle_pos,
 			'ball_pos': [ self.ball_pos[0] / self.WIDTH * 100, self.ball_pos[1] / self.HEIGHT * 100],
+			'ball_vel': self.ball_vel,
 			'score1': self.score1,
 			'score2': self.score2
 		}
@@ -58,6 +59,7 @@ class PongGame:
 			self.paddle_pos = game_state['paddle_pos']
 			self.ball_pos[0] = game_state['ball_pos'][0] / 100 * self.WIDTH
 			self.ball_pos[1] = game_state['ball_pos'][1] / 100 * self.HEIGHT
+			self.ball_vel = game_state['ball_vel']
 			self.score1 = game_state['score1']
 			self.score2 = game_state['score2']
 

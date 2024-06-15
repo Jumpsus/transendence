@@ -72,16 +72,11 @@ class GameConsumer(AsyncWebsocketConsumer):
 
 
 		lock = redis_instance.lock(f"lock:{self.game_id}game_state", timeout=5)
-		if not lock.acquire(blocking=False):
-			# If the lock is already held, just return without doing anything
-			return
-		try:
+		with lock:
 			self.game_state.from_json(str(cache.get(self.game_id+'game_state')))
 			self.game_state.game_loop(text_data_json['paddle_pos'], self.player_id)
 			message = self.game_state.to_json()
 			cache.set(self.game_id+'game_state', message, timeout=300)
-		finally:
-			lock.release()
 		await self.channel_layer.group_send(
 			self.game_id,
 			{

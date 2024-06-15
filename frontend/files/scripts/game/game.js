@@ -160,6 +160,7 @@ export function init() {
   // score2:5
   if (gameConfig.isOnline) {
     let lastTime;
+    // let lastSockTime;
     gameConfig.ws.onmessage = (event) => {
       const data = JSON.parse(event.data);
       if (!online.myID) {
@@ -170,6 +171,7 @@ export function init() {
       playerTwo.y = data.paddle_pos[online.myID - 1];
       ball.x = data.ball_pos[0];
       ball.y = data.ball_pos[1];
+      console.log(data)
     };
     gameConfig.ws.onclose = () => {
       console.log("WebSocket closed");
@@ -180,7 +182,16 @@ export function init() {
         updatePaddles(delta);
         sendPaddlePos();
       }
+      // if (lastSockTime != undefined && !gameState.isPaused) {
+      //   const delta = time - lastSockTime;
+      //   if (delta > 30) {
+      //     sendPaddlePos();
+      //     lastSockTime = time;
+      //   }
+      // }
       lastTime = time;
+      // if (lastSockTime == undefined)
+      //   lastSockTime = time;
       window.requestAnimationFrame(update);
     }
     window.requestAnimationFrame(update);
