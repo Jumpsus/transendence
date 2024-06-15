@@ -4,9 +4,9 @@ class PongGame:
 	def __init__(self):
 		self.WIDTH = 800
 		self.HEIGHT = 600
-		self.PADDLE_WIDTH = 10
-		self.PADDLE_HEIGHT = 100
-		self.BALL_SIZE = 10
+		self.PADDLE_WIDTH = 16
+		self.PADDLE_HEIGHT = 120
+		self.BALL_SIZE = 24
 
 		paddle_pos = self.HEIGHT // 2 - self.PADDLE_HEIGHT // 2
 		self.paddle_pos = [paddle_pos, paddle_pos]
@@ -24,11 +24,12 @@ class PongGame:
 		if self.ball_pos[1] <= 0 or self.ball_pos[1] >= self.HEIGHT - self.BALL_SIZE:
 			self.ball_vel[1] = -self.ball_vel[1]
 
-		if self.ball_pos[0] <= self.PADDLE_WIDTH and self.paddle_pos[0] <= self.ball_pos[1] <= self.paddle_pos[0] + self.PADDLE_HEIGHT:
+		if self.ball_pos[0] < self.PADDLE_WIDTH and self.paddle_pos[0] <= self.ball_pos[1] < self.paddle_pos[0] + self.PADDLE_HEIGHT:
 			self.ball_vel[0] = -self.ball_vel[0]
-		elif self.ball_pos[0] >= self.WIDTH - self.PADDLE_WIDTH - self.BALL_SIZE and self.paddle_pos[1] <= self.ball_pos[1] <= self.paddle_pos[1] + self.PADDLE_HEIGHT:
+			self.ball_pos[0] = self.PADDLE_WIDTH
+		elif self.ball_pos[0] > self.WIDTH - self.PADDLE_WIDTH - self.BALL_SIZE and self.paddle_pos[1] < self.ball_pos[1] < self.paddle_pos[1] + self.PADDLE_HEIGHT:
 			self.ball_vel[0] = -self.ball_vel[0]
-
+			self.ball_pos[0] = self.WIDTH - self.PADDLE_WIDTH 
 	def check_score(self):
 		if self.ball_pos[0] <= 0:
 			self.score2 += 1
@@ -43,14 +44,9 @@ class PongGame:
 
 	def to_json(self):
 		game_state = {
-			'WIDTH': self.WIDTH,
-			'HEIGHT': self.HEIGHT,
-			'PADDLE_WIDTH': self.PADDLE_WIDTH,
-			'PADDLE_HEIGHT': self.PADDLE_HEIGHT,
-			'BALL_SIZE': self.BALL_SIZE,
+			'PADDLE_HEIGHT': self.PADDLE_HEIGHT / self.HEIGHT * 100,
 			'paddle_pos': self.paddle_pos,
 			'ball_pos': self.ball_pos,
-			'ball_vel': self.ball_vel,
 			'score1': self.score1,
 			'score2': self.score2
 		}
@@ -58,14 +54,9 @@ class PongGame:
 
 	def from_json(self, json_str):
 			game_state = json.loads(json_str)
-			self.WIDTH = game_state["WIDTH"]
-			self.HEIGHT = game_state['HEIGHT']
-			self.PADDLE_WIDTH = game_state['PADDLE_WIDTH']
-			self.PADDLE_HEIGHT = game_state['PADDLE_HEIGHT']
-			self.BALL_SIZE = game_state['BALL_SIZE']
+			self.PADDLE_HEIGHT = game_state['PADDLE_HEIGHT'] / 100 * self.HEIGHT
 			self.paddle_pos = game_state['paddle_pos']
 			self.ball_pos = game_state['ball_pos']
-			self.ball_vel = game_state['ball_vel']
 			self.score1 = game_state['score1']
 			self.score2 = game_state['score2']
 

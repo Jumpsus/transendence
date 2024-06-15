@@ -74,7 +74,6 @@ class GameConsumer(AsyncWebsocketConsumer):
 		lock = redis_instance.lock(f"lock:{self.game_id}game_state", timeout=5)
 		if not lock.acquire(blocking=False):
 			# If the lock is already held, just return without doing anything
-			print("Lock is already held, returning...")
 			return
 		try:
 			self.game_state.from_json(str(cache.get(self.game_id+'game_state')))
