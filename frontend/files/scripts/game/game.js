@@ -143,7 +143,7 @@ export function init() {
     let lastTime;
     gameConfig.ws.onmessage = (event) => {
       const data = JSON.parse(event.data);
-      console.log(data.player_id);
+      console.log(data);
       const myID = data.player_id;
     };
     gameConfig.ws.onclose = () => {
