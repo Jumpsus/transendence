@@ -24,10 +24,10 @@ class PongGame:
 		if self.ball_pos[1] <= 0 or self.ball_pos[1] >= self.HEIGHT - self.BALL_SIZE:
 			self.ball_vel[1] = -self.ball_vel[1]
 
-		if self.ball_pos[0] <= self.PADDLE_WIDTH and self.paddle_pos[0] <= self.ball_pos[1] <= self.paddle_pos[0] + self.PADDLE_HEIGHT:
+		if self.ball_pos[0] <= self.PADDLE_WIDTH + 16 and self.paddle_pos[0] <= self.ball_pos[1] <= self.paddle_pos[0] + self.PADDLE_HEIGHT:
 			self.ball_vel[0] = -self.ball_vel[0]
 			# self.ball_pos[0] = self.PADDLE_WIDTH
-		elif self.ball_pos[0] >= self.WIDTH - self.PADDLE_WIDTH - self.BALL_SIZE and self.paddle_pos[1] <= self.ball_pos[1] <= self.paddle_pos[1] + self.PADDLE_HEIGHT:
+		elif self.ball_pos[0] >= self.WIDTH - self.PADDLE_WIDTH - 16 - self.BALL_SIZE and self.paddle_pos[1] <= self.ball_pos[1] <= self.paddle_pos[1] + self.PADDLE_HEIGHT:
 			self.ball_vel[0] = -self.ball_vel[0]
 			# self.ball_pos[0] = self.WIDTH - self.PADDLE_WIDTH 
 	def check_score(self):
