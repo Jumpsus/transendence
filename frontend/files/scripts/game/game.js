@@ -162,12 +162,6 @@ export function init() {
     let lastTime;
     gameConfig.ws.onmessage = (event) => {
       const data = JSON.parse(event.data);
-      if (!online.gameField) {
-        online.gameField = {
-          width: data.WIDTH,
-          height: data.HEIGHT
-        }
-      }
       if (!online.myID) {
         online.myID = data.player_id;
         online.theirID = online.myID == 1 ? 2 : 1
