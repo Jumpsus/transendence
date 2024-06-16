@@ -5,22 +5,23 @@ from user_app.models import UserManagement
 from datetime import datetime
 from user_app import utils, database
 from user_app.views import validator
+from jsonschema import validate
 import json
 
 @csrf_exempt
 def make_relation(req):
     try:
         body = utils.getJsonBody(req.body)
-        # schema = {
-        #     "type" : "object",
-        #     "properties" : {
-        #         "username": {"type" : "string"},
-        #         "action": {"type" : "string"},
-        #     },
-        #     "required": ["username", "action"]
-        # }
+        schema = {
+            "type" : "object",
+            "properties" : {
+                "username": {"type" : "string"},
+                "action": {"type" : "string"},
+            },
+            "required": ["username", "action"]
+        }
 
-        # validate(instance=body, schema=schema)
+        validate(instance=body, schema=schema)
         other_user = body.get("username")
         action = body.get("action")
     except:
