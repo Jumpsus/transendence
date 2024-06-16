@@ -11,16 +11,16 @@ import json
 def make_relation(req):
     try:
         body = utils.getJsonBody(req.body)
-        schema = {
-            "type" : "object",
-            "properties" : {
-                "username": {"type" : "string"},
-                "action": {"type" : "string"},
-            },
-            "required": ["username", "action"]
-        }
+        # schema = {
+        #     "type" : "object",
+        #     "properties" : {
+        #         "username": {"type" : "string"},
+        #         "action": {"type" : "string"},
+        #     },
+        #     "required": ["username", "action"]
+        # }
 
-        validate(instance=body, schema=schema)
+        # validate(instance=body, schema=schema)
         other_user = body.get("username")
         action = body.get("action")
     except:

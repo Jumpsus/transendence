@@ -220,6 +220,17 @@ def get_other_info(req):
     if len(other_u) == 0:
         return utils.responseJsonErrorMessage(400, "13", "User Not Found")
 
+    # find other friend list
+    friend_list = []
+    other_friends = database.find_friend(other_u[0])
+    for other_friend in other_friends:
+        if other_friend.user_a == other_u[0]:
+            f = other_friend.user_b.username
+        else:
+            f = other_friend.user_a.username
+        friend_list.append(f)
+
+    # find relation with user
     found, u = validator.validate_user(req)
     if found != True:
         return utils.responseJsonErrorMessage(400, "30", "Invalid Session")
@@ -228,6 +239,8 @@ def get_other_info(req):
         return utils.responseJsonErrorMessage(400, "13", "User Not Found")
 
     relation = friend_management.map_relation(u[0], other_u[0])
+
+    # get win lose stat
     win, lose = database.find_user_win_lose_stats(other_u[0])
 
     response_data = {
@@ -243,6 +256,7 @@ def get_other_info(req):
         "level": 0,
         "relation": relation,
         "status": "offline", # TODO handle this case
+        "friends": friend_list,
     }
 
     return HttpResponse(json.dumps(response_data), content_type="application/json", status=200)
