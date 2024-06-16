@@ -2,7 +2,7 @@ import { Component } from "../library/component.js";
 
 export class Tournament extends Component {
   constructor() {
-    super(document.getElementById("content-wrapper"));
+    super(document.body);
     this.view = `
 	<div class="w-100 h-100 d-flex justify-content-center align-items-center">
 	<div

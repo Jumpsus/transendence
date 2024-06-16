@@ -2,7 +2,7 @@ import { Component } from "../library/component.js";
 
 export class Game extends Component {
   constructor() {
-    super(document.getElementById("content-wrapper"));
+    super(document.body);
     this.view = `
 	<div class="w-100 h-100 position-relative" id="game-container">
 			<div class="position-absolute" id="pause-text">PAUSED</div>
