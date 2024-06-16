@@ -49,6 +49,15 @@ services:
     extends:
       file: pong_game/docker-compose.yml
       service: redis
+
+  mock:
+    restart: always
+    extends:
+      file: mock_communication/docker-compose.yml
+      service: mock-communication
+    depends_on:
+      - user-management
+      - pong-game
 volumes:
   ssl_volume:
     name: ssl_volume
