@@ -167,10 +167,10 @@ export function init() {
         online.myID = data.player_id;
         online.theirID = online.myID == 1 ? 2 : 1
       }
-      playerOne.y = data.paddle_pos[online.theirID - 1];
-      playerTwo.y = data.paddle_pos[online.myID - 1];
       ball.x = data.ball_pos[0];
       ball.y = data.ball_pos[1];
+      playerOne.y = data.paddle_pos[0];
+      playerTwo.y = data.paddle_pos[1];
       console.log(data)
     };
     gameConfig.ws.onclose = () => {
