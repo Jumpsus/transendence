@@ -1,13 +1,16 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
+from jsonschema import validate
+import json
 
 from user_app import utils, database
+from user_app.views import validator
 
 #validate via app-secret
 @csrf_exempt
 def save_game_result(req):
-    verify = validate_internal_key(req)
+    verify = validator.validate_internal_key(req)
 
     if verify == False:
         return utils.responseJsonErrorMessage(400, "30", "Invalid Session")
@@ -19,8 +22,8 @@ def save_game_result(req):
             "properties" : {
                 "winner": {"type" : "string"},
                 "loser": {"type" : "string"},
-                "winner_score": {"type" : "int"},
-                "loser_score": {"type": "int"}
+                "winner_score": {"type" : "number"},
+                "loser_score": {"type": "number"}
             },
             "required": ["winner", "loser", "winner_score", "loser_score"]
         }
@@ -31,7 +34,6 @@ def save_game_result(req):
         loser = body["loser"]
         winner_score = body["winner_score"]
         loser_score = body["loser_score"]
-
     except:
         return utils.responseJsonErrorMessage(400, "10", "Invalid request")
 
@@ -43,7 +45,7 @@ def save_game_result(req):
     if len(loser_u) == 0:
         return utils.responseJsonErrorMessage(400, "13", "User Not Found")
     
-    if database.create_match_history(winner_u, loser_u, winner_score, loser_score) == False:
+    if database.create_match_history(winner_u[0], loser_u[0], winner_score, loser_score) == False:
         return utils.responseJsonErrorMessage(500, "20", "Internal error")
 
     return utils.responseJsonErrorMessage(200, "00", "Success")
@@ -57,7 +59,7 @@ def get_match_history(req):
     if len(u) == 0:
         return utils.responseJsonErrorMessage(400, "13", "User Not Found")
 
-    match_historys = database.find_user_match_history(u)
+    match_historys = database.find_user_match_history(u[0])
 
     match_list = []
 
@@ -65,10 +67,12 @@ def get_match_history(req):
         d = {"winner": match.user_w.username, "loser": match.user_l.username ,"win_score": match.score_w, "lose_score":match.score_l}
         match_list.append(d)
     
-    response = {
+    response_data = {
         "code": "00",
         "match_history": match_list,
     }
+
+    return HttpResponse(json.dumps(response_data), content_type="application/json", status=200)
 
 @csrf_exempt
 def get_other_match_history(req):
@@ -94,7 +98,11 @@ def get_other_match_history(req):
     except:
         return utils.responseJsonErrorMessage(400, "10", "Invalid request")
 
-    match_historys = database.find_user_match_history(other_user)
+    other_u = database.find_user_by_username(other_user)
+    if len(other_u) == 0:
+        return utils.responseJsonErrorMessage(400, "13", "User Not Found")
+
+    match_historys = database.find_user_match_history(other_u[0])
 
     match_list = []
 
@@ -102,7 +110,9 @@ def get_other_match_history(req):
         d = {"winner": match.user_w.username, "loser": match.user_l.username ,"win_score": match.score_w, "lose_score":match.score_l}
         match_list.append(d)
     
-    response = {
+    response_data = {
         "code": "00",
         "match_history": match_list,
     }
+    
+    return HttpResponse(json.dumps(response_data), content_type="application/json", status=200)
