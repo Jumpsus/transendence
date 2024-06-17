@@ -69,13 +69,32 @@ a {
   }
 }
 
+#loginForm,
+#registerForm {
+  max-width: 300px;
+}
+
+.form-control.is-invalid {
+  background-image: none;
+}
+
+/* .form-control.is-invalid::before {
+  content: "!";
+  display: block;
+  position: absolute;
+  right: 0;
+  top: 0;
+  color: var(--danger-color);
+  z-index: 1000;
+} */
+
 #loginForm input,
-#registerForm input{
+#registerForm input {
   border: none;
 }
 
 #loginForm label,
-#registerForm label{
+#registerForm label {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
@@ -84,9 +103,14 @@ a {
 #loginForm input:focus + label,
 #loginForm input:valid + label,
 #registerForm input:focus + label,
-#registerForm input:valid + label{
+#registerForm input:valid + label {
   top: -10px;
   font-size: 12px;
+}
+
+.invalid-feedback,
+.text-danger {
+  color: var(--danger-color) !important;
 }
 
 .press-start-btn {

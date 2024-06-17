@@ -38,7 +38,7 @@ def login(req):
     u = database.find_user_by_username_passwd(user, passwd)
 
     if len(u) == 0:
-        return utils.responseJsonErrorMessage(400, "11", "Mismatch username or password")
+        return utils.responseJsonErrorMessage(401, "11", "Invalid username or password")
 
     response = utils.responseJsonErrorMessage(200, "00", "Success")
 

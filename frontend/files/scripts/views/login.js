@@ -9,8 +9,7 @@ export class Login extends Component {
     this.view = `
 	<div class="d-flex flex-column h-100 w-100 overflow-auto">
 		<div class="d-flex flex-column justify-content-between align-items-center" id="top-screen">
-			<div class="fs-4 text-center">Don't have an
-			account? <a href="/Register" class="link-text" data-link>Sign&nbsp;up</a></div>
+			<a href="/Register" class="fs-4" data-link> >>> Sign up <<< </a>
 			<h1 id="project-title">PONG</h1>
 		</div>
 		<div class="d-flex h-50 flex-column justify-content-between align-items-center">
@@ -26,6 +25,7 @@ export class Login extends Component {
 						placeholder="password" required autocomplete="new-password" name="password">
 					<label for="login-password" class="form-label">Insert password</label>
 				</div>
+				<div class="text-center text-danger" id="err-msg"></div>
 			</form>
 			<div class="fs-4 pb-5">© 42Bkk 2567</div>
 		</div>
@@ -35,57 +35,43 @@ export class Login extends Component {
     this.setupEventListeners();
   }
 
-  setupEventListeners() {
+  async setupEventListeners() {
     const loginForm = document.getElementById("loginForm");
+    const usernameElm = document.getElementById("login-username");
+    const passwordElm = document.getElementById("login-password");
+    const errMsg = document.getElementById("err-msg");
     loginForm.addEventListener("submit", async function (event) {
       event.preventDefault();
-      const usernameElm = document.getElementById("login-username");
-      const passwordElm = document.getElementById("login-password");
 
       const username = usernameElm.value.toLowerCase();
       const password = passwordElm.value;
-      if (username === "") usernameElm.classList.add("is-invalid");
-      else usernameElm.classList.remove("is-invalid");
-      if (password === "") passwordElm.classList.add("is-invalid");
-      else passwordElm.classList.remove("is-invalid");
-      if (username === "" || password === "") return;
+      if (username === "" || password === "") {
+        errMsg.textContent = "Invalid username or password";
+        return;
+      }
 
       const requestBody = {
         username: username,
         password: password,
       };
 
-      fetch(`https://${host}/user-management/user/login`, {
+      const resp = await fetch(`https://${host}/user-management/user/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(requestBody),
-      })
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("Network response was not ok");
-          }
-          return response.json();
-        })
-        .then((data) => {
-          localStorage.setItem("jwt", data.token);
-          return setMyUsername();
-        })
-        .then((resp) => {
-          isLoggedIn.status = resp;
-          if (isLoggedIn.status) replaceHistoryAndGoTo("/");
-          else console.log("login failed");
-        })
-        .catch((error) => {
-          console.log(error);
-          if (document.getElementById("error-alert")) return;
-          const errorAlert = document.createElement("div");
-          errorAlert.id = "error-alert";
-          errorAlert.classList.add("text-center", "pt-2", "text-danger");
-          errorAlert.textContent = "Invalid username or password";
-          loginForm.insertAdjacentElement("afterend", errorAlert);
-        });
+      });
+      const data = await resp.json();
+      if (!resp.ok) {
+        errMsg.textContent = data.message;
+      } else {
+        localStorage.setItem("jwt", data.token);
+        const loginSuccess = await setMyUsername();
+        isLoggedIn.status = loginSuccess;
+        if (isLoggedIn.status) replaceHistoryAndGoTo("/");
+        else errMsg.textContent = "Login failed";
+      }
     });
   }
 }
