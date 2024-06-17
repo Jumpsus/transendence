@@ -11,21 +11,25 @@ export class MatchHistory extends Component {
 		<div>Opponent</div>
 		<div>Leo</div>
 		<div>Preed</div>
+		<div>windowshopper</div>
 	</div>
-	<div id="score-column" class="d-flex flex-column align-items-center">
+	<div id="score-column">
 		<div>Score</div>
 		<div>1:11</div>
 		<div>11:10</div>
+		<div>4:11</div>
 	</div>
-	<div id="result-column" class="d-flex flex-column align-items-end align-items-center">
+	<div id="result-column">
 		<div>Result</div>
 		<div>Won</div>
 		<div>Lost</div>
+		<div>Lost</div>
 	</div>
-	<div id="date-column" class="d-none d-sm-flex align-items-end flex-column">
+	<div id="date-column" class="d-none d-sm-block">
 		<div>Date</div>
 		<div>01-01-02</div>
 		<div>01-02-03</div>
+		<div>01-02-01</div>
 	</div>
 </div>
 		`;
@@ -34,8 +38,7 @@ export class MatchHistory extends Component {
   }
 
   render() {
-	if (!document.getElementById("profileHeader"))
-		new Profile;
+    if (!document.getElementById("profileHeader")) new Profile();
     super.render();
     makeLinkActive(document.getElementById("profileMenu"));
   }
