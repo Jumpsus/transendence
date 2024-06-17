@@ -13,22 +13,22 @@ export class Home extends Component {
 			<div class="fs-5 text-danger d-none text-center" id="sock-err-msg"></div>
 			<div class="menu-btn" id="start-btn">
 				<div class="mini-paddle p1"></div>
-				Start
+				<span>Start</span>
 				<div class="mini-paddle p2"></div>
 			</div>
 			<a href="/Options" class="menu-btn" data-link>
 				<div class="mini-paddle p2"></div>
-				Options
+				<span>Options</span>
 				<div class="mini-paddle p1"></div>
 			</a>
 			<a href="/${myUsername.username}" class="menu-btn" data-link>
 				<div class="mini-paddle p1"></div>
-				Profile
+				<span>Profile</span>
 				<div class="mini-paddle p2"></div>
 			</a>
 			<div class="menu-btn" id="logout-button">
 				<div class="mini-paddle p2"></div>
-				Exit
+				<span>Exit</span>
 				<div class="mini-paddle p1"></div>
 			</div>
 		</div>
