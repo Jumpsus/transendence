@@ -11,6 +11,9 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+from projects import vault_handler
+
+import hvac, urllib3
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,6 +23,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
+urllib3.disable_warnings()
+vault_secret = vault_handler.init_vault()
+    
+SECRET_KEY = vault_secret.get("usermanagement_secret", "")
+JWT_SECRET = vault_secret.get("jwt_secret", "")
+API_KEY = vault_secret.get("api_key", "")
+
 SECRET_KEY = 'django-insecure-a=r9q=dba1t5w&8_be56vmmu#j-g)f$ojdgzvqumb=g4f4*u=z'
 
 # SECURITY WARNING: don't run with debug turned on in production!
