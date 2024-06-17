@@ -16,6 +16,9 @@ def status(req):
 
 @csrf_exempt
 def login(req):
+    if req.method != 'POST':
+        return utils.responseJsonErrorMessage(400, "10", "Invalid request (Method)")
+
     try:
         body = utils.getJsonBody(req.body)
         schema = {
@@ -61,6 +64,9 @@ def login(req):
 
 @csrf_exempt
 def register(req):
+    if req.method != 'POST':
+        return utils.responseJsonErrorMessage(400, "10", "Invalid request (Method)")
+
     try:
         body = utils.getJsonBody(req.body)
         schema = {
@@ -115,6 +121,8 @@ def loginlist(req):
 
 @csrf_exempt
 def user_list(req):
+    if req.method != 'POST' and req.method != 'GET' :
+        return utils.responseJsonErrorMessage(400, "10", "Invalid request (Method)")
 
     found, u = validator.validate_user(req)
     if found != True:
@@ -175,6 +183,8 @@ def user_list(req):
     return HttpResponse(json.dumps(response_data), content_type="application/json", status=200)
 
 def get_info(req):
+    if req.method != 'GET' :
+        return utils.responseJsonErrorMessage(400, "10", "Invalid request (Method)")
 
     found, u = validator.validate_user(req)
     if found != True:
@@ -202,6 +212,8 @@ def get_info(req):
 
 @csrf_exempt
 def get_other_info(req):
+    if req.method != 'POST':
+        return utils.responseJsonErrorMessage(400, "10", "Invalid request (Method)")
 
     try:
         body = utils.getJsonBody(req.body)
@@ -265,6 +277,8 @@ def get_other_info(req):
 
 @csrf_exempt
 def update_info(req):
+    if req.method != 'POST' :
+        return utils.responseJsonErrorMessage(400, "10", "Invalid request (Method)")
 
     try:
         body = utils.getJsonBody(req.body)
@@ -290,6 +304,8 @@ def update_info(req):
 
 @csrf_exempt
 def get_relation(req):
+    if req.method != 'POST':
+        return utils.responseJsonErrorMessage(400, "10", "Invalid request (Method)")
 
     try:
         body = utils.getJsonBody(req.body)
@@ -329,6 +345,9 @@ def get_relation(req):
 
 @csrf_exempt
 def change_password(req):
+    if req.method != 'POST':
+        return utils.responseJsonErrorMessage(400, "10", "Invalid request (Method)")
+
     try:
         body = utils.getJsonBody(req.body)
         schema = {
@@ -369,6 +388,9 @@ def change_password(req):
 
 @csrf_exempt
 def stamp_status(req):
+    if req.method != 'POST':
+        return utils.responseJsonErrorMessage(400, "10", "Invalid request (Method)")
+
     found, u = validator.validate_user(req)
     if found != True:
         return utils.responseJsonErrorMessage(400, "30", "Invalid Session")
@@ -405,6 +427,8 @@ def stamp_status(req):
 
 @csrf_exempt
 def logout(req):
+    if req.method != 'GET' :
+        return utils.responseJsonErrorMessage(400, "10", "Invalid request (Method)")
 
     found, u = validator.validate_user(req)
     if found != True:

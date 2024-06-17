@@ -10,6 +10,9 @@ from user_app.views import validator
 #validate via app-secret
 @csrf_exempt
 def save_game_result(req):
+    if req.method != 'POST':
+        return utils.responseJsonErrorMessage(400, "10", "Invalid request (Method)")
+
     verify = validator.validate_internal_key(req)
 
     if verify == False:
@@ -51,6 +54,8 @@ def save_game_result(req):
     return utils.responseJsonErrorMessage(200, "00", "Success")
 
 def get_match_history(req):
+    if req.method != 'GET':
+        return utils.responseJsonErrorMessage(400, "10", "Invalid request (Method)")
 
     found, u = validator.validate_user(req)
     if found != True:
@@ -76,6 +81,9 @@ def get_match_history(req):
 
 @csrf_exempt
 def get_other_match_history(req):
+    if req.method != 'POST':
+        return utils.responseJsonErrorMessage(400, "10", "Invalid request (Method)")
+
     found, u = validator.validate_user(req)
     if found != True:
         return utils.responseJsonErrorMessage(400, "30", "Invalid Session")

@@ -15,6 +15,8 @@ from PIL import Image
 
 @csrf_exempt
 def upload_image(req):
+    if req.method != 'POST':
+        return utils.responseJsonErrorMessage(400, "10", "Invalid request (Method)")
 
     found, user = validator.validate_user(req)
     if found != True:
