@@ -18,7 +18,8 @@ def create_user(username, password, name = "", last_name = "", phone_number = ""
                             phone_number = phone_number,
                             image = "default.png",
                             tag = tag,
-                            jti = jti)
+                            jti = jti,
+                            status = "online")
 
     try: 
         user.save()
@@ -161,4 +162,4 @@ def find_user_win_lose_stats(user):
     return len(win_history), len(lose_history)
 
 def find_user_match_history(user):
-    return MatchHistory.objects.filter(Q(user_w = user) | Q(user_l = user)).order_bY('-created_at')
+    return MatchHistory.objects.filter(Q(user_w = user) | Q(user_l = user)).order_by('-created_at')
