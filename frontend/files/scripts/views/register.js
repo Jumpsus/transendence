@@ -17,18 +17,18 @@ export class Register extends Component {
 				<form id="registerForm" novalidate>
 					<button class="press-start-btn">Press start</button>
 					<div class="form-floating">
-						<input type="text" id="signup-username" class="form-control rounded-0" placeholder="username"
+						<input type="text" id="signup-username" class="form-control rounded-0 text-center" placeholder="username"
 							required autocomplete="username" name="username">
 						<label for="signup-username" class="form-label">Insert username</label>
 					</div>
 					<div class="form-floating">
-						<input type="password" id="signup-password" class="form-control rounded-0"
+						<input type="password" id="signup-password" class="form-control rounded-0 text-center"
 							placeholder="password" required autocomplete="new-password" name="password">
 						<label for="signup-password" class="form-label">Insert password</label>
 						<div class="invalid-feedback text-center">Password must have at least 5 characters</div>
 					</div>
 					<div class="form-floating">
-						<input type="password" id="signup-password-confirm" class="form-control rounded-0"
+						<input type="password" id="signup-password-confirm" class="form-control rounded-0 text-center"
 							placeholder="confirm password" required autocomplete="new-password" name="passwordRepeated">
 						<label for="signup-password-confirm" class="form-label">Confirm
 							password</label>

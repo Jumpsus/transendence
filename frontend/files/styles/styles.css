@@ -103,6 +103,11 @@ a {
 
 .form-control.is-invalid {
   background-image: none;
+  padding-right: 0.75rem;
+}
+
+.form-control.is-invalid:focus {
+  box-shadow: none;
 }
 
 /* general */

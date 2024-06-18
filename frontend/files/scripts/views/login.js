@@ -16,12 +16,12 @@ export class Login extends Component {
 			<form id="loginForm" novalidate>
 				<button class="press-start-btn">Press start</button>
 				<div class="form-floating">
-					<input type="text" id="login-username" class="form-control rounded-0" placeholder="username" required
+					<input type="text" id="login-username" class="form-control rounded-0 text-center" placeholder="username" required
 						autocomplete="username" name="username">
 					<label for="login-username" class="form-label">Insert username</label>
 				</div>
 				<div class="form-floating">
-					<input type="password" id="login-password" class="form-control border-top-0 rounded-0"
+					<input type="password" id="login-password" class="form-control rounded-0 text-center"
 						placeholder="password" required autocomplete="new-password" name="password">
 					<label for="login-password" class="form-label">Insert password</label>
 				</div>
