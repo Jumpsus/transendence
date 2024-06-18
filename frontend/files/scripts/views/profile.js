@@ -9,7 +9,7 @@ export class Profile extends Component {
   constructor() {
     super(document.body);
     this.view = `
-	<div id="profile-window" class="d-flex flex-column py-4  px-sm-4 px-2 position-relative overflow-scroll">
+	<div id="profile-window" class="d-flex flex-column py-4  px-sm-4 px-2 position-relative overflow-auto">
 		<a id="back-button" class="position-absolute top-0 end-0 me-4 mt-4 fs-4" data-link></a>
 		<div class="d-flex flex-sm-row flex-column mb-4" id="profileHeader">
 			<div class="profile-img-box position-relative align-self-center" id="profile-img-box"

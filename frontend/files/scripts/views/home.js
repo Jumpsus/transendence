@@ -7,13 +7,15 @@ export class Home extends Component {
   constructor() {
     super(document.body);
     this.view = `
-	<div class="d-flex flex-column">
-		<h1 id="project-title">PONG</h1>
-		<div class="d-flex flex-column px-3 game-menu pb-5 align-self-center">
+	<div class="d-flex flex-column h-100">
+		<div class="d-flex flex-column justify-content-end align-items-center" id="top-screen">
+			<h1 id="project-title">PONG</h1>
+		</div>
+		<div class="d-flex h-50 flex-column px-3 game-menu pb-5 align-self-center overflow-auto">
 			<div class="fs-5 text-danger d-none text-center" id="sock-err-msg"></div>
 			<div class="menu-btn" id="start-btn">
 				<div class="mini-paddle p1"></div>
-				<span>Start</span>
+				<span>Play</span>
 				<div class="mini-paddle p2"></div>
 			</div>
 			<a href="/Options" class="menu-btn" data-link>
