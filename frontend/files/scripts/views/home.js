@@ -5,32 +5,34 @@ import { myUsername, isLoggedIn, host } from "../../index.js";
 
 export class Home extends Component {
   constructor() {
-    super(document.getElementById("content-wrapper"));
+    super(document.body);
     this.view = `
-	<div class="d-flex flex-column justify-content-end align-self-center" id="title-container">
-		<h1 id="project-title">PONG</h1>
-	</div>
-	<div class="d-flex flex-column px-3 game-menu pb-5 align-self-center">
-		<div class="fs-5 text-danger d-none text-center" id="sock-err-msg"></div>
-		<div class="menu-btn" id="start-btn">
-			<div class="mini-paddle p1"></div>
-			Start
-			<div class="mini-paddle p2"></div>
+	<div class="d-flex flex-column h-100">
+		<div class="d-flex flex-column justify-content-end align-items-center" id="top-screen">
+			<h1 id="project-title">PONG</h1>
 		</div>
-		<a href="/Options" class="menu-btn" data-link>
-			<div class="mini-paddle p2"></div>
-			Options
-			<div class="mini-paddle p1"></div>
-		</a>
-		<a href="/${myUsername.username}" class="menu-btn" data-link>
-			<div class="mini-paddle p1"></div>
-			Profile
-			<div class="mini-paddle p2"></div>
-		</a>
-		<div class="menu-btn" id="logout-button">
-			<div class="mini-paddle p2"></div>
-			Exit
-			<div class="mini-paddle p1"></div>
+		<div class="d-flex h-50 flex-column px-3 game-menu pb-5 align-self-center overflow-auto">
+			<div class="fs-5 text-danger d-none text-center" id="sock-err-msg"></div>
+			<div class="menu-btn" id="start-btn">
+				<div class="mini-paddle p1"></div>
+				<span>Play</span>
+				<div class="mini-paddle p2"></div>
+			</div>
+			<a href="/Options" class="menu-btn" data-link>
+				<div class="mini-paddle p2"></div>
+				<span>Options</span>
+				<div class="mini-paddle p1"></div>
+			</a>
+			<a href="/${myUsername.username}" class="menu-btn" data-link>
+				<div class="mini-paddle p1"></div>
+				<span>Profile</span>
+				<div class="mini-paddle p2"></div>
+			</a>
+			<div class="menu-btn" id="logout-button">
+				<div class="mini-paddle p2"></div>
+				<span>Exit</span>
+				<div class="mini-paddle p1"></div>
+			</div>
 		</div>
 	</div>
 	`;

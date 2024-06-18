@@ -1,13 +1,13 @@
 import { Component } from "../library/component.js";
 import { makeLinkActive } from "../utils/other.js";
 import { replaceHistoryAndGoTo } from "../utils/router.js";
-import { host } from "../../index.js"
+import { host } from "../../index.js";
 
 export class Settings extends Component {
   constructor() {
     super(document.getElementById("profile-wrapper"));
     this.view = `
-		<div class="container m-0 p-0 settings-cont">
+		<div class="">
 			<div class="col">
 				<h4 class="mb-4">Personal information</h4>
 				<form class="row g-3">
@@ -34,16 +34,15 @@ export class Settings extends Component {
 							</div>
 						</div>
 					</div>
-					<div class="d-flex justify-content-end">
-						<button type="button" class="btn btn-secondary rounded-0" id="edit-button">Edit</button>
-						<button type="submit" class="btn btn-primary me-2 rounded-0" style="display: none;"
+					<div class="d-flex justify-content-end gap-3">
+						<button type="button" class="my-button secondary-button" id="edit-button">Edit</button>
+						<button type="submit" class="my-button primary-button" style="display: none;"
 							id="save-button">Save</button>
-						<button type="button" class="btn btn-secondary rounded-0" style="display: none;"
+						<button type="button" class="my-button secondary-button" style="display: none;"
 							id="reset-button">Cancel</button>
 					</div>
 				</form>
 			</div>
-			<hr class="my-4">
 			<div class="col">
 				<h4 class="mb-4">Account information</h4>
 					<form class="row g-3">
@@ -66,11 +65,11 @@ export class Settings extends Component {
 								<input type="password" class="form-control  rounded-0" autocomplete="new-password" id="new-profile-password-2">
 							</div>
 							<div class="text-danger" id="password-error"></div>
-							<div class="d-flex justify-content-end mt-3">
-								<button type="button" class="btn btn-secondary rounded-0" id="edit-password-button">Edit</button>
-								<button type="submit" class="btn btn-primary me-2 rounded-0" style="display: none;"
+							<div class="d-flex justify-content-end gap-3 mt-3">
+								<button type="button" class="my-button secondary-button" id="edit-password-button">Edit</button>
+								<button type="submit" class="my-button primary-button" style="display: none;"
 									id="save-password-button">Save</button>
-								<button type="button" class="btn btn-secondary rounded-0" style="display: none;"
+								<button type="button" class="my-button secondary-button" style="display: none;"
 									id="reset-password-button">Cancel</button>
 							</div>
 						</div>

@@ -135,7 +135,7 @@ export function init() {
   });
 
   function sendPaddlePos() {
-    let pos;
+    let pos = 50;
     if (online.myID == 1)
       pos = playerOne.onY;
     else
@@ -297,14 +297,14 @@ export function init() {
     if (gameState.isHorizontal) {
       if (gameConfig.isOnline) {
         if (online.myID == 2) {
-          if (keys["ArrowUp"]) {
+          if (keys["w"]) {
             playerTwo.onY -= PLAYER_SPEED * delta;
           }
-          if (keys["ArrowDown"]) {
+          if (keys["s"]) {
             playerTwo.onY += PLAYER_SPEED * delta;
           }
         }
-        else {
+        else if (online.myID == 1) {
           if (keys["w"]) {
             playerOne.onY -= PLAYER_SPEED * delta;
           }
