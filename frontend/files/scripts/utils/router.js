@@ -3,14 +3,16 @@ import { Login } from "../views/login.js";
 import { Profile } from "../views/profile.js";
 import { Tournament } from "../views/tournament.js";
 import { Register } from "../views/register.js";
-import { Settings } from "../views/settings.js";
+import { Info } from "../views/info.js";
 import { Friends } from "../views/friends.js";
 import { isLoggedIn, myUsername, host } from "../../index.js";
-import { Nav } from "../views/nav.js";
 import { NotExist } from "../views/404.js";
 import { Game } from "../views/gameview.js";
-import { arrayFromMultiPath, makeLinkActive } from "./other.js";
-import { GameOptions } from "../views/gameOptions.js";
+import { arrayFromMultiPath } from "./other.js";
+import { Options } from "../views/options.js";
+import { ModeSelect } from "../views/modeSelect.js";
+import { MatchRoom } from "../views/matchRoom.js";
+import { gameConfig } from "../game/setup.js";
 
 export let username = { username: "" };
 let lastViewedUser = "";
@@ -20,9 +22,11 @@ const routes = [
   { path: "/", view: Home },
   { path: "/Tournament", view: Tournament },
   { path: "/Friends", view: Friends },
-  { path: "/Settings", view: Settings },
+  { path: "/Info", view: Info },
   { path: "/Game", view: Game },
-  { path: "/Options", view: GameOptions },
+  { path: "/Select", view: ModeSelect },
+  { path: "/Options", view: Options },
+  { path: "/MatchRoom", view: MatchRoom },
 ];
 
 const routesLoggedOut = [
@@ -63,6 +67,8 @@ async function pathToView(url) {
   let route;
   let viewArr = [];
   if (isLoggedIn.status) {
+	if (url === "/Game" && !gameConfig.key)
+		url = "/Select";
     let parts = arrayFromMultiPath(url);
     for (let i = 0; i < parts.length; i++) {
       route = routes.find((route) => route.path === parts[i]);

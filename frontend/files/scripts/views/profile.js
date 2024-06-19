@@ -39,7 +39,7 @@ export class Profile extends Component {
 			<a href="/${username.username}/Friends" id="friends-tab" data-link>Friends</a>
 			<a href="/${
         username.username
-      }/Settings" class="ms-auto ms-sm-0" data-link id="settings-tab">Settings</a>
+      }/Info" class="ms-auto ms-sm-0" data-link id="settings-tab">Settings</a>
 		</div>
 		<div class="d-flex flex-grow-1 justify-content-center mt-3" id="profile-wrapper">
 		</div>

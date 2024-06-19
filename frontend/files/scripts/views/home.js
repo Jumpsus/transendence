@@ -1,6 +1,5 @@
 import { Component } from "../library/component.js";
-import { gameState, gameConfig } from "../game/game.js";
-import { pushHistoryAndGoTo, replaceHistoryAndGoTo } from "../utils/router.js";
+import { replaceHistoryAndGoTo } from "../utils/router.js";
 import { myUsername, isLoggedIn, host } from "../../index.js";
 
 export class Home extends Component {
@@ -11,13 +10,13 @@ export class Home extends Component {
 		<div class="d-flex flex-column justify-content-end align-items-center" id="top-screen">
 			<h1 id="project-title">PONG</h1>
 		</div>
-		<div class="d-flex h-50 flex-column px-3 game-menu pb-5 align-self-center overflow-auto">
+		<div class="d-flex h-50 flex-column game-menu pb-5 align-self-center overflow-auto">
 			<div class="fs-5 text-danger d-none text-center" id="sock-err-msg"></div>
-			<div class="menu-btn" id="start-btn">
+			<a href="/Select" class="menu-btn" data-link>
 				<div class="mini-paddle p1"></div>
 				<span>Play</span>
 				<div class="mini-paddle p2"></div>
-			</div>
+			</a>
 			<a href="/Options" class="menu-btn" data-link>
 				<div class="mini-paddle p2"></div>
 				<span>Options</span>
@@ -41,30 +40,7 @@ export class Home extends Component {
   }
 
   addEventListeners() {
-    const startBtn = document.getElementById("start-btn");
-    const sockErrMsg = document.getElementById("sock-err-msg");
     const logoutButton = document.getElementById("logout-button");
-    startBtn.addEventListener("click", () => {
-      if (gameConfig.isOnline) {
-        gameConfig.ws = new WebSocket(
-          `wss://${host}/ws/game/${gameConfig.roomId}/`
-        );
-        gameConfig.ws.onopen = () => {
-          console.log("connected");
-          pushHistoryAndGoTo("/Game");
-          sockErrMsg.classList.add("d-none");
-          sockErrMsg.innerText = "";
-        };
-        gameConfig.ws.onerror = (error) => {
-          console.error("WebSocket error:", error);
-          sockErrMsg.classList.remove("d-none");
-          sockErrMsg.innerText = "Room not found";
-        };
-      } else {
-        pushHistoryAndGoTo("/Game");
-      }
-    });
-
     logoutButton.addEventListener("click", async () => {
       await fetch(`https://${host}/user-management/user/logout`, {
         method: "POST",

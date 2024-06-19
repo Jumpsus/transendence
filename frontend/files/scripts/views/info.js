@@ -1,9 +1,8 @@
 import { Component } from "../library/component.js";
 import { makeLinkActive } from "../utils/other.js";
-import { replaceHistoryAndGoTo } from "../utils/router.js";
 import { host } from "../../index.js";
 
-export class Settings extends Component {
+export class Info extends Component {
   constructor() {
     super(document.getElementById("profile-wrapper"));
     this.view = `

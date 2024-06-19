@@ -4,6 +4,7 @@ import {
   replaceHistoryAndGoTo,
   goTo,
 } from "./scripts/utils/router.js";
+import { gameConfig } from "./scripts/game/setup.js";
 
 export let isLoggedIn = { status: false };
 
@@ -34,6 +35,9 @@ document.addEventListener("keypress", (event) => {
 });
 
 window.addEventListener("popstate", () => {
+  if (gameConfig.animationID) {
+    cancelAnimationFrame(gameConfig.animationID);
+  }
   const url = window.location.pathname;
   if (isLoggedIn.status && (url === "/Login" || url === "/Register")) {
     replaceHistoryAndGoTo("/");
@@ -59,7 +63,7 @@ export async function setMyUsername() {
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
-  const port = location.port ? `:${location.port}` : '';
+  const port = location.port ? `:${location.port}` : "";
   host = `${location.hostname}${port}`;
   isLoggedIn.status = await setMyUsername();
   setupDarkMode();

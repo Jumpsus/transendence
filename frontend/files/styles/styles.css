@@ -333,7 +333,6 @@ a {
 
 .game-menu {
   width: 100%;
-  max-width: 400px;
 }
 
 .game-options {
@@ -438,6 +437,55 @@ a {
 .settings-switch.on {
   background-color: var(--my-primary-color);
   color: var(--bs-body-bg);
+}
+
+/* options */
+
+#modeSwitch {
+  cursor: pointer;
+}
+
+/* mode select */
+
+.mode-box {
+  border: 3px solid var(--my-border-color);
+}
+
+.retro-btn {
+  background-color: grey;
+  border: 5px outset white;
+  text-align: center;
+  cursor: pointer;
+}
+
+@keyframes shine {
+  0% {
+    background-color: rgb(0, 255, 0);
+  }
+  50% {
+    background-color: rgb(32, 77, 6);
+  }
+  100% {
+    background-color: rgb(0, 255, 0);
+  }
+}
+
+.online-light {
+  box-sizing: content-box;
+  background-color: rgb(0, 255, 0);
+  border: 3px solid rgb(0, 55, 0);
+  width: 6px;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  right: 8px;
+  bottom: 8px;
+  animation: shine 1s infinite;
+}
+
+.check-box {
+  border: 3px solid var(--my-border-color);
+  width: 30px;
+  aspect-ratio: 1/1;
 }
 
 /* Extra small	None	<576px

@@ -89,7 +89,7 @@ export class Friends extends Component {
           }
           data.user_list.forEach((friend) => {
             if (
-              friend.username.startsWith(findFriend.value) &&
+              friend.username.startsWith(findFriend.value.toLowerCase()) &&
               friend.username != myUsername.username
             ) {
               searchList.innerHTML += `<div>

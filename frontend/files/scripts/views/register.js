@@ -1,7 +1,6 @@
 import { Component } from "../library/component.js";
 import { isLoggedIn, host } from "../../index.js";
 import { replaceHistoryAndGoTo } from "../utils/router.js";
-import { Nav } from "./nav.js";
 import { setMyUsername } from "../../index.js";
 
 export class Register extends Component {
@@ -98,7 +97,7 @@ export class Register extends Component {
       );
       const data = await resp.json();
       if (!resp.ok) {
-		console.log(data);
+        console.log(data);
         errMsg.textContent = data.message;
       } else {
         localStorage.setItem("jwt", data.token);
