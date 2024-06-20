@@ -13,6 +13,7 @@ class GameConsumer(AsyncWebsocketConsumer):
 		active_connections = cache.get("game"+self.game_id, 0)
 
 		if active_connections >= 3:
+			await self.send(text_data="Waiting for another player...")
 			# Reject the connection if 2 connections are already active
 			await self.close(code=4002)
 			return

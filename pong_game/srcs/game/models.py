@@ -6,7 +6,8 @@ class TournamentData:
 		self.room_id = room_id
 		self.player_names = []
 		self.matches = []
-		self.matches_player = []
+		self.matches_id = {}
+		self.matches_player = {}
 		self.results = {}
 
 	def add_player(self, player_name):
@@ -19,16 +20,30 @@ class TournamentData:
 		self.player_names = [name for name in self.player_names if name != player_name]
 
 	def generate_matches(self):
+		if self.matches:
+			return
 		self.matches = [(self.player_names[i], self.player_names[j]) 
 						for i in range(len(self.player_names)) 
 						for j in range(i + 1, len(self.player_names))]
-		self.matches_player[self.player_names[0]] = [self.matches[0], self.matches[1], self.matches[2]]
-		self.matches_player[self.player_names[1]] = [self.matches[0], self.matches[4], self.matches[3]]
-		self.matches_player[self.player_names[2]] = [self.matches[5], self.matches[1], self.matches[3]]
-		self.matches_player[self.player_names[3]] = [self.matches[5], self.matches[4], self.matches[2]]
+		for match in self.matches:
+			unique_id = uuid.uuid4()  # Generates a unique UUID
+			self.matches_id[str(match)] = str(unique_id)
+			cache.set("game" + str(unique_id), 1, timeout=1800)  # Store in cache for 30 mins
+
+		self.matches_player[self.player_names[0]] = [self.matches_id[str(self.matches[0])], self.matches_id[str(self.matches[1])], self.matches_id[str(self.matches[2])]]
+		self.matches_player[self.player_names[1]] = [self.matches_id[str(self.matches[0])], self.matches_id[str(self.matches[4])], self.matches_id[str(self.matches[3])]]
+		self.matches_player[self.player_names[2]] = [self.matches_id[str(self.matches[5])], self.matches_id[str(self.matches[1])], self.matches_id[str(self.matches[3])]]
+		self.matches_player[self.player_names[3]] = [self.matches_id[str(self.matches[5])], self.matches_id[str(self.matches[4])], self.matches_id[str(self.matches[2])]]
+		self.save()
 
 	def save_result(self, match, result):
-		self.results[match] = result
+		if match in self.results.keys():
+			if result != self.results[match]:
+				self.results[match] = "Invalid result"
+				return False
+		else:
+			self.results[match] = result
+		return True
 
 	def all_matches_completed(self):
 		return len(self.matches) == len(self.results)
@@ -38,9 +53,11 @@ class TournamentData:
 		data = cache.get(f'room_{room_id}')
 		if data:
 			tournament = TournamentData(room_id)
-			tournament.player_names = data['player_names']
-			tournament.matches = data['matches']
-			tournament.results = data['results']
+			tournament.player_names = data.get('player_names', [])
+			tournament.matches = data.get('matches', [])
+			tournament.matches_id = data.get('matches_id', {})
+			tournament.matches_player = data.get('matches_player', {})
+			tournament.results = data.get('results', {})
 			return tournament
 		return None
 
@@ -48,6 +65,8 @@ class TournamentData:
 		cache.set(f'room_{self.room_id}', {
 			'player_names': self.player_names,
 			'matches': self.matches,
+			'matches_id': self.matches_id,
+			'matches_player': self.matches_player,
 			'results': self.results,
 		})
 
@@ -57,12 +76,7 @@ class TournamentData:
 def generate_room_id():
 	return str(uuid.uuid4())
 
-def clean_up_rooms():
-	# You can add any room expiration logic here if needed.
-	pass
-
 def join_room(player_name):
-	clean_up_rooms()
 	room_list = cache.get('room_list', [])
 
 	for room_id in room_list:
