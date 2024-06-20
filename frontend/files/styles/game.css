@@ -4,7 +4,7 @@
   --game-ui-color: var(--my-secondary-color);
 }
 [data-bs-theme="dark"] {
-  --game-ui-color: var(--bs-body-color);
+  --game-ui-color: var(--my-color);
 }
 
 #game-container {
@@ -63,7 +63,8 @@
   z-index: 100;
 }
 
-#pause-menu {
+#pause-menu,
+#game-over {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -76,21 +77,19 @@
   padding-bottom: 1cqw;
 }
 
-#pause-menu > * {
+#pause-menu > *,
+#game-over > * {
   text-align: center;
 }
 
-#pause-menu > *:first-child {
+#pause-menu > *:first-child,
+#game-over > *:first-child {
   background-color: var(--my-color);
   color: var(--my-bg-color);
 }
 
 #resume-btn {
   cursor: pointer;
-}
-
-#pause-menu.show {
-  display: flex;
 }
 
 .collectible {
@@ -337,7 +336,8 @@
     transform: translateY(-50%);
   }
 
-  #pause-menu {
+  #pause-menu,
+  #game-over{
     font-size: 5cqh;
     width: 40cqh;
     padding-bottom: 1cqh;

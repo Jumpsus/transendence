@@ -37,6 +37,8 @@ const routesLoggedOut = [
 function getCorrectUrl(url) {
   let route;
   if (isLoggedIn.status) {
+	if (url === "/Game" && !gameConfig.key)
+		url = "/Select";
     if (routesLoggedOut.find((route) => route.path === url))
       return myUsername.username;
     else {
@@ -67,8 +69,6 @@ async function pathToView(url) {
   let route;
   let viewArr = [];
   if (isLoggedIn.status) {
-	if (url === "/Game" && !gameConfig.key)
-		url = "/Select";
     let parts = arrayFromMultiPath(url);
     for (let i = 0; i < parts.length; i++) {
       route = routes.find((route) => route.path === parts[i]);

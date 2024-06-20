@@ -3,6 +3,7 @@ export let eventListenersSet = false;
 export const gameState = {
   isHorizontal: true,
   isPaused: false,
+  isFinished: false,
   score: [0, 0],
 };
 
@@ -20,6 +21,7 @@ export const gameConfig = {
   hasCPU: false,
   hasAim: false,
   animationID: null,
+  names: [],
 };
 
 export const gameParameters = {
@@ -27,8 +29,8 @@ export const gameParameters = {
   paddleHeight: 20,
   ballWidth: 3,
   bufferWidth: 2,
-  ballSpeed: 0.1,
-  playerSpeed: 0.1,
+  ballSpeed: 0.15,
+  playerSpeed: 0.15,
   aimSpeed: 0.2,
   cpuUpdateTime: 1000,
 };
@@ -72,23 +74,24 @@ function insertNames() {
   const nameOne = document.getElementById("name-one");
   const nameTwo = document.getElementById("name-two");
   if (gameConfig.hasCPU) {
-    nameOne.textContent = "CPU";
-    nameTwo.textContent = "P1";
+    gameConfig.names = ["CPU", "PL1"];
   } else if (!gameConfig.isOnline) {
-    nameOne.textContent = "P1";
-    nameTwo.textContent = "P2";
+    gameConfig.names = ["PL1", "PL2"];
   }
+  nameOne.innerText = gameConfig.names[0];
+  nameTwo.innerText = gameConfig.names[1];
 }
 
 function pauseGame() {
+  if (gameState.isFinished) return;
   gameState.isPaused = !gameState.isPaused;
   const pauseText = document.getElementById("pause-menu");
   if (gameState.isPaused) {
-    pauseText.classList.add("show");
-    game.field.classList.add("paused");
+    pauseText.classList.remove("d-none");
+    // game.field.classList.add("paused");
   } else {
-    pauseText.classList.remove("show");
-    game.field.classList.remove("paused");
+    pauseText.classList.add("d-none");
+    // game.field.classList.remove("paused");
   }
 }
 
@@ -110,6 +113,7 @@ function setupState() {
   gameState.isHorizontal = game.field.clientWidth > game.field.clientHeight;
   gameState.isPaused = false;
   gameState.score = [0, 0];
+  gameState.isFinished = false;
   for (let prop in keys) {
     if (keys.hasOwnProperty(prop)) {
       delete keys[prop];
@@ -181,11 +185,11 @@ window.addEventListener("resize", () => {
 
 export function setupGame() {
   gameConfig.key = false;
+  gameConfig.isTouch = isTouchDevice();
   setupElements();
   setupState();
   setDimensions();
   setFieldBorders();
-  gameConfig.isTouch = isTouchDevice();
   insertNames();
   updateScore();
   setupPause();

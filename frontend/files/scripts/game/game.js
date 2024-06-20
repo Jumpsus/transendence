@@ -69,11 +69,15 @@ export function init() {
           ball.reset();
           playerOne.reset();
           playerTwo.reset();
+          if (gameState.score[0] == 1 || gameState.score[1] == 1) {
+            gameState.isFinished = true;
+          }
         }
       }
       lastTime = time;
-      console.log("requestAnimationFrame");
-      gameConfig.animationID = window.requestAnimationFrame(update);
+      console.log("update");
+      if (gameState.isFinished) gameover();
+      else gameConfig.animationID = window.requestAnimationFrame(update);
     }
     gameConfig.animationID = window.requestAnimationFrame(update);
   }
@@ -88,6 +92,17 @@ export function init() {
       return true;
     }
     return false;
+  }
+
+  function gameover() {
+    document.getElementById("game-over").classList.remove("d-none");
+    const winner =
+      gameState.score[0] > gameState.score[1]
+        ? gameConfig.names[0]
+        : gameConfig.names[1];
+    document.getElementById("winner-name").innerText = winner;
+    cancelAnimationFrame(gameConfig.animationID);
+    return;
   }
 
   function updatePaddles(delta) {

@@ -1,4 +1,6 @@
 import { Component } from "../library/component.js";
+import { username } from "../utils/router.js";
+import { host } from "../../index.js";
 
 export class Tournament extends Component {
   constructor() {
@@ -12,14 +14,18 @@ export class Tournament extends Component {
 			<div class="quarters-half d-flex flex-xl-column flex-row gap-3">
 				<div class="vs-card">
 					<div class="contestant-card d-flex align-items-center">
-						<div class="profile-img-box position-relative" style="height: 100%; aspect-ratio: 1/1;"><img class="position-absolute object-fit-cover profile-img" src="/assets/profile.png"></div>
+						<div class="profile-img-box position-relative" style="height: 100%; aspect-ratio: 1/1;"><img class="position-absolute object-fit-cover profile-img" src="https://${host}/image/${
+      username.username
+    }.png?t=${new Date().getTime()}"></div>
 						<div class="card-right-section d-flex justify-content-between">
 							<div class="user-name">contestant</div>
 							<div class="d-flex align-items-center">69%</div>
 						</div>
 					</div>
 					<div class="contestant-card d-flex align-items-center">
-					<div class="profile-img-box position-relative" style="height: 100%; aspect-ratio: 1/1;"><img class="position-absolute object-fit-cover profile-img" src="/assets/profile.png"></div>
+					<div class="profile-img-box position-relative" style="height: 100%; aspect-ratio: 1/1;"><img class="position-absolute object-fit-cover profile-img" src="https://${host}/image/${
+						username.username
+					  }.png?t=${new Date().getTime()}"></div>
 					<div class="card-right-section d-flex justify-content-between">
 						<div class="user-name">contestant</div>
 						<div class="d-flex align-items-center">69%</div>

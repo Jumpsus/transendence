@@ -8,9 +8,15 @@ export class Game extends Component {
 	<div class="w-100 h-100 position-relative" id="game-container">
 			<div class="d-flex flex-column flex-xl-row justify-content-center position-relative"
 				id="game-field">
-				<div class="position-absolute flex-column align-items-stretch" id="pause-menu">
+				<div class="position-absolute d-flex flex-column align-items-stretch d-none" id="pause-menu">
 					<div>pause</div>
 					<div id="resume-btn">resume</div>
+					<a href="/Select" id="quit-button" data-link>quit</a>
+				</div>
+				<div class="position-absolute d-flex flex-column align-items-stretch d-none" id="game-over">
+					<div>gameover</div>
+					<div>winner is:</div>
+					<div id="winner-name"></div>
 					<a href="/Select" id="quit-button" data-link>quit</a>
 				</div>
 				<div class="paddle position-absolute" id="player-one">
@@ -75,6 +81,7 @@ export class Game extends Component {
   setupEventListeners() {
     const quitBtn = document.getElementById("quit-button");
     quitBtn.addEventListener("click", () => {
+      console.log(gameConfig.animationID);
       window.cancelAnimationFrame(gameConfig.animationID);
     });
   }
