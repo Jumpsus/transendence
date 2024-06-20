@@ -1,14 +1,6 @@
-import { game, keys } from "./setup.js";
+import { game } from "./setup.js";
 
 export function setupControls(playerOne, playerTwo) {
-  window.addEventListener("keydown", (event) => {
-    keys[event.key] = true;
-  });
-
-  window.addEventListener("keyup", (event) => {
-    keys[event.key] = false;
-  });
-
   let paddle1TouchId = null;
   let paddle2TouchId = null;
 
@@ -30,10 +22,8 @@ export function setupControls(playerOne, playerTwo) {
     for (let touch of event.changedTouches) {
       if (touch.identifier === paddle1TouchId) {
         movePaddle(playerOne, touch.clientX);
-        moveAim(playerOne, touch.clientY);
       } else if (touch.identifier === paddle2TouchId) {
         movePaddle(playerTwo, touch.clientX);
-        moveAim(playerTwo, touch.clientY);
       }
     }
   }
@@ -51,23 +41,6 @@ export function setupControls(playerOne, playerTwo) {
   function movePaddle(paddle, y) {
     const yPercent = ((window.innerWidth - y) / window.innerWidth) * 100;
     paddle.y = yPercent;
-  }
-
-  function moveAim(paddle, x) {
-    const gameRect = game.container.getBoundingClientRect();
-    if (paddle.paddleElem.id === "player-one") {
-      const playerZone = paddle.rect().top * 2;
-      if (x < gameRect.top + playerZone && x > gameRect.top) {
-        x = playerZone / 2 - (x - gameRect.top);
-        paddle.angle = -(x / playerZone) * 2 * 100;
-      }
-    } else {
-      const playerZone = (gameRect.bottom - paddle.rect().bottom) * 2;
-      if (x > gameRect.bottom - playerZone && x < gameRect.bottom) {
-        x = playerZone / 2 - (gameRect.bottom - x);
-        paddle.angle = (x / playerZone) * 2 * 100;
-      }
-    }
   }
 
   const options = { passive: true };

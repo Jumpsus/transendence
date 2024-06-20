@@ -19,7 +19,6 @@ export const gameConfig = {
   roomId: null,
   ws: null,
   hasCPU: false,
-  hasAim: false,
   animationID: null,
   names: [],
 };
@@ -29,9 +28,8 @@ export const gameParameters = {
   paddleHeight: 20,
   ballWidth: 3,
   bufferWidth: 2,
-  ballSpeed: 0.15,
+  ballSpeed: 0.1,
   playerSpeed: 0.15,
-  aimSpeed: 0.2,
   cpuUpdateTime: 1000,
 };
 
@@ -41,8 +39,6 @@ export const game = {
   ball: null,
   paddleOne: null,
   paddleTwo: null,
-  aimOne: null,
-  aimTwo: null,
 };
 
 export const keys = {};
@@ -101,12 +97,6 @@ function setupElements() {
   game.ball = document.getElementById("ball");
   game.paddleOne = document.getElementById("player-one");
   game.paddleTwo = document.getElementById("player-two");
-  game.aimOne = document.getElementById("aim-one");
-  game.aimTwo = document.getElementById("aim-two");
-  if (!gameConfig.hasAim) {
-    game.aimOne.style.display = "none";
-    game.aimTwo.style.display = "none";
-  }
 }
 
 function setupState() {
@@ -124,14 +114,6 @@ function setupState() {
 function setupPause() {
   const resumeBtn = document.getElementById("resume-btn");
   const pauseArea = document.getElementById("pause-area");
-  if (!eventListenersSet) {
-    document.addEventListener("keydown", (event) => {
-      if (event.key === " ") {
-        pauseGame();
-      }
-    });
-    eventListenersSet = true;
-  }
   pauseArea.addEventListener("click", () => {
     pauseGame();
   });
@@ -177,15 +159,35 @@ function setFieldBorders() {
   }
 }
 
-window.addEventListener("resize", () => {
-  if (!game.field) return;
-  gameState.isHorizontal = game.field.clientWidth > game.field.clientHeight;
-  setFieldBorders();
-});
+function setEventListeners() {
+  if (!eventListenersSet) {
+    window.addEventListener("resize", () => {
+      if (!game.field) return;
+      gameState.isHorizontal = game.field.clientWidth > game.field.clientHeight;
+      setFieldBorders();
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.key === " ") {
+        pauseGame();
+      }
+    });
+    window.addEventListener("keydown", (event) => {
+      if (gameConfig.hasCPU)
+        if (["w", "s", "a", "d"].includes(event.key)) return;
+      keys[event.key] = true;
+    });
+
+    window.addEventListener("keyup", (event) => {
+      keys[event.key] = false;
+    });
+    eventListenersSet = true;
+  } else return;
+}
 
 export function setupGame() {
   gameConfig.key = false;
   gameConfig.isTouch = isTouchDevice();
+  setEventListeners();
   setupElements();
   setupState();
   setDimensions();

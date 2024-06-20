@@ -23,18 +23,6 @@ export class Game extends Component {
 				</div>
 				<div class="position-absolute" id="pause-area">
 				</div>
-				<div class="aim position-absolute" id="aim-two">
-						<div class="aim-part"></div>
-						<div class="aim-part"></div>
-						<div class="aim-part"></div>
-						<div class="aim-part"></div>
-					</div>
-					<div class="aim position-absolute" id="aim-one">
-						<div class="aim-part"></div>
-						<div class="aim-part"></div>
-						<div class="aim-part"></div>
-						<div class="aim-part"></div>
-				</div>
 				<div class="position-relative" id="separator">
 					<div class="d-flex flex-xl-column justify-content-around flex-row w-100 h-100">
 						<div class=" separator-chunk"></div>

@@ -34,31 +34,13 @@ export class ModeSelect extends Component {
 						</a>
 					</div>
 				</div>
-				<div class="d-flex align-items-center justify-content-end gap-3" style="cursor: pointer" id="aim-select">
-					<div class="">Aim</div>
-					<div class="check-box d-flex justify-content-center align-items-center"></div>
-				</div>
 			</div>
 	`;
     this.render();
     this.addEventListeners();
   }
 
-  render() {
-    super.render();
-    const aim = document.querySelector(".check-box");
-    if (gameConfig.hasAim) aim.innerText = "x";
-    else aim.innerText = "";
-  }
-
   addEventListeners() {
-    const aim = document.querySelector(".check-box");
-	const aimSelect = document.getElementById("aim-select");
-    aimSelect.addEventListener("click", () => {
-      gameConfig.hasAim = !gameConfig.hasAim;
-      if (gameConfig.hasAim) aim.innerText = "x";
-      else aim.innerText = "";
-    });
     const vs1 = document.getElementById("vs1");
     vs1.addEventListener("click", () => {
       gameConfig.isOnline = false;

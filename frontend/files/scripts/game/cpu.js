@@ -1,4 +1,4 @@
-import { gameState, gameParameters, keys } from "./setup.js";
+import { gameState, gameParameters, keys, gameConfig } from "./setup.js";
 
 function calcBallTrajectory(ball) {
   let futureBallX = ball.x;
@@ -49,8 +49,8 @@ function calcBallTrajectory(ball) {
 }
 
 let lastUpdate = 0;
+let ballEstY = 50;
 export function updateCPU(ball, cpu, player) {
-  let ballEstY = ball.y;
   let up = "w";
   let down = "s";
   if (!gameState.isHorizontal) {
@@ -63,11 +63,16 @@ export function updateCPU(ball, cpu, player) {
     ballEstY = calcBallTrajectory(ball, player);
     lastUpdate = now;
   }
-  if (cpu.y < ballEstY) {
+
+  const diff = cpu.y - ballEstY;
+  if (Math.abs(diff) <= 5) {
     keys[`${up}`] = false;
-    keys[`${down}`] = true;
-  } else {
+    keys[`${down}`] = false;
+  } else if (diff > 0) {
     keys[`${down}`] = false;
     keys[`${up}`] = true;
+  } else {
+    keys[`${up}`] = false;
+    keys[`${down}`] = true;
   }
 }

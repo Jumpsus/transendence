@@ -27,7 +27,7 @@ export default class Ball {
     this.x = 50;
     this.y = 50;
     if (gameState.isOnline) return;
-    this.direction = { x: 0 };
+    this.direction = { x: 0, y: 0 };
     while (
       Math.abs(this.direction.x) <= 0.2 ||
       Math.abs(this.direction.x) >= 0.9
@@ -68,19 +68,12 @@ export default class Ball {
         }
       }
     }
-    let aim;
     if (isCollission(paddles[0].rect(), rect)) {
       this.x =
         gameParameters.bufferWidth +
         gameParameters.paddleWidth +
         gameParameters.ballWidth / 2;
-      if (gameConfig.hasAim) aim = { x: paddles[0].aimX, y: paddles[0].aimY };
-      calculateDirection(
-        { x: this.x, y: this.y },
-        aim,
-        this.direction,
-        paddles[0]
-      );
+      calculateDirection({ x: this.x, y: this.y }, this.direction, paddles[0]);
       this.velocity = gameParameters.ballSpeed;
     } else if (isCollission(paddles[1].rect(), rect)) {
       this.x =
@@ -88,13 +81,7 @@ export default class Ball {
         (gameParameters.bufferWidth +
           gameParameters.paddleWidth +
           gameParameters.ballWidth / 2);
-      if (gameConfig.hasAim) aim = { x: paddles[1].aimX, y: paddles[1].aimY };
-      calculateDirection(
-        { x: this.x, y: this.y },
-        aim,
-        this.direction,
-        paddles[1]
-      );
+      calculateDirection({ x: this.x, y: this.y }, this.direction, paddles[1]);
       this.velocity = gameParameters.ballSpeed;
     }
   }
@@ -113,31 +100,19 @@ function isCollission(rect1, rect2) {
   );
 }
 
-function calculateDirection(ballPosition, aimPosition, ballDirection, paddle) {
-  if (!aimPosition) {
-    let hitPosition =
-      ((ballPosition.y - paddle.y) * 2) / gameParameters.paddleHeight;
-    hitPosition = Math.min(Math.max(hitPosition, -1), 1);
-    let maxBounceAngle = (60 * Math.PI) / 180;
-    let reflectionAngle = hitPosition * maxBounceAngle;
-    let speed = Math.sqrt(
-      ballDirection.x * ballDirection.x + ballDirection.y * ballDirection.y
-    );
-    ballDirection.y = speed * Math.sin(reflectionAngle);
-    ballDirection.x = -speed * Math.cos(reflectionAngle);
-    if (paddle.id == 1) {
-      ballDirection.x *= -1;
-    }
-    return;
-  } else {
-    const directionX = aimPosition.x - ballPosition.x;
-    const directionY = aimPosition.y - ballPosition.y;
-    const magnitude = Math.sqrt(
-      directionX * directionX + directionY * directionY
-    );
-    const unitDirectionX = directionX / magnitude;
-    const unitDirectionY = directionY / magnitude;
-    ballDirection.x = unitDirectionX;
-    ballDirection.y = unitDirectionY;
+function calculateDirection(ballPosition, ballDirection, paddle) {
+  let hitPosition =
+    ((ballPosition.y - paddle.y) * 2) / gameParameters.paddleHeight;
+  hitPosition = Math.min(Math.max(hitPosition, -1), 1);
+  let maxBounceAngle = (60 * Math.PI) / 180;
+  let reflectionAngle = hitPosition * maxBounceAngle;
+  let speed = Math.sqrt(
+    ballDirection.x * ballDirection.x + ballDirection.y * ballDirection.y
+  );
+  ballDirection.y = speed * Math.sin(reflectionAngle);
+  ballDirection.x = -speed * Math.cos(reflectionAngle);
+  if (paddle.id == 1) {
+    console.log("paddle 1");
+    ballDirection.x *= -1;
   }
 }

@@ -16,8 +16,8 @@ import {
 export function init() {
   setupGame();
   const ball = new Ball(game.ball);
-  const playerOne = new Paddle(game.paddleOne, game.aimOne, 1);
-  const playerTwo = new Paddle(game.paddleTwo, game.aimTwo, 2);
+  const playerOne = new Paddle(game.paddleOne, 1);
+  const playerTwo = new Paddle(game.paddleTwo, 2);
   setupControls(playerOne, playerTwo);
   function sendPaddlePos() {
     let pos;
@@ -75,7 +75,6 @@ export function init() {
         }
       }
       lastTime = time;
-      console.log("update");
       if (gameState.isFinished) gameover();
       else gameConfig.animationID = window.requestAnimationFrame(update);
     }
@@ -115,40 +114,5 @@ export function init() {
     if (keys[down1]) playerOne.y += gameParameters.playerSpeed * delta;
     if (keys[up2]) playerTwo.y -= gameParameters.playerSpeed * delta;
     if (keys[down2]) playerTwo.y += gameParameters.playerSpeed * delta;
-
-    if (gameConfig.hasAim) {
-      const aimUp1 = gameState.isHorizontal ? "a" : "w";
-      const aimDown1 = gameState.isHorizontal ? "d" : "s";
-      const aimUp2 = gameState.isHorizontal ? "ArrowLeft" : "ArrowUp";
-      const aimDown2 = gameState.isHorizontal ? "ArrowRight" : "ArrowDown";
-      if (keys[aimUp1]) playerOne.angle -= gameParameters.aimSpeed * delta;
-      if (keys[aimDown1]) playerOne.angle += gameParameters.aimSpeed * delta;
-      if (keys[aimUp2]) playerTwo.angle += gameParameters.aimSpeed * delta;
-      if (keys[aimDown2]) playerTwo.angle -= gameParameters.aimSpeed * delta;
-      retractAim(keys[aimUp2], keys[aimDown2], playerTwo, delta);
-      retractAim(keys[aimUp1], keys[aimDown1], playerOne, delta);
-      updateAim(playerOne, radius);
-      updateAim(playerTwo, radius);
-    }
-  }
-
-  function retractAim(left, right, player, delta) {
-    if (gameConfig.isTouch) return;
-    if (!left && !right && player.angle != 0) {
-      if (player.angle > gameParameters.aimSpeed * delta)
-        player.angle -= gameParameters.aimSpeed * delta;
-      else if (player.angle < -gameParameters.aimSpeed * delta)
-        player.angle += gameParameters.aimSpeed * delta;
-      else player.angle = 0;
-    }
-  }
-
-  function updateAim(paddle, radius) {
-    let angle = (paddle.angle * Math.PI) / 180;
-    if (paddle.paddleElem.id === "player-one")
-      paddle.aimX = gameParameters.bufferWidth + radius * Math.cos(angle);
-    else
-      paddle.aimX = 100 - gameParameters.bufferWidth - radius * Math.cos(angle);
-    paddle.aimY = 50 + radius * Math.sin(angle);
   }
 }
