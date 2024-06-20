@@ -1,16 +1,14 @@
 import { Component } from "../library/component.js";
-import { gameConfig } from "../game/setup.js";
 import { Home } from "./home.js";
 import { setupDarkModeToggle } from "../utils/darkmode.js";
-import { host } from "../../index.js";
 
 export class Options extends Component {
   constructor() {
-    const gameMenu = document.querySelector(".game-menu");
+    const gameMenu = document.getElementById("game-menu");
     if (!gameMenu) {
       new Home();
     }
-    super(document.querySelector(".game-menu"));
+    super(document.getElementById("game-menu"));
     this.view = `
 	<a href="/" id="back-button" class="" data-link>
 		< Back</a>

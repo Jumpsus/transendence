@@ -84,10 +84,10 @@ function pauseGame() {
   const pauseText = document.getElementById("pause-menu");
   if (gameState.isPaused) {
     pauseText.classList.remove("d-none");
-    // game.field.classList.add("paused");
+    game.field.classList.add("paused");
   } else {
     pauseText.classList.add("d-none");
-    // game.field.classList.remove("paused");
+    game.field.classList.remove("paused");
   }
 }
 

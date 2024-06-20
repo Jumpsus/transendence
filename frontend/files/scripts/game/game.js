@@ -66,11 +66,14 @@ export function init() {
         if (gameConfig.hasCPU) updateCPU(ball, playerOne, playerTwo);
         if (isLose()) {
           updateScore();
-          ball.reset();
-          playerOne.reset();
-          playerTwo.reset();
-          if (gameState.score[0] == 11 || gameState.score[1] == 11) {
+          if (gameState.score[0] == 1 || gameState.score[1] == 1) {
+            ball.x = -100;
+            ball.y = -100;
             gameState.isFinished = true;
+          } else {
+            ball.reset();
+            playerOne.reset();
+            playerTwo.reset();
           }
         }
       }
@@ -94,6 +97,7 @@ export function init() {
   }
 
   function gameover() {
+	game.field.classList.add("paused");
     document.getElementById("game-over").classList.remove("d-none");
     const winner =
       gameState.score[0] > gameState.score[1]
@@ -105,7 +109,6 @@ export function init() {
   }
 
   function updatePaddles(delta) {
-    const radius = 50 - gameParameters.bufferWidth;
     const up1 = gameState.isHorizontal ? "w" : "d";
     const down1 = gameState.isHorizontal ? "s" : "a";
     const up2 = gameState.isHorizontal ? "ArrowUp" : "ArrowRight";

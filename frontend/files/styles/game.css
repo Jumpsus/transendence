@@ -21,12 +21,8 @@
   container-type: size;
   overflow: hidden;
   margin: auto;
-  transition: all 300ms ease-out;
+  transition: all 300ms ease-out, transform 3s linear;
   will-change: transform;
-}
-
-#game-field * {
-  text-shadow: none !important;
 }
 
 .paddle {
@@ -39,11 +35,6 @@
   --x: 50;
   --y: 50;
   background-color: var(--game-ui-color);
-}
-
-:root {
-  --paddle1Angle: 0;
-  --paddle2Angle: 0;
 }
 
 #player-one {
@@ -63,63 +54,41 @@
   z-index: 100;
 }
 
+#game-field.paused {
+  filter: blur(3px);
+  opacity: 0.2;
+}
+
+#winner-name {
+	color: var(--my-primary-color);
+}
+
+#quit-button {
+  cursor: pointer;
+}
+
 #pause-menu,
 #game-over {
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   font-size: 5cqw;
-  width: 40cqw;
-  display: none;
-  background-color: var(--my-bg-color);
-  border: 3px solid var(--my-color);
   z-index: 5000;
-  padding-bottom: 1cqw;
 }
 
-#pause-menu > *,
-#game-over > * {
-  text-align: center;
+#pause-menu > div:first-child {
+  margin-bottom: 2cqw;
 }
 
-#pause-menu > *:first-child,
-#game-over > *:first-child {
-  background-color: var(--my-color);
-  color: var(--my-bg-color);
+#pause-menu > div:last-child {
+  gap: 8cqw;
+}
+
+#pause-menu > div:last-child > *:hover,
+#quit-button:hover{
+  text-decoration: underline;
+  text-underline-offset: 2cqw;
 }
 
 #resume-btn {
   cursor: pointer;
-}
-
-.collectible {
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  --x: 100;
-  --y: 0;
-  --speedyColor: rgb(255, 40, 79);
-  --paddleReducerColor: rgb(0, 255, 242);
-  --reverseControlsColor: rgb(41, 255, 25);
-  left: calc(var(--x) * 1%);
-  top: calc(var(--y) * 1%);
-  transform: translate(-50%, -50%);
-  /* filter: drop-shadow(0 0 5px); */
-}
-
-.speedy {
-  color: var(--speedyColor);
-  background-color: var(--speedyColor);
-}
-
-.paddleReducer {
-  color: var(--paddleReducerColor);
-  background-color: var(--paddleReducerColor);
-}
-
-.paddleEnlarger {
-  color: var(--reverseControlsColor);
-  background-color: var(--reverseControlsColor);
 }
 
 /* horizontal */
@@ -181,9 +150,6 @@
   #name-two {
     left: 100%;
     bottom: 0;
-  }
-  #debug-info {
-    right: 25%;
   }
   @container resize-box (aspect-ratio > 4/3) {
     #game-field {
@@ -277,12 +243,5 @@
     height: 30%;
     top: 50%;
     transform: translateY(-50%);
-  }
-
-  #pause-menu,
-  #game-over{
-    font-size: 5cqh;
-    width: 40cqh;
-    padding-bottom: 1cqh;
   }
 }

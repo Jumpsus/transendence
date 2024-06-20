@@ -24,8 +24,8 @@ export class Tournament extends Component {
 					</div>
 					<div class="contestant-card d-flex align-items-center">
 					<div class="profile-img-box position-relative" style="height: 100%; aspect-ratio: 1/1;"><img class="position-absolute object-fit-cover profile-img" src="https://${host}/image/${
-						username.username
-					  }.png?t=${new Date().getTime()}"></div>
+      username.username
+    }.png?t=${new Date().getTime()}"></div>
 					<div class="card-right-section d-flex justify-content-between">
 						<div class="user-name">contestant</div>
 						<div class="d-flex align-items-center">69%</div>

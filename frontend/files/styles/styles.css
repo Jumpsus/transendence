@@ -3,7 +3,7 @@
 
 :root {
   --my-bg-color: black;
-  --my-color: white;
+  --my-color: hsl(0, 0%, 100%);
   --my-primary-color: #5610ff;
   --my-secondary-color: #42debe;
   --btn-color1: #fc0061;
@@ -331,7 +331,7 @@ a {
 
 /* profile settings */
 
-.game-menu {
+#game-menu {
   width: 100%;
 }
 
@@ -486,6 +486,13 @@ a {
   border: 3px solid var(--my-border-color);
   width: 30px;
   aspect-ratio: 1/1;
+}
+
+/* tournament */
+
+.player-name-tournament {
+  max-width: 100px;
+  overflow: auto;
 }
 
 /* Extra small	None	<576px

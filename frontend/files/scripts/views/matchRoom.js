@@ -6,11 +6,11 @@ import { host } from "../../index.js";
 
 export class MatchRoom extends Component {
   constructor() {
-    const gameMenu = document.querySelector(".game-menu");
+    const gameMenu = document.getElementById("game-menu");
     if (!gameMenu) {
       new Home();
     }
-    super(document.querySelector(".game-menu"));
+    super(document.getElementById("game-menu"));
     this.view = `
 	<a href="/Select" id="back-button" class="pb-4" data-link>
 		< Back</a>

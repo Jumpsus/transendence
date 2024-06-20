@@ -10,7 +10,7 @@ export class Home extends Component {
 		<div class="d-flex flex-column justify-content-end align-items-center" id="top-screen">
 			<h1 id="project-title">PONG</h1>
 		</div>
-		<div class="d-flex h-50 flex-column game-menu pb-5 align-self-center overflow-auto">
+		<div class="d-flex h-50 flex-column pb-5 align-self-center overflow-auto" id="game-menu">
 			<div class="fs-5 text-danger d-none text-center" id="sock-err-msg"></div>
 			<a href="/Select" class="menu-btn" data-link>
 				<div class="mini-paddle p1"></div>
