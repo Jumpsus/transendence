@@ -69,7 +69,7 @@ export function init() {
           ball.reset();
           playerOne.reset();
           playerTwo.reset();
-          if (gameState.score[0] == 1 || gameState.score[1] == 1) {
+          if (gameState.score[0] == 11 || gameState.score[1] == 11) {
             gameState.isFinished = true;
           }
         }
