@@ -11,8 +11,7 @@ class PongGame:
 		self.ball_pos = [50, 50]
 		self.ball_vel = [random.uniform(0, 0.5) + 0.3, random.uniform(0, 1)]  # Percentage per frame
 		self.flag = True
-		self.score1 = 0
-		self.score2 = 0
+		self.score = [0, 0]
 
 	def update_ball(self):
 		self.ball_pos[0] += self.ball_vel[0]
@@ -35,10 +34,10 @@ class PongGame:
 
 	def check_score(self):
 		if self.ball_pos[0] <= 0:
-			self.score2 += 1
+			self.score[1] += 1
 			self.reset_ball()
 		elif self.ball_pos[0] >= 100:
-			self.score1 += 1
+			self.score[0] += 1
 			self.reset_ball()
 
 	def reset_ball(self):
@@ -56,8 +55,7 @@ class PongGame:
 			'paddle_pos': self.paddle_pos,
 			'ball_pos': self.ball_pos,
 			'ball_vel': self.ball_vel,
-			'score1': self.score1,
-			'score2': self.score2
+			'score': self.score
 		}
 		return json.dumps(game_state)
 
@@ -67,8 +65,7 @@ class PongGame:
 		self.paddle_pos = game_state['paddle_pos']
 		self.ball_pos = game_state['ball_pos']
 		self.ball_vel = game_state['ball_vel']
-		self.score1 = game_state['score1']
-		self.score2 = game_state['score2']
+		self.score = game_state['score']
 
 	def game_loop(self, paddle_pos, player):
 		if player == 1:
