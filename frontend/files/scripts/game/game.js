@@ -41,6 +41,8 @@ export function init() {
       ball.y = data.ball_pos[1];
       playerOne.y = data.paddle_pos[0];
       playerTwo.y = data.paddle_pos[1];
+      playerOne.update();
+      playerTwo.update();
     };
     gameConfig.ws.onclose = () => {
       console.log("WebSocket closed");
@@ -52,9 +54,10 @@ export function init() {
         sendPaddlePos();
       }
       lastTime = time;
-      window.requestAnimationFrame(update);
+      console.log("framing");
+      gameConfig.animationID = window.requestAnimationFrame(update);
     }
-    window.requestAnimationFrame(update);
+    gameConfig.animationID = window.requestAnimationFrame(update);
   }
   if (!gameConfig.isOnline) {
     let lastTime;
@@ -66,7 +69,7 @@ export function init() {
         if (gameConfig.hasCPU) updateCPU(ball, playerOne, playerTwo);
         if (isLose()) {
           updateScore();
-          if (gameState.score[0] == 1 || gameState.score[1] == 1) {
+          if (gameState.score[0] == 11 || gameState.score[1] == 11) {
             ball.x = -100;
             ball.y = -100;
             gameState.isFinished = true;
@@ -97,7 +100,7 @@ export function init() {
   }
 
   function gameover() {
-	game.field.classList.add("paused");
+    game.field.classList.add("paused");
     document.getElementById("game-over").classList.remove("d-none");
     const winner =
       gameState.score[0] > gameState.score[1]
