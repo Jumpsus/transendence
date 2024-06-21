@@ -30,7 +30,7 @@ export class MatchRoom extends Component {
     const sockErrMsg = document.getElementById("sock-err-msg");
     joinBtn.addEventListener("click", () => {
       gameConfig.ws = new WebSocket(
-        `wss://${host}/ws/game/${gameConfig.roomId}/`
+        `wss://${host}/ws/game/${gameConfig.roomId}/${localStorage.getItem("jwt")}/0/`
       );
       gameConfig.ws.onopen = () => {
         console.log("connected");

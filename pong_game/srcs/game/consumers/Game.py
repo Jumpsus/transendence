@@ -21,16 +21,11 @@ class GameConsumer(AsyncWebsocketConsumer):
 		active_connections = cache.get("game"+self.game_id, 0)
 
 		if active_connections >= 3:
-			await self.send(text_data="Waiting for another player...")
 			# Reject the connection if 2 connections are already active
 			await self.close(code=4002)
 			return
 
 		self.player_id = int(active_connections)
-		if self.player_id == 2 and cache.get("id_two_set"+self.game_id):
-			self.player_id = 1
-		elif self.player_id == 2:
-			cache.set("id_two_set"+self.game_id, True, timeout=300)
 		self.game_state = PongGame()
 
 		# Increment the connection count in the cache atomically
@@ -40,7 +35,6 @@ class GameConsumer(AsyncWebsocketConsumer):
 			self.game_id,
 			self.channel_name
 		)
-
 		await self.accept()
 
 	async def disconnect(self, close_code):
@@ -56,8 +50,7 @@ class GameConsumer(AsyncWebsocketConsumer):
 		elif active_connections != 0:
 			# Remove the key if this is the last connection
 			cache.delete("game"+self.game_id)
-		if self.player_id == 2 and cache.get("id_two_set"+self.game_id):
-			cache.delete("id_two_set"+self.game_id)
+
 		await self.channel_layer.group_discard(
 			self.game_id,
 			self.channel_name
@@ -66,7 +59,7 @@ class GameConsumer(AsyncWebsocketConsumer):
 	async def receive(self, text_data):
 		# room expired
 		if cache.get("game"+self.game_id, 0) == 0:
-			self.close(code=442)
+			await self.close(code=442)
 		# Block if the connections are less than 2
 		if int(cache.get("game"+self.game_id)) < 3:
 			return
@@ -87,7 +80,7 @@ class GameConsumer(AsyncWebsocketConsumer):
 						'message': message
 					}
 				)
-				self.close(code=102)
+				await self.close(code=102)
 			else:
 				await self.channel_layer.group_send(
 					self.game_id,
@@ -96,7 +89,7 @@ class GameConsumer(AsyncWebsocketConsumer):
 						'message': message
 					}
 				)
-				self.close(code=101)
+				await self.close(code=101)
 		else:
 			# Send message to the other player
 			await self.channel_layer.group_send(
@@ -114,13 +107,13 @@ class GameConsumer(AsyncWebsocketConsumer):
 
 	# Different close code
 	async def opponent_disconnect(self, event):
-		self.close(code=441)
+		await self.close(code=441)
 	async def succ_normal(self, event):
 		message = event['message']
 		self.send(text_data=message)
-		self.close(code=101)
+		await self.close(code=101)
 	async def succ_tournament(self, event):
 		message = event['message']
 		self.send(text_data=message)
-		self.close(code=102)
+		await self.close(code=102)
 
