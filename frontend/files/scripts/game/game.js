@@ -33,6 +33,10 @@ export function init() {
     let lastTime;
     gameConfig.ws.onmessage = (event) => {
       const data = JSON.parse(event.data);
+		console.log(data.player_names);
+		if (data.player_names) {
+		console.log(data.player_names);
+	  }
       if (!online.myID) {
         online.myID = data.player_id;
         online.theirID = online.myID == 1 ? 2 : 1;
@@ -53,13 +57,14 @@ export function init() {
         game.field.classList.add("paused");
         document.getElementById("game-over").classList.remove("d-none");
         document.getElementById("winner-name").innerText = playerOne.score > playerTwo.score ? gameConfig.names[0] : gameConfig.names[1];
-        cancelAnimationFrame(gameConfig.animationID);
       }
+	  cancelAnimationFrame(gameConfig.animationID);
       return;
     };
     function update(time) {
       if (lastTime != undefined && !gameState.isPaused) {
         const delta = time - lastTime;
+		 console.log(delta)
         updatePaddles(delta);
         sendPaddlePos();
       }
