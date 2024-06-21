@@ -3,20 +3,33 @@ import json
 from django.core.cache import cache
 from django.core.cache.backends.base import DEFAULT_TIMEOUT
 from ..pong_game import PongGame
+import requests
+
+def fetch_player_name(token):
+	url = "http://user-management:8000/user/getinfo"
+	headers = {
+		"Authorization": "Bearer "+token,
+	}
+	response = requests.get(url, headers=headers)
+
+	if response.status_code == 200:
+		data = response.json()
+		if len(data['tag']) == 0:
+			return data['username']
+		return data['tag']
+	else:
+		return None
 
 class GameConsumer(AsyncWebsocketConsumer):
 	async def connect(self):
+		self.valid = False
 		self.player_id = 0
 		self.game_id = str(self.scope['url_route']['kwargs']['game_id'])
 		self.user_token = str(self.scope['url_route']['kwargs']['user_token'])
 		self.is_tournament = bool(self.scope['url_route']['kwargs']['is_tournament'])
 		self.player_name = ["player1", "player2"]
-		if self.user_token == 'guest':
-			self.is_tournament = False
-		else:
-			# Fetch the url in usermanagement to check if the token is valid, if not, reject the connection
-			pass
 		if not cache.get("game"+self.game_id):
+			await self.close(code=4002)
 			return
 		active_connections = cache.get("game"+self.game_id, 0)
 
@@ -25,17 +38,53 @@ class GameConsumer(AsyncWebsocketConsumer):
 			await self.close(code=4002)
 			return
 
-		self.player_id = int(active_connections)
-		self.game_state = PongGame()
-
 		# Increment the connection count in the cache atomically
 		new_connections = active_connections + 1
-		cache.set("game"+self.game_id, new_connections, timeout=300)
+		cache.set("game"+self.game_id, new_connections, timeout=1500)
 		await self.channel_layer.group_add(
 			self.game_id,
 			self.channel_name
 		)
 		await self.accept()
+
+		self.player_id = int(active_connections)
+		if self.user_token == 'guest':
+			self.is_tournament = False
+			if self.player_id == 2:
+				await self.channel_layer.group_send(
+					self.game_id,
+					{
+						'type': 'init_playername',
+					}
+				)
+			else:
+				cache.set("game_player_name"+self.game_id, self.player_name, timeout=1500)
+		# Fetch the url in usermanagement to check if the token is valid, if not, reject the connection
+		else:
+			player_name = fetch_player_name(self.user_token)
+			if not player_name:
+				await self.close(code=4002)
+				return
+			self.player_name[self.player_id - 1] = player_name
+			if self.player_id == 1:
+				cache.set("game_player_name"+self.game_id, self.player_name, timeout=1500)
+			else:
+				self.player_name[0] = cache.get("game_player_name"+self.game_id, [])[0]
+				cache.set("game_player_name"+self.game_id, self.player_name, timeout=1500)
+				await self.channel_layer.group_send(
+					self.game_id,
+					{
+						'type': 'init_playername',
+					}
+				)
+				message = {
+					'player_names': self.player_name
+				}
+				await self.send(text_data=json.dumps(message))
+
+		# Init the game obj
+		self.game_state = PongGame()
+		self.valid = True
 
 	async def disconnect(self, close_code):
 		active_connections = cache.get("game"+self.game_id, 0)
@@ -47,7 +96,7 @@ class GameConsumer(AsyncWebsocketConsumer):
 					'type': 'opponent_disconnect',
 				}
 			)
-		elif active_connections != 0:
+		elif active_connections != 0 and self.valid:
 			# Remove the key if this is the last connection
 			cache.delete("game"+self.game_id)
 
@@ -59,7 +108,7 @@ class GameConsumer(AsyncWebsocketConsumer):
 	async def receive(self, text_data):
 		# room expired
 		if cache.get("game"+self.game_id, 0) == 0:
-			await self.close(code=442)
+			await self.close(code=4442)
 		# Block if the connections are less than 2
 		if int(cache.get("game"+self.game_id)) < 3:
 			return
@@ -80,7 +129,7 @@ class GameConsumer(AsyncWebsocketConsumer):
 						'message': message
 					}
 				)
-				await self.close(code=102)
+				await self.close(code=4102)
 			else:
 				await self.channel_layer.group_send(
 					self.game_id,
@@ -89,7 +138,7 @@ class GameConsumer(AsyncWebsocketConsumer):
 						'message': message
 					}
 				)
-				await self.close(code=101)
+				await self.close(code=4101)
 		else:
 			# Send message to the other player
 			await self.channel_layer.group_send(
@@ -104,16 +153,24 @@ class GameConsumer(AsyncWebsocketConsumer):
 	async def game_message(self, event):
 		message = event['message']
 		self.game_state.from_json(message)
+	async def init_playername(self, event):
+		self.player_name = cache.get("game_player_name"+self.game_id, [])
+		if self.player_name:
+			cache.delete("game_player_name"+self.game_id)
+			message = {
+				'player_names': self.player_name
+			}
+			await self.send(text_data=json.dumps(message))
 
 	# Different close code
 	async def opponent_disconnect(self, event):
-		await self.close(code=441)
+		await self.close(code=4441)
 	async def succ_normal(self, event):
 		message = event['message']
 		self.send(text_data=message)
-		await self.close(code=101)
+		await self.close(code=4101)
 	async def succ_tournament(self, event):
 		message = event['message']
 		self.send(text_data=message)
-		await self.close(code=102)
+		await self.close(code=4102)
 
