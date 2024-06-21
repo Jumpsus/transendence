@@ -6,7 +6,6 @@ export default class Paddle {
     this.paddleElem = paddleElem;
     this.id = id;
     this._y = 50;
-    this.update();
   }
 
   get y() {

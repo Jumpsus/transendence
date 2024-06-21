@@ -54,7 +54,6 @@ export function init() {
         sendPaddlePos();
       }
       lastTime = time;
-      console.log("framing");
       gameConfig.animationID = window.requestAnimationFrame(update);
     }
     gameConfig.animationID = window.requestAnimationFrame(update);

@@ -39,7 +39,7 @@ window.addEventListener("popstate", () => {
     cancelAnimationFrame(gameConfig.animationID);
   }
   if (gameConfig.ws)
-      close(gameConfig.ws);
+    gameConfig.ws.close();
   const url = window.location.pathname;
   if (isLoggedIn.status && (url === "/Login" || url === "/Register")) {
     replaceHistoryAndGoTo("/");

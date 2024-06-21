@@ -185,6 +185,8 @@ function setEventListeners() {
 }
 
 export function setupGame() {
+  online.myID = 0;
+  online.theirID = 0;
   gameConfig.key = false;
   gameConfig.isTouch = isTouchDevice();
   setEventListeners();
