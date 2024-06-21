@@ -3,9 +3,9 @@ import { Home } from "./home.js";
 import { myUsername } from "../../index.js";
 import { host } from "../../index.js";
 import { pushHistoryAndGoTo } from "../utils/router.js";
-import { gameConfig } from "../game/setup.js";
+import { gameConfig, gameState } from "../game/setup.js";
 
-export const cup = { ws: null };
+export const cup = { ws: null, matches: [], currentMatch: 1 };
 
 export class Tournament extends Component {
 	constructor() {
@@ -19,10 +19,49 @@ export class Tournament extends Component {
 			< Back</a>
 			 <button class="retro-btn mb-4" id="join-cup-btn">join</button>
 			 <div class="d-flex justify-content-center text-center" id="cup-log"><span id="player-number">0</span>/<span>4</span> connected</div>
+     		 <div class="fs-5 text-danger d-none text-center" id="sock-err-msg"></div>
+			 <div class="d-flex justify-content-center text-center" id="cup-results"></div>
 	`;
 		this.render();
 		this.addEventListeners();
 	}
+	render() {
+		super.render();
+		const joinCupBtn = document.getElementById("join-cup-btn");
+		const cupLog = document.getElementById("cup-log");
+		if (cup.ws) {
+			joinCupBtn.classList.add("d-none");
+			cupLog.innerText = `${cup.currentMatch - 1}/3 matches finished`;
+			if (cup.currentMatch > 3) {
+				cupLog.innerText = "Cup finished";
+				const cupResults = document.getElementById("cup-results");
+				cupResults.innerText = "waiting for results...";
+			} else {
+				setTimeout(() => {
+					this.createMatch();
+				}, 5000);
+			}
+		}
+	}
+
+	createMatch() {
+		const match = cup.matches[cup.currentMatch - 1];
+		console.log("trying to connect to match " + match);
+		gameConfig.ws = new WebSocket(
+			`wss://${host}/ws/game/${match}/${localStorage.getItem("jwt")}/1/`
+		);
+		gameConfig.ws.onopen = () => {
+			console.log("connected");
+			gameConfig.isOnline = true;
+			gameConfig.key = true;
+			pushHistoryAndGoTo("/Game");
+		};
+		gameConfig.ws.onerror = (error) => {
+			console.error("WebSocket error:", error);
+		};
+
+	}
+
 	async addEventListeners() {
 		const resp = await fetch(`https://${host}/user-management/user/getinfo`, {
 			method: "GET",
@@ -36,6 +75,7 @@ export class Tournament extends Component {
 		const joinCupBtn = document.getElementById("join-cup-btn");
 		const playerN = document.getElementById("player-number");
 		const cupLog = document.getElementById("cup-log");
+		const sockErrMsg = document.getElementById("sock-err-msg");
 		joinCupBtn.addEventListener("click", async () => {
 			const name = tagField ? tagField : myUsername.username;
 			cup.ws = new WebSocket(
@@ -52,30 +92,34 @@ export class Tournament extends Component {
 					cupLog.innerText = "4/4 connected";
 				}
 				else if (data.hasOwnProperty("matches")) {
-					const matches = data.matches;
-					console.log(matches);
+					cup.matches = data.matches;
 					setTimeout(() => {
-						console.log("Game starting");
-						// gameConfig.ws = new WebSocket(
-						// 	`wss://${host}/ws/game/${gameConfig.roomId}/`
-						// );
-						// gameConfig.ws.onopen = () => {
-						// 	console.log("connected");
-						// 	gameConfig.isOnline = true;
-						// 	gameConfig.key = true;
-						// 	pushHistoryAndGoTo("/Game");
-						// 	sockErrMsg.classList.add("d-none");
-						// 	sockErrMsg.innerText = "";
-						// };
-						// gameConfig.ws.onerror = (error) => {
-						// 	console.error("WebSocket error:", error);
-						// 	sockErrMsg.classList.remove("d-none");
-						// 	sockErrMsg.innerText = "Room not found";
-						// };
-						// pushHistoryAndGoTo("/Game");
+						this.createMatch();
 					}, 5000);
 				}
-				// console.log(data);
+				else if (data.hasOwnProperty("results")) {
+					console.log(data.results);
+					const cupResults = document.getElementById("cup-results");
+					data.results.forEach((score, index) => {
+						const matchDiv = document.createElement('div');
+						matchDiv.className = 'match';
+
+						const matchHeading = document.createElement('h3');
+						matchHeading.textContent = `Match ${index + 1}`;
+
+						const player1Score = document.createElement('p');
+						player1Score.textContent = `Player 1: ${score.player1_name}`;
+
+						const player2Score = document.createElement('p');
+						player2Score.textContent = `Player 2: ${score.player2_name}`;
+
+						matchDiv.appendChild(matchHeading);
+						matchDiv.appendChild(player1Score);
+						matchDiv.appendChild(player2Score);
+						cupResults.innerText = "";
+						cupResults.appendChild(matchDiv);
+					});
+				}
 			};
 			cup.ws.onerror = (error) => {
 				console.error("WebSocket error:", error);

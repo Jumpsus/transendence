@@ -2,6 +2,7 @@ import Ball from "./Ball.js";
 import Paddle from "./Paddle.js";
 import { setupControls } from "./controls.js";
 import { updateCPU } from "./cpu.js";
+import { cup } from "../views/tournament.js";
 import {
   setupGame,
   updateScore,
@@ -12,6 +13,7 @@ import {
   game,
   keys,
 } from "./setup.js";
+import { pushHistoryAndGoTo, replaceHistoryAndGoTo } from "../utils/router.js";
 
 export function init() {
   setupGame();
@@ -54,11 +56,29 @@ export function init() {
     gameConfig.ws.onclose = (event) => {
       console.log(event.code);
       if(event.code == 4101) {
-        game.field.classList.add("paused");
+        updateScore();
         document.getElementById("game-over").classList.remove("d-none");
         document.getElementById("winner-name").innerText = playerOne.score > playerTwo.score ? gameConfig.names[0] : gameConfig.names[1];
       }
-	  cancelAnimationFrame(gameConfig.animationID);
+      if (event.code == 4102) {
+        console.log("Tournament match finished");
+        cup.ws.send(JSON.stringify({
+          type: 'game' + cup.currentMatch,
+          match: cup.matches[cup.currentMatch - 1],
+          result: {player1_name: gameState.score[0], player2_name: gameState.score[1]}
+        }));
+        cup.currentMatch++;
+        replaceHistoryAndGoTo("/Tournament");
+      }
+      if (event.code == 4441) {
+        console.log("Player disconnected");
+      }
+      if (event.code == 4442) {
+        console.log("Room expired");
+      }
+      game.field.classList.add("paused");
+      cancelAnimationFrame(gameConfig.animationID);
+      gameState.isFinished = true;
       return;
     };
     function update(time) {
