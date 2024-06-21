@@ -43,6 +43,9 @@ export function init() {
       playerTwo.y = data.paddle_pos[1];
       playerOne.update();
       playerTwo.update();
+      gameState.score[0] = data.score[0];
+      gameState.score[1] = data.score[1];
+      updateScore();
     };
     gameConfig.ws.onclose = () => {
       console.log("WebSocket closed");

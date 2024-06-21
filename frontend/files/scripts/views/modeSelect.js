@@ -1,15 +1,16 @@
 import { Component } from "../library/component.js";
 import { gameConfig } from "../game/setup.js";
 import { Home } from "./home.js";
+import { myUsername } from "../../index.js";
 
 export class ModeSelect extends Component {
-  constructor() {
-    const gameMenu = document.getElementById("game-menu");
-    if (!gameMenu) {
-      new Home();
-    }
-    super(document.getElementById("game-menu"));
-    this.view = `
+	constructor() {
+		const gameMenu = document.getElementById("game-menu");
+		if (!gameMenu) {
+			new Home();
+		}
+		super(document.getElementById("game-menu"));
+		this.view = `
 			<a href="/" id="back-button" class="pb-4" data-link>
 			< Back</a>
 			<div class="d-flex flex-column gap-3">
@@ -27,7 +28,7 @@ export class ModeSelect extends Component {
 						Match
 						<div class="online-light position-absolute"></div>
 						</a>
-						<a class="retro-btn online w-50 text-center py-3 position-relative">
+						<a href="/Tournament" class="retro-btn online w-50 text-center py-3 position-relative" data-link>
 						Cup
 						<div class="online-light position-absolute"></div>
 						</a>
@@ -35,22 +36,22 @@ export class ModeSelect extends Component {
 				</div>
 			</div>
 	`;
-    this.render();
-    this.addEventListeners();
-  }
+		this.render();
+		this.addEventListeners();
+	}
 
-  addEventListeners() {
-    const vs1 = document.getElementById("vs1");
-    vs1.addEventListener("click", () => {
-      gameConfig.isOnline = false;
-      gameConfig.hasCPU = false;
-	  gameConfig.key = true;
-    });
-    const vsCPU = document.getElementById("vsCPU");
-    vsCPU.addEventListener("click", () => {
-      gameConfig.isOnline = false;
-      gameConfig.hasCPU = true;
-	  gameConfig.key = true;
-    });
-  }
+	async addEventListeners() {
+		const vs1 = document.getElementById("vs1");
+		vs1.addEventListener("click", () => {
+			gameConfig.isOnline = false;
+			gameConfig.hasCPU = false;
+			gameConfig.key = true;
+		});
+		const vsCPU = document.getElementById("vsCPU");
+		vsCPU.addEventListener("click", () => {
+			gameConfig.isOnline = false;
+			gameConfig.hasCPU = true;
+			gameConfig.key = true;
+		});
+	}
 }
