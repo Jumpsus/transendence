@@ -47,8 +47,15 @@ export function init() {
       gameState.score[1] = data.score[1];
       updateScore();
     };
-    gameConfig.ws.onclose = () => {
-      console.log("WebSocket closed");
+    gameConfig.ws.onclose = (event) => {
+      console.log(event.code);
+      if(event.code == 4101) {
+        game.field.classList.add("paused");
+        document.getElementById("game-over").classList.remove("d-none");
+        document.getElementById("winner-name").innerText = playerOne.score > playerTwo.score ? gameConfig.names[0] : gameConfig.names[1];
+        cancelAnimationFrame(gameConfig.animationID);
+      }
+      return;
     };
     function update(time) {
       if (lastTime != undefined && !gameState.isPaused) {
