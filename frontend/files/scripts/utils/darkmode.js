@@ -38,13 +38,13 @@ function changeIcon(theme, label = null) {
   if (label) label.textContent = theme;
 }
 
-export function setupDarkModeToggle(label = null) {
+export function setupDarkModeToggle(label) {
   const modeSwitch = document.getElementById("modeSwitch");
-  changeIcon(getPreferredTheme(), label);
+  label.textContent = getPreferredTheme();
 
   modeSwitch.addEventListener("click", () => {
     const theme = getPreferredTheme() == "light" ? "dark" : "light";
-    changeIcon(theme, label);
+    label.textContent = theme;
     setStoredTheme(theme);
     setTheme(theme);
   });
@@ -52,6 +52,6 @@ export function setupDarkModeToggle(label = null) {
   window
     .matchMedia("(prefers-color-scheme: dark)")
     .addEventListener("change", () => {
-      if (!getStoredTheme()) changeIcon(getPreferredTheme(), label);
+      if (!getStoredTheme()) label.textContent = theme;
     });
 }

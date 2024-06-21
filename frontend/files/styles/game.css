@@ -4,10 +4,7 @@
   --game-ui-color: var(--my-secondary-color);
 }
 [data-bs-theme="dark"] {
-  --game-ui-color: var(--bs-body-color);
-  #game-field {
-    filter: drop-shadow(0 0 2px);
-  }
+  --game-ui-color: var(--my-color);
 }
 
 #game-container {
@@ -24,21 +21,11 @@
   container-type: size;
   overflow: hidden;
   margin: auto;
-  transition: all 300ms ease-out;
+  transition: all 300ms ease-out, transform 3s linear;
   will-change: transform;
 }
 
-#game-field.paused {
-  opacity: 0.2;
-}
-
-#game-field * {
-  text-shadow: none !important;
-}
-
 .paddle {
-  /* transition: all 100ms ease-out; */
-  /* transition: all 100ms ease-out; */
   background-color: var(--game-ui-color);
 }
 
@@ -48,11 +35,6 @@
   --x: 50;
   --y: 50;
   background-color: var(--game-ui-color);
-}
-
-:root {
-  --paddle1Angle: 0;
-  --paddle2Angle: 0;
 }
 
 #player-one {
@@ -72,87 +54,41 @@
   z-index: 100;
 }
 
-#pause-text {
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 10cqw;
-  font-weight: bold;
-  color: var(--game-ui-color);
-  opacity: 0;
-  transition: all 1000ms ease-out;
+#game-field.paused {
+  filter: blur(3px);
+  opacity: 0.2;
 }
 
-#pause-text.show {
-  opacity: 1;
+#winner-name {
+	color: var(--my-primary-color);
 }
 
-.collectible {
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  --x: 100;
-  --y: 0;
-  --speedyColor: rgb(255, 40, 79);
-  --paddleReducerColor: rgb(0, 255, 242);
-  --reverseControlsColor: rgb(41, 255, 25);
-  left: calc(var(--x) * 1%);
-  top: calc(var(--y) * 1%);
-  transform: translate(-50%, -50%);
-  /* filter: drop-shadow(0 0 5px); */
+#quit-button {
+  cursor: pointer;
 }
 
-.speedy {
-  color: var(--speedyColor);
-  background-color: var(--speedyColor);
+#pause-menu,
+#game-over {
+  font-size: 5cqw;
+  z-index: 5000;
 }
 
-.paddleReducer {
-  color: var(--paddleReducerColor);
-  background-color: var(--paddleReducerColor);
+#pause-menu > div:first-child {
+  margin-bottom: 2cqw;
 }
 
-.paddleEnlarger {
-  color: var(--reverseControlsColor);
-  background-color: var(--reverseControlsColor);
+#pause-menu > div:last-child {
+  gap: 8cqw;
 }
 
-.aim {
-  width: 3%;
-  aspect-ratio: 1/1;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
+#pause-menu > div:last-child > *:hover,
+#quit-button:hover{
+  text-decoration: underline;
+  text-underline-offset: 2cqw;
 }
 
-#aim-one {
-  --x: 45;
-  --y: 50;
-}
-
-#aim-two {
-  --x: 55;
-  --y: 50;
-}
-
-.aim-part:nth-child(1) {
-  border-bottom: 3px solid var(--game-ui-color);
-  border-right: 3px solid var(--game-ui-color);
-}
-
-.aim-part:nth-child(2) {
-  border-bottom: 3px solid var(--game-ui-color);
-  border-left: 3px solid var(--game-ui-color);
-}
-
-.aim-part:nth-child(3) {
-  border-top: 3px solid var(--game-ui-color);
-  border-right: 3px solid var(--game-ui-color);
-}
-
-.aim-part:nth-child(4) {
-  border-top: 3px solid var(--game-ui-color);
-  border-left: 3px solid var(--game-ui-color);
+#resume-btn {
+  cursor: pointer;
 }
 
 /* horizontal */
@@ -184,16 +120,7 @@
   .paddle#player-two {
     right: calc(var(--bufferWidth) * 1%);
   }
-  #aim-one {
-    left: calc(var(--x) * 1%);
-    top: calc(var(--y) * 1%);
-    transform: translate(-50%, -50%);
-  }
-  #aim-two {
-    left: calc(var(--x) * 1%);
-    top: calc(var(--y) * 1%);
-    transform: translate(-50%, -50%);
-  }
+
   #ball {
     height: calc(var(--ballWidth) * 1%);
     left: calc(var(--x) * 1%);
@@ -223,9 +150,6 @@
   #name-two {
     left: 100%;
     bottom: 0;
-  }
-  #debug-info {
-    right: 25%;
   }
   @container resize-box (aspect-ratio > 4/3) {
     #game-field {
@@ -274,16 +198,6 @@
   }
   .paddle#player-two {
     bottom: calc(var(--bufferWidth) * 1%);
-  }
-  #aim-one {
-    top: calc(var(--x) * 1%);
-    right: calc(var(--y) * 1%);
-    transform: translate(50%, -50%);
-  }
-  #aim-two {
-    top: calc(var(--x) * 1%);
-    right: calc(var(--y) * 1%);
-    transform: translate(50%, -50%);
   }
   #ball {
     width: calc(var(--ballWidth) * 1%);
