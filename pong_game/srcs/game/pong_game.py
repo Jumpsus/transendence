@@ -2,15 +2,15 @@ import json
 import random
 
 class PongGame:
-	def __init__(self):
-		self.PADDLE_WIDTH = 2  # Percentage
-		self.PADDLE_HEIGHT = 20  # Percentage
-		self.BALL_SIZE = 4  # Percentage
-		self.BUFFER_SIZE = 2
+	def __init__(self, paddle_width=2, paddle_height=20, ball_size=4, buffer_size=2):
+		self.PADDLE_WIDTH = paddle_width
+		self.PADDLE_HEIGHT = paddle_height
+		self.BALL_SIZE = ball_size
+		self.BUFFER_SIZE = buffer_size
 		self.paddle_pos = [50, 50]
 		self.ball_pos = [50, 50]
 		self.ball_vel = [random.uniform(0, 0.5) + 0.3, random.uniform(0, 1)]  # Percentage per frame
-		self.flag = True
+		self.flag = True # used to take turn on serving
 		self.score = [0, 0]
 
 	def update_ball(self):

@@ -8,6 +8,14 @@ class GameConsumer(AsyncWebsocketConsumer):
 	async def connect(self):
 		self.player_id = 0
 		self.game_id = str(self.scope['url_route']['kwargs']['game_id'])
+		self.user_token = str(self.scope['url_route']['kwargs']['user_token'])
+		self.is_tournament = bool(self.scope['url_route']['kwargs']['is_tournament'])
+		self.player_name = ["player1", "player2"]
+		if self.user_token == 'guest':
+			self.is_tournament = False
+		else:
+			# Fetch the url in usermanagement to check if the token is valid, if not, reject the connection
+			pass
 		if not cache.get("game"+self.game_id):
 			return
 		active_connections = cache.get("game"+self.game_id, 0)
@@ -38,8 +46,13 @@ class GameConsumer(AsyncWebsocketConsumer):
 	async def disconnect(self, close_code):
 		active_connections = cache.get("game"+self.game_id, 0)
 		if active_connections > 2:
-			# Decrement the connection count in the cache
-			cache.set("game"+self.game_id, active_connections - 1, timeout=300)
+			# Disconnect the other player with error code
+			await self.channel_layer.group_send(
+				self.game_id,
+				{
+					'type': 'opponent_disconnect',
+				}
+			)
 		elif active_connections != 0:
 			# Remove the key if this is the last connection
 			cache.delete("game"+self.game_id)
@@ -51,6 +64,9 @@ class GameConsumer(AsyncWebsocketConsumer):
 		)
 
 	async def receive(self, text_data):
+		# room expired
+		if cache.get("game"+self.game_id, 0) == 0:
+			self.close(code=442)
 		# Block if the connections are less than 2
 		if int(cache.get("game"+self.game_id)) < 3:
 			return
@@ -61,19 +77,50 @@ class GameConsumer(AsyncWebsocketConsumer):
 		message_dict = json.loads(message)
 		message_dict['player_id'] = self.player_id
 		message = json.dumps(message_dict)
-		# Send message to room group
-		await self.channel_layer.group_send(
-			self.game_id,
-			{
-				'type': 'game_message',
-				'message': message
-			}
-		)
 		await self.send(text_data=message)
+		if self.game_state.score[0] >= 11 or self.game_state.score[1] >= 11:
+			if self.is_tournament:
+				await self.channel_layer.group_send(
+					self.game_id,
+					{
+						'type': 'succ_tournament',
+						'message': message
+					}
+				)
+				self.close(code=102)
+			else:
+				await self.channel_layer.group_send(
+					self.game_id,
+					{
+						'type': 'succ_normal',
+						'message': message
+					}
+				)
+				self.close(code=101)
+		else:
+			# Send message to the other player
+			await self.channel_layer.group_send(
+				self.game_id,
+				{
+					'type': 'game_message',
+					'message': message
+				}
+			)
 
-	# Receive message from room group
+	# Sync 2 players' data
 	async def game_message(self, event):
 		message = event['message']
 		self.game_state.from_json(message)
 
+	# Different close code
+	async def opponent_disconnect(self, event):
+		self.close(code=441)
+	async def succ_normal(self, event):
+		message = event['message']
+		self.send(text_data=message)
+		self.close(code=101)
+	async def succ_tournament(self, event):
+		message = event['message']
+		self.send(text_data=message)
+		self.close(code=102)
 
