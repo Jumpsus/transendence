@@ -167,7 +167,7 @@ function setEventListeners() {
       setFieldBorders();
     });
     document.addEventListener("keydown", (event) => {
-      if (event.key === " ") {
+      if (event.key === " " && !gameConfig.isOnline) {
         pauseGame();
       }
     });
@@ -194,5 +194,6 @@ export function setupGame() {
   setFieldBorders();
   insertNames();
   updateScore();
-  setupPause();
+  if (!gameConfig.isOnline)
+    setupPause();
 }

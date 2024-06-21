@@ -12,14 +12,14 @@ export class MatchRoom extends Component {
     }
     super(document.getElementById("game-menu"));
     this.view = `
-	<a href="/Select" id="back-button" class="pb-4" data-link>
-		< Back</a>
-	<div class="d-flex flex-column align-items-stretch justify-content-center gap-3">
-				<div class="fs-5 text-danger d-none text-center" id="sock-err-msg"></div>
-				<div class="retro-btn" id="join-btn">Join room</div>
-				<input type="text" class="form-control rounded-0" placeholder="Room ID" id="room-ID" />
-				<button class="retro-btn" id="create-room-btn">Create</button>
-	</div>
+    <a href="/Select" id="back-button" class="pb-4" data-link>
+      < Back</a>
+    <div class="d-flex flex-column align-items-stretch justify-content-center gap-3">
+      <div class="retro-btn" id="join-btn">Join room</div>
+      <input type="text" class="form-control rounded-0" placeholder="Room ID" id="room-ID" />
+      <button class="retro-btn" id="create-room-btn">Create</button>
+      <div class="fs-5 text-danger d-none text-center" id="sock-err-msg"></div>
+    </div>
 	`;
     this.render();
     this.addEventListeners();
@@ -35,6 +35,7 @@ export class MatchRoom extends Component {
       gameConfig.ws.onopen = () => {
         console.log("connected");
         gameConfig.isOnline = true;
+        gameConfig.key = true;
         pushHistoryAndGoTo("/Game");
         sockErrMsg.classList.add("d-none");
         sockErrMsg.innerText = "";
