@@ -11,6 +11,9 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
+from core import vault_handler
+
+import urllib3
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,6 +24,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-lxa=@z(-3)62=)qiy&2gwxc+z&=e4d^uoav!8hu$j0r*n*dzj_'
+
+urllib3.disable_warnings()
+vault_secret = vault_handler.init_vault()
+
+API_KEY = vault_secret.get("api_key", "")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True

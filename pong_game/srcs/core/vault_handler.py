@@ -30,7 +30,7 @@ def init_vault():
     secret_dict = read_secret()
 
     count = 0
-    while secret_dict.get("api_key", "") == "" and secret_dict.get("jwt_secret", "") == "" and secret_dict.get("usermanagement_secret", "") == "":
+    while secret_dict.get("api_key", "") == "":
         if count > 10:
             print("Exit with unexpected result: Time out while getting secret!")
             exit(1)
@@ -40,4 +40,3 @@ def init_vault():
         secret_dict = read_secret()
     
     return secret_dict
-
