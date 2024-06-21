@@ -19,7 +19,7 @@ class GameConsumer(AsyncWebsocketConsumer):
 			return
 
 		self.player_id = int(active_connections)
-		if self.player_id == 2 and cache.get("id_two_set"):
+		if self.player_id == 2 and cache.get("id_two_set"+self.game_id):
 			self.player_id = 1
 		elif self.player_id == 2:
 			cache.set("id_two_set"+self.game_id, True, timeout=300)
@@ -43,7 +43,7 @@ class GameConsumer(AsyncWebsocketConsumer):
 		elif active_connections != 0:
 			# Remove the key if this is the last connection
 			cache.delete("game"+self.game_id)
-		if self.player_id == 2 and cache.get("id_two_set"):
+		if self.player_id == 2 and cache.get("id_two_set"+self.game_id):
 			cache.delete("id_two_set"+self.game_id)
 		await self.channel_layer.group_discard(
 			self.game_id,
