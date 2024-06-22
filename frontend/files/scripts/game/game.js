@@ -107,7 +107,7 @@ export function init() {
         if (gameConfig.hasCPU) updateCPU(ball, playerOne, playerTwo);
         if (isLose()) {
           updateScore();
-          if (gameState.score[0] == 11 || gameState.score[1] == 11) {
+          if (gameState.score[0] == 1100 || gameState.score[1] == 1100) {
             ball.x = -100;
             ball.y = -100;
             gameState.isFinished = true;

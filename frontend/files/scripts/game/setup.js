@@ -165,8 +165,8 @@ function setEventListeners() {
   if (!eventListenersSet) {
     window.addEventListener("resize", () => {
       if (!game.field) return;
-      gameState.isHorizontal = game.field.clientWidth > game.field.clientHeight;
       setFieldBorders();
+      gameState.isHorizontal = game.field.clientWidth > game.field.clientHeight;
     });
     document.addEventListener("keydown", (event) => {
       if (event.key === " " && !gameConfig.isOnline) {
