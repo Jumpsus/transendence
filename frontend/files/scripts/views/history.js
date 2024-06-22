@@ -4,9 +4,9 @@ import { Profile } from "./profile.js";
 import { host } from "../../index.js";
 
 export class MatchHistory extends Component {
-  constructor() {
-    super(document.getElementById("profile-wrapper"));
-    this.view = `
+	constructor() {
+		super(document.getElementById("profile-wrapper"));
+		this.view = `
 	<div id="match-history-table" class="d-flex justify-content-between w-100">
 	<div id="name-column">
 		<div>Opponent</div>
@@ -26,33 +26,54 @@ export class MatchHistory extends Component {
 	</div>
 </div>
 		`;
-    this.render();
-    this.setupEventListeners();
-  }
-
-  async render() {
-    if (!document.getElementById("profileHeader")) new Profile();
-    super.render();
-    makeLinkActive(document.getElementById("profileMenu"));
-	const resp = await fetch(`https://${host}/user/getmatchhistory`, {
-		method: "GET",
-		headers: {
-			"Content-Type": "application/json",
-			Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-		},
-	})
-	console.log("my history");
-	console.log(resp);
-	if (!resp.ok) {
-		console.log("Error fetching match history");
-		return;
+		this.render();
+		this.setupEventListeners();
 	}
-	const data = await resp.json();
-	if (data.length === 0) {
-		console.log("No match history");
-		return;
-	}
-  }
 
-  setupEventListeners() {}
+	async render() {
+		const nameColumn = document.getElementById("name-column");
+		const scoreColumn = document.getElementById("score-column");
+		const resultColumn = document.getElementById("result-column");
+		const dateColumn = document.getElementById("date-column");
+		if (!document.getElementById("profileHeader")) new Profile();
+		super.render();
+		makeLinkActive(document.getElementById("profileMenu"));
+		const resp = await fetch(`https://${host}/user-management/user/getmatchhistory`, {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+			},
+		})
+		if (!resp.ok) {
+			console.log("Error fetching match history");
+			return;
+		}
+		if (data.length === 0) {
+			console.log("No match history");
+			return;
+		}
+		else {
+			data.forEach(match => {
+				const opponent = document.createElement('a');
+				opponent.textContent = match.opponent;
+				opponent.href = `/${match.opponent}`;
+				nameColumn.appendChild(opponent);
+
+				const score = document.createElement('div');
+				score.textContent = match.score;
+				scoreColumn.appendChild(score);
+
+				const result = document.createElement('div');
+				result.textContent = match.result;
+				resultColumn.appendChild(result);
+
+				const data = document.createElement('div');
+				data.textContent = match.date;
+				dateColumn.appendChild(data);
+			});
+		}
+	}
+
+	setupEventListeners() { }
 }

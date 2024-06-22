@@ -5,6 +5,7 @@ import {
   goTo,
 } from "./scripts/utils/router.js";
 import { gameConfig } from "./scripts/game/setup.js";
+import { cup } from "./scripts/views/tournament.js";
 
 export let isLoggedIn = { status: false };
 
@@ -38,8 +39,14 @@ window.addEventListener("popstate", () => {
   if (gameConfig.animationID) {
     cancelAnimationFrame(gameConfig.animationID);
   }
-  if (gameConfig.ws)
+  if (gameConfig.ws){
     gameConfig.ws.close();
+    gameConfig.ws = null;
+  }
+  if (cup.ws) {
+    cup.ws.close();
+    cup.ws = null;
+  }
   const url = window.location.pathname;
   if (isLoggedIn.status && (url === "/Login" || url === "/Register")) {
     replaceHistoryAndGoTo("/");
