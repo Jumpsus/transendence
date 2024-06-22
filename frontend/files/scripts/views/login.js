@@ -62,10 +62,11 @@ export class Login extends Component {
         },
         body: JSON.stringify(requestBody),
       });
-      const data = await resp.json();
       if (!resp.ok) {
-        errMsg.textContent = data.message;
+        errMsg.textContent = "Wrong username or password";
+        return;
       } else {
+        const data = await resp.json();
         localStorage.setItem("jwt", data.token);
         const loginSuccess = await setMyUsername();
         isLoggedIn.status = loginSuccess;

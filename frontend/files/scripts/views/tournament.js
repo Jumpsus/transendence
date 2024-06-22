@@ -63,26 +63,31 @@ export class Tournament extends Component {
 	}
 
 	async addEventListeners() {
-		const resp = await fetch(`https://${host}/user-management/user/getinfo`, {
-			method: "GET",
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-			},
-		});
-		const data = await resp.json();
-		const tagField = data.tag;
+		const backBtn = document.getElementById("back-button");
 		const joinCupBtn = document.getElementById("join-cup-btn");
 		const playerN = document.getElementById("player-number");
 		const cupLog = document.getElementById("cup-log");
 		const sockErrMsg = document.getElementById("sock-err-msg");
+		backBtn.addEventListener("click", () => {
+			if (cup.ws) {
+				cup.ws.close();
+				cup.ws = null;
+			}
+		});
 		joinCupBtn.addEventListener("click", async () => {
-			const name = tagField ? tagField : myUsername.username;
+			if (!cup.ws) {
 			cup.ws = new WebSocket(
-				`wss://${host}/ws/game/${name}/`
+				`wss://${host}/ws/game/${localStorage.getItem("jwt")}/`
 			);
+			} else {
+				cup.ws.close();
+				cup.ws = null;
+				joinCupBtn.innerText = "Join";
+				return;
+			}
 			cup.ws.onopen = () => {
 				console.log("connected");
+				joinCupBtn.innerText = "Cancel";
 			};
 			cup.ws.onmessage = (event) => {
 				const data = JSON.parse(event.data);
