@@ -43,6 +43,9 @@ services:
     extends:
       file: pong_game/docker-compose.yml
       service: pong-game
+    depends_on:
+      - vault-service
+      - redis
 
   redis:
     restart: always
