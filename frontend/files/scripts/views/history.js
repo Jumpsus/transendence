@@ -49,12 +49,15 @@ export class MatchHistory extends Component {
 			console.log("Error fetching match history");
 			return;
 		}
+		const data = await resp.json();
+		console.log(data);
+
 		if (data.length === 0) {
 			console.log("No match history");
 			return;
 		}
 		else {
-			data.forEach(match => {
+			data.match_history.forEach(match => {
 				const opponent = document.createElement('a');
 				opponent.textContent = match.opponent;
 				opponent.href = `/${match.opponent}`;

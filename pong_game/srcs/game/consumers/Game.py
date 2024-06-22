@@ -34,8 +34,6 @@ class GameConsumer(AsyncWebsocketConsumer):
 			await self.close(code=4002)
 			return
 
-		new_connections = active_connections + 1
-		await set_cache("game" + self.game_id, new_connections, 1500)
 		await self.channel_layer.group_add(
 			self.game_id,
 			self.channel_name
@@ -57,7 +55,7 @@ class GameConsumer(AsyncWebsocketConsumer):
 				await set_cache("game_player_name" + self.game_id, self.player_name, 1500)
 				await set_cache("game_user_name" + self.game_id, self.user_name, 1500)
 		else:
-			player_name = await self.fetch_user(self.user_token)
+			player_name = await self.fetch_user()
 			if not player_name:
 				await self.close(code=4002)
 				return
@@ -67,7 +65,7 @@ class GameConsumer(AsyncWebsocketConsumer):
 				await set_cache("game_user_name" + self.game_id, self.user_name, 1500)
 			else:
 				self.player_name[0] = cache.get("game_player_name" + self.game_id, [])[0]
-				self.user_name[0] = cache.get("game_player_name" + self.user_name, [])[0]
+				self.user_name[0] = cache.get("game_user_name" + self.game_id, [])[0]
 				await set_cache("game_player_name" + self.game_id, self.player_name, 1500)
 				await set_cache("game_user_name" + self.game_id, self.user_name, 1500)
 				await self.channel_layer.group_send(
@@ -78,6 +76,8 @@ class GameConsumer(AsyncWebsocketConsumer):
 				)
 
 		self.valid = True
+		new_connections = active_connections + 1
+		await set_cache("game" + self.game_id, new_connections, 1500)
 		if self.player_id == 1:
 			self.game_state = PongGame()
 		if self.player_id == 2:
@@ -210,9 +210,9 @@ class GameConsumer(AsyncWebsocketConsumer):
 		}
 		response = requests.get(url, headers=headers)
 
-		self.user_name[self.player_id - 1] = data['username']
 		if response.status_code == 200:
 			data = response.json()
+			self.user_name[self.player_id - 1] = data['username']
 			if len(data['tag']) == 0:
 				return data['username']
 			return data['tag']

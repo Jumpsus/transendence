@@ -88,7 +88,6 @@ export function init() {
     function update(time) {
       if (lastTime != undefined && !gameState.isPaused) {
         const delta = time - lastTime;
-        console.log(delta)
         updatePaddles(delta);
         sendPaddlePos();
       }

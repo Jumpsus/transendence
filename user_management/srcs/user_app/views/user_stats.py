@@ -59,16 +59,18 @@ def generate_history_dict(username, match_historys):
     for match in match_historys:
         d = {}
         d['date'] = match.created_at.strftime('%Y-%m-%d')
-        if username == match.user_w:
+        if username == match.user_w.username:
             d['result'] = 'WON'
-            d['score'] = str(match.score_w) + ':' + str(match.score_l)
-            d['opponent'] = match.user_l
+            d['score'] = f"{match.score_w}:{match.score_l}"
+            d['opponent'] = match.user_l.username
         else:
             d['result'] = 'LOSE'
-            d['score'] = str(match.score_l) + ':' + str(match.score_w)
-            d['opponent'] = match.user_w
+            d['score'] = f"{match.score_l}:{match.score_w}"
+            d['opponent'] = match.user_w.username
         match_list.append(d)
+
     return match_list
+
 
 def get_match_history(req):
     if req.method != 'GET':
