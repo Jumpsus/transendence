@@ -77,6 +77,8 @@ export class Profile extends Component {
         body: JSON.stringify({ username: username.username }),
       }
     );
+    console.log("my data:");
+    console.log(resp);
     const data = await resp.json();
     wonNumber.textContent = data.win;
     lostNumber.textContent = data.lose;
