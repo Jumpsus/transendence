@@ -3,8 +3,9 @@ import json
 from django.core.cache import cache
 from django.core.cache.backends.base import DEFAULT_TIMEOUT
 from ..pong_game import PongGame
-import requests, asyncio
+import asyncio
 import logging # for debug
+from ..func import fetch_player_name, store_game_result
 
 logger = logging.getLogger('game')
 
@@ -13,20 +14,7 @@ async def set_cache(key, value, timeout=DEFAULT_TIMEOUT):
 	while cache.get(key) != value:
 		await asyncio.sleep(0.01)
 
-def fetch_player_name(token):
-	url = "http://user-management:8000/user/getinfo"
-	headers = {
-		"Authorization": "Bearer " + token,
-	}
-	response = requests.get(url, headers=headers)
 
-	if response.status_code == 200:
-		data = response.json()
-		if len(data['tag']) == 0:
-			return data['username']
-		return data['tag']
-	else:
-		return None
 
 class GameConsumer(AsyncWebsocketConsumer):
 	async def connect(self):
@@ -113,7 +101,7 @@ class GameConsumer(AsyncWebsocketConsumer):
 				}
 			)
 			await asyncio.sleep(0.016)  # 16ms for approximately 60fps
-			if self.game_state.score[0] >= 12 or self.game_state.score[1] >= 12:
+			if self.game_state.score[0] >= 11 or self.game_state.score[1] >= 11:
 				if self.is_tournament:
 					await self.channel_layer.group_send(
 						self.game_id,
@@ -127,6 +115,7 @@ class GameConsumer(AsyncWebsocketConsumer):
 						self.game_id,
 						{
 							'type': 'succ_normal',
+							'message': message
 						}
 					)
 					break
@@ -195,6 +184,9 @@ class GameConsumer(AsyncWebsocketConsumer):
 		await self.close(code=4441)
 
 	async def succ_normal(self, event):
+		if self.player_id == 1:
+			data = json.loads(event['message'])
+			store_game_result(self.player_name, data['score'])
 		await self.close(code=4101)
 
 	async def succ_tournament(self, event):
