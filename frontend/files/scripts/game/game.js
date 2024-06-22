@@ -35,7 +35,10 @@ export function init() {
     let lastTime;
     gameConfig.ws.onmessage = (event) => {
       const data = JSON.parse(event.data);
-	  console.log(data)
+      console.log(data.player_names);
+      if (data.player_names) {
+        console.log(data.player_names);
+      }
       if (!online.myID) {
         online.myID = data.player_id;
         online.theirID = online.myID == 1 ? 2 : 1;
@@ -44,6 +47,10 @@ export function init() {
       ball.y = data.ball_pos[1];
       playerOne.y = data.paddle_pos[0];
       playerTwo.y = data.paddle_pos[1];
+      gameConfig.names[0] = data.player_names[0];
+      gameConfig.names[1] = data.player_names[1];
+      document.getElementById("name-one").innerText = gameConfig.names[0];
+      document.getElementById("name-two").innerText = gameConfig.names[1];
       playerOne.update();
       playerTwo.update();
       gameState.score[0] = data.score[0];
@@ -52,7 +59,7 @@ export function init() {
     };
     gameConfig.ws.onclose = (event) => {
       console.log(event.code);
-      if(event.code == 4101) {
+      if (event.code == 4101) {
         updateScore();
         document.getElementById("game-over").classList.remove("d-none");
         document.getElementById("winner-name").innerText = playerOne.score > playerTwo.score ? gameConfig.names[0] : gameConfig.names[1];
@@ -62,7 +69,7 @@ export function init() {
         cup.ws.send(JSON.stringify({
           type: 'game' + cup.currentMatch,
           match: cup.matches[cup.currentMatch - 1],
-          result: {player1_name: gameState.score[0], player2_name: gameState.score[1]}
+          result: { player1_name: gameState.score[0], player2_name: gameState.score[1] }
         }));
         cup.currentMatch++;
         replaceHistoryAndGoTo("/Tournament");
@@ -81,6 +88,7 @@ export function init() {
     function update(time) {
       if (lastTime != undefined && !gameState.isPaused) {
         const delta = time - lastTime;
+        console.log(delta)
         updatePaddles(delta);
         sendPaddlePos();
       }
@@ -99,7 +107,7 @@ export function init() {
         if (gameConfig.hasCPU) updateCPU(ball, playerOne, playerTwo);
         if (isLose()) {
           updateScore();
-          if (gameState.score[0] == 11 || gameState.score[1] == 11) {
+          if (gameState.score[0] == 1100 || gameState.score[1] == 1100) {
             ball.x = -100;
             ball.y = -100;
             gameState.isFinished = true;

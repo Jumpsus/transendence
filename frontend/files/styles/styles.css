@@ -193,9 +193,14 @@ a {
 
 #profile-window {
   background: linear-gradient(180deg, blue, rgb(0, 0, 83));
-  width: 750px;
-  height: 550px;
-  box-sizing: content-box;
+}
+
+@media (width >= 576px) {
+  #profile-window {
+    width: 750px;
+    height: 550px;
+    box-sizing: content-box;
+  }
 }
 
 @media (width < 576px) {
@@ -229,6 +234,10 @@ a {
   100% {
     background-position: 0% 0%;
   }
+}
+
+button {
+  all: unset;
 }
 
 .my-button {

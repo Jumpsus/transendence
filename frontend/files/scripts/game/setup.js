@@ -73,6 +73,8 @@ function insertNames() {
     gameConfig.names = ["CPU", "PL1"];
   } else if (!gameConfig.isOnline) {
     gameConfig.names = ["PL1", "PL2"];
+  } else if (gameConfig.isOnline) {
+    gameConfig.names = ["", ""];
   }
   nameOne.innerText = gameConfig.names[0];
   nameTwo.innerText = gameConfig.names[1];
@@ -163,8 +165,8 @@ function setEventListeners() {
   if (!eventListenersSet) {
     window.addEventListener("resize", () => {
       if (!game.field) return;
-      gameState.isHorizontal = game.field.clientWidth > game.field.clientHeight;
       setFieldBorders();
+      gameState.isHorizontal = game.field.clientWidth > game.field.clientHeight;
     });
     document.addEventListener("keydown", (event) => {
       if (event.key === " " && !gameConfig.isOnline) {
