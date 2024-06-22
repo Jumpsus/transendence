@@ -73,6 +73,8 @@ function insertNames() {
     gameConfig.names = ["CPU", "PL1"];
   } else if (!gameConfig.isOnline) {
     gameConfig.names = ["PL1", "PL2"];
+  } else if (gameConfig.isOnline) {
+    gameConfig.names = ["", ""];
   }
   nameOne.innerText = gameConfig.names[0];
   nameTwo.innerText = gameConfig.names[1];
