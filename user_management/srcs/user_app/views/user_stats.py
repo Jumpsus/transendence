@@ -53,6 +53,23 @@ def save_game_result(req):
 
     return utils.responseJsonErrorMessage(200, "00", "Success")
 
+def generate_history_dict(username, match_historys):
+    match_list = []
+
+    for match in match_historys:
+        d = {}
+        d['date'] = match.created_at.strftime('%Y-%m-%d')
+        if username == match.user_w:
+            d['result'] = 'WON'
+            d['score'] = str(match.score_w) + ':' + str(match.score_l)
+            d['opponent'] = match.user_l
+        else:
+            d['result'] = 'LOSE'
+            d['score'] = str(match.score_l) + ':' + str(match.score_w)
+            d['opponent'] = match.user_w
+        match_list.append(d)
+    return match_list
+
 def get_match_history(req):
     if req.method != 'GET':
         return utils.responseJsonErrorMessage(400, "10", "Invalid request (Method)")
@@ -61,16 +78,9 @@ def get_match_history(req):
     if found != True:
         return utils.responseJsonErrorMessage(400, "30", "Invalid Session")
 
-    if len(u) == 0:
-        return utils.responseJsonErrorMessage(400, "13", "User Not Found")
-
     match_historys = database.find_user_match_history(u[0])
 
-    match_list = []
-
-    for match in match_historys:
-        d = {"winner": match.user_w.username, "loser": match.user_l.username ,"win_score": match.score_w, "lose_score":match.score_l}
-        match_list.append(d)
+    match_list = generate_history_dict(u[0].username, match_historys)
     
     response_data = {
         "code": "00",
@@ -112,12 +122,8 @@ def get_other_match_history(req):
 
     match_historys = database.find_user_match_history(other_u[0])
 
-    match_list = []
+    match_list = generate_history_dict(other_u[0].username, match_historys)
 
-    for match in match_historys:
-        d = {"winner": match.user_w.username, "loser": match.user_l.username ,"win_score": match.score_w, "lose_score":match.score_l}
-        match_list.append(d)
-    
     response_data = {
         "code": "00",
         "match_history": match_list,
