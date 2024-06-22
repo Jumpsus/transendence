@@ -35,6 +35,10 @@ export function init() {
     let lastTime;
     gameConfig.ws.onmessage = (event) => {
       const data = JSON.parse(event.data);
+		console.log(data.player_names);
+		if (data.player_names) {
+		console.log(data.player_names);
+	  }
       if (!online.myID) {
         online.myID = data.player_id;
         online.theirID = online.myID == 1 ? 2 : 1;
@@ -80,6 +84,7 @@ export function init() {
     function update(time) {
       if (lastTime != undefined && !gameState.isPaused) {
         const delta = time - lastTime;
+		 console.log(delta)
         updatePaddles(delta);
         sendPaddlePos();
       }
