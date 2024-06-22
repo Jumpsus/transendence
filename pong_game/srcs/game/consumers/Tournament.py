@@ -4,17 +4,21 @@ import logging
 from channels.generic.websocket import AsyncWebsocketConsumer
 from asgiref.sync import sync_to_async
 from ..models import join_room, leave_room, TournamentData
+from ..func import fetch_player_name
 
 logger = logging.getLogger(__name__)
 
 class TournamentConsumer(AsyncWebsocketConsumer):
 	async def connect(self):
-		self.player_name = self.scope['url_route']['kwargs']['player_name']
+		self.user_token = str(self.scope['url_route']['kwargs']['user_token'])
 		self.room_id = await sync_to_async(join_room)(self.player_name)
 		self.room_group_name = f'room_{self.room_id}'
 		self.check_task1 = None
 		self.check_task2 = None
 
+		player_name = fetch_player_name(self.user_token)
+		if not player_name:
+			return
 		await self.accept()
 
 		# Start the periodic check task
@@ -89,9 +93,10 @@ class TournamentConsumer(AsyncWebsocketConsumer):
 				await asyncio.sleep(5)
 			except asyncio.CancelledError:
 				await self.close()
-			except Exception as e:
-				logger.error(f"Error in check_results: {e}")
+				break
+			except Exception:
 				await self.close()
+				break
 	async def save_game_result(self, match, result):
 		tournament = TournamentData.load(self.room_id)
 		if not tournament:
