@@ -16,6 +16,9 @@ def status(req):
 
 @csrf_exempt
 def login(req):
+    if req.method != 'POST':
+        return utils.responseJsonErrorMessage(400, "10", "Invalid request (Method)")
+
     try:
         body = utils.getJsonBody(req.body)
         schema = {
@@ -48,6 +51,8 @@ def login(req):
     if database.stamp_jti(u[0], jti) != True:
         return utils.responseJsonErrorMessage(500, "20", "Internal error")
 
+    if database.update_status(u[0], "online") != True:
+        return utils.responseJsonErrorMessage(500, "20", "Internal error")
     response_data = {
         "code": "00",
         "message": "Success",
@@ -59,6 +64,9 @@ def login(req):
 
 @csrf_exempt
 def register(req):
+    if req.method != 'POST':
+        return utils.responseJsonErrorMessage(400, "10", "Invalid request (Method)")
+
     try:
         body = utils.getJsonBody(req.body)
         schema = {
@@ -113,6 +121,8 @@ def loginlist(req):
 
 @csrf_exempt
 def user_list(req):
+    if req.method != 'POST' and req.method != 'GET' :
+        return utils.responseJsonErrorMessage(400, "10", "Invalid request (Method)")
 
     found, u = validator.validate_user(req)
     if found != True:
@@ -133,34 +143,34 @@ def user_list(req):
         case "":
             users = UserManagement.objects.all()
             for user in users:
-                d = {"username": user.username, "image": user.image ,"status": "offline"}
+                d = {"username": user.username, "image": user.image ,"status": "offline" if user.status == "" else user.status}
                 user_list.append(d)
         
         case "friend":
             friends = database.find_friend(u[0])
             for friend in friends:
                 if friend.user_a == u[0]:
-                    d = {"username": friend.user_b.username, "image": friend.user_b.image ,"status": "offline"}
+                    d = {"username": friend.user_b.username, "image": friend.user_b.image ,"status": "offline" if friend.user_b.status == "" else friend.user_b.status}
                 else:
-                    d = {"username": friend.user_a.username, "image": friend.user_a.image ,"status": "offline"}
+                    d = {"username": friend.user_a.username, "image": friend.user_a.image ,"status": "offline" if friend.user_a.status == "" else friend.user_a.status}
                 user_list.append(d)
         
         case "add":
             friends = database.find_friends_by_action_user(u[0], "pending")
             for friend in friends:
-                d = {"username": friend.user_b.username, "image": friend.user_b.image ,"status": "offline"}
+                d = {"username": friend.user_b.username, "image": friend.user_b.image ,"status": "offline" if friend.user_b.status == "" else friend.user_b.status}
                 user_list.append(d)
         
         case "pending":
             friends = database.find_friends_by_actioned_user(u[0], "pending")
             for friend in friends:
-                d = {"username": friend.user_a.username, "image": friend.user_a.image ,"status": "offline"}
+                d = {"username": friend.user_a.username, "image": friend.user_a.image ,"status": "offline" if friend.user_a.status == "" else friend.user_a.status}
                 user_list.append(d)
         
         case "block":
             friends = database.find_friends_by_action_user(u[0], "block")
             for friend in friends:
-                d = {"username": friend.user_b.username, "image": friend.user_b.image ,"status": "offline"}
+                d = {"username": friend.user_b.username, "image": friend.user_b.image ,"status": "offline" if friend.user_b.status == "" else friend.user_b.status}
                 user_list.append(d)
         
         case _:
@@ -173,6 +183,8 @@ def user_list(req):
     return HttpResponse(json.dumps(response_data), content_type="application/json", status=200)
 
 def get_info(req):
+    if req.method != 'GET' :
+        return utils.responseJsonErrorMessage(400, "10", "Invalid request (Method)")
 
     found, u = validator.validate_user(req)
     if found != True:
@@ -200,6 +212,8 @@ def get_info(req):
 
 @csrf_exempt
 def get_other_info(req):
+    if req.method != 'POST':
+        return utils.responseJsonErrorMessage(400, "10", "Invalid request (Method)")
 
     try:
         body = utils.getJsonBody(req.body)
@@ -220,6 +234,17 @@ def get_other_info(req):
     if len(other_u) == 0:
         return utils.responseJsonErrorMessage(400, "13", "User Not Found")
 
+    # find other friend list
+    friend_list = []
+    other_friends = database.find_friend(other_u[0])
+    for other_friend in other_friends:
+        if other_friend.user_a == other_u[0]:
+            f = other_friend.user_b.username
+        else:
+            f = other_friend.user_a.username
+        friend_list.append(f)
+
+    # find relation with user
     found, u = validator.validate_user(req)
     if found != True:
         return utils.responseJsonErrorMessage(400, "30", "Invalid Session")
@@ -228,6 +253,8 @@ def get_other_info(req):
         return utils.responseJsonErrorMessage(400, "13", "User Not Found")
 
     relation = friend_management.map_relation(u[0], other_u[0])
+
+    # get win lose stat
     win, lose = database.find_user_win_lose_stats(other_u[0])
 
     response_data = {
@@ -242,13 +269,16 @@ def get_other_info(req):
         "lose": lose,
         "level": 0,
         "relation": relation,
-        "status": "offline", # TODO handle this case
+        "status": "offline" if u[0].status == "" else u[0].status,
+        "friends": friend_list,
     }
 
     return HttpResponse(json.dumps(response_data), content_type="application/json", status=200)
 
 @csrf_exempt
 def update_info(req):
+    if req.method != 'POST' :
+        return utils.responseJsonErrorMessage(400, "10", "Invalid request (Method)")
 
     try:
         body = utils.getJsonBody(req.body)
@@ -274,6 +304,8 @@ def update_info(req):
 
 @csrf_exempt
 def get_relation(req):
+    if req.method != 'POST':
+        return utils.responseJsonErrorMessage(400, "10", "Invalid request (Method)")
 
     try:
         body = utils.getJsonBody(req.body)
@@ -313,6 +345,9 @@ def get_relation(req):
 
 @csrf_exempt
 def change_password(req):
+    if req.method != 'POST':
+        return utils.responseJsonErrorMessage(400, "10", "Invalid request (Method)")
+
     try:
         body = utils.getJsonBody(req.body)
         schema = {
@@ -353,6 +388,9 @@ def change_password(req):
 
 @csrf_exempt
 def stamp_status(req):
+    if req.method != 'POST':
+        return utils.responseJsonErrorMessage(400, "10", "Invalid request (Method)")
+
     found, u = validator.validate_user(req)
     if found != True:
         return utils.responseJsonErrorMessage(400, "30", "Invalid Session")
@@ -389,6 +427,8 @@ def stamp_status(req):
 
 @csrf_exempt
 def logout(req):
+    if req.method != 'GET' :
+        return utils.responseJsonErrorMessage(400, "10", "Invalid request (Method)")
 
     found, u = validator.validate_user(req)
     if found != True:
@@ -399,6 +439,9 @@ def logout(req):
 
     temp_jti = jwt_handler.generate_jti(u[0].username)
     if database.stamp_jti(u[0], temp_jti) != True:
+        return utils.responseJsonErrorMessage(500, "20", "Internal error")
+
+    if database.update_status(u[0], "offline") != True:
         return utils.responseJsonErrorMessage(500, "20", "Internal error")
     
     return utils.responseJsonErrorMessage(200, "00", "Success")

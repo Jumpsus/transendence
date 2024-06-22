@@ -2,5 +2,8 @@ django==4.0
 channels==3.0.4
 channels_redis==3.3.1
 django-cors-headers
+redis
 requests==2.32.3
 asyncio
+hvac==2.2.0
+urllib3==2.2.1

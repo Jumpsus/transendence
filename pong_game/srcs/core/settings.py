@@ -11,54 +11,10 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
-import os
+from core import vault_handler
 
-LOGGING = {
-	'version': 1,
-	'disable_existing_loggers': False,
-	'handlers': {
-		'console': {
-			'level': 'DEBUG',
-			'class': 'logging.StreamHandler',
-		},
-	},
-	'root': {
-		'handlers': ['console'],
-		'level': 'DEBUG',
-	},
-	'loggers': {
-		'django': {
-			'handlers': ['console'],
-			'level': 'DEBUG',
-			'propagate': True,
-		},
-		'django.request': {
-			'handlers': ['console'],
-			'level': 'DEBUG',
-			'propagate': False,
-		},
-		'game': {  # Add this logger for your game consumer
-			'handlers': ['console'],
-			'level': 'DEBUG',
-			'propagate': False,
-		},
-		'daphne': {
-            'handlers': ['console'],
-            'level': 'INFO',  # Set to INFO or WARNING to reduce verbosity
-            'propagate': False,
-        },
-		'channels': {
-			'handlers': ['console'],
-			'level': 'INFO',  # Set to INFO or WARNING to reduce verbosity
-			'propagate': False,
-		},
-		'websockets': {
-			'handlers': ['console'],
-			'level': 'INFO',  # Set to INFO or WARNING to reduce verbosity
-			'propagate': False,
-		},
-	},
-}
+import urllib3
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -68,6 +24,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-lxa=@z(-3)62=)qiy&2gwxc+z&=e4d^uoav!8hu$j0r*n*dzj_'
+
+urllib3.disable_warnings()
+vault_secret = vault_handler.init_vault()
+
+API_KEY = vault_secret.get("api_key", "")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True

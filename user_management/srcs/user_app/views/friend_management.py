@@ -5,10 +5,14 @@ from user_app.models import UserManagement
 from datetime import datetime
 from user_app import utils, database
 from user_app.views import validator
+from jsonschema import validate
 import json
 
 @csrf_exempt
 def make_relation(req):
+    if req.method != 'POST':
+        return utils.responseJsonErrorMessage(400, "10", "Invalid request (Method)")
+    
     try:
         body = utils.getJsonBody(req.body)
         schema = {

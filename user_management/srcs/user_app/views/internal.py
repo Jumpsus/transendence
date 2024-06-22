@@ -7,6 +7,9 @@ from user_app import utils, database
 # validate via jwt
 @csrf_exempt
 def stamp_status(req):
+    if req.method != 'POST':
+        return utils.responseJsonErrorMessage(400, "10", "Invalid request (Method)")
+
     found, u = validator.validate_user(req)
     if found != True:
         return utils.responseJsonErrorMessage(400, "30", "Invalid Session")

@@ -2,8 +2,9 @@ import hvac
 import os
 import time
 
-client = hvac.Client(url = os.environ["VAULT_ADDR"], verify=False)
-client.token = os.environ["MY_VAULT_TOKEN"]
+client = hvac.Client(url = "https://vault-service:8201", verify=False)
+# client = hvac.Client(url = "https://127.0.0.1:8201", verify=False)
+client.token = "Do_not_share_this_ever_ever"
 
 def check_seal():
     return client.sys.read_seal_status()['sealed']
@@ -14,6 +15,13 @@ def read_secret():
 
 def init_vault():
 
+    if client.is_authenticated() != True:
+        # wait for client
+        time.sleep(3)
+        if client.is_authenticated() != True:
+            print("Exit with unexpected result: Token is unauthenticate")
+            exit(1)
+
     for i in range (0, 10):
         if check_seal() != True:
             break
@@ -21,10 +29,6 @@ def init_vault():
 
     if check_seal() == True:
         print("Exit with unexpected result: Vault is Sealed!")
-        exit(1)
-
-    if client.is_authenticated() != True:
-        print("Exit with unexpected result: Token is unauthenticate")
         exit(1)
 
     secret_dict = read_secret()
@@ -40,4 +44,3 @@ def init_vault():
         secret_dict = read_secret()
     
     return secret_dict
-
