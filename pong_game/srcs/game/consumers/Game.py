@@ -107,6 +107,7 @@ class GameConsumer(AsyncWebsocketConsumer):
 			)
 			await asyncio.sleep(0.016)  # 16ms for approximately 60fps
 			if self.game_state.score[0] >= 11 or self.game_state.score[1] >= 11:
+				message = self.game_state.to_json()
 				if self.is_tournament:
 					await self.channel_layer.group_send(
 						self.game_id,
@@ -194,13 +195,15 @@ class GameConsumer(AsyncWebsocketConsumer):
 		await self.close(code=4441)
 
 	async def succ_normal(self, event):
-		data = json.loads(event['message'])
-		store_game_result(self.user_name, data['score'])
+		if self.player_id == 1:
+			data = json.loads(event['message'])
+			store_game_result(self.user_name, data['score'])
 		await self.close(code=4101)
 
 	async def succ_tournament(self, event):
-		data = json.loads(event['message'])
-		store_game_result(self.user_name, data['score'])
+		if self.player_id == 1:
+			data = json.loads(event['message'])
+			store_game_result(self.user_name, data['score'])
 		await self.close(code=4102)
 
 	# Used to get user's tag and username:

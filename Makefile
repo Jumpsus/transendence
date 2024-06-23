@@ -1,5 +1,7 @@
-PG_DIR := ./user_management/postgres/pgdata
-VAULT_DIR := ./vault/data
+PG_DIR := ./goinfre/user_management/pgdata
+VAULT_DIR := ./goinfre/vault/data
+IMAGE_DIR := ./goinfre/common/image
+GOINFRE := ./goinfre
 
 all: create_dir
 	bash generate_cert.sh
@@ -21,6 +23,14 @@ create_dir:
 		echo "Directory $(VAULT_DIR) already exists."; \
 	fi
 
+	@if [ ! -d $(IMAGE_DIR) ]; then \
+		echo "Directory $(IMAGE_DIR) does not exist. Creating..."; \
+		mkdir -p $(IMAGE_DIR); \
+		cp ./default.png $(IMAGE_DIR); \
+	else \
+		echo "Directory $(IMAGE_DIR) already exists."; \
+	fi
+
 up:
 	@docker compose up -d
 
@@ -39,8 +49,7 @@ clean: down
 
 # This requires root permission
 fclean: clean
-	rm -rf $(PG_DIR) ./ssl/cert $(VAULT_DIR)
-
+	rm -rf $(GOINFRE)
 
 .PHONY: all create_dir re up down clean fclean list_base_images clean_cache
 
