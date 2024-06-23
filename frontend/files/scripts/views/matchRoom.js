@@ -33,7 +33,6 @@ export class MatchRoom extends Component {
         `wss://${host}/ws/game/${gameConfig.roomId}/${localStorage.getItem("jwt")}/0/`
       );
       gameConfig.ws.onopen = () => {
-        console.log("connected");
         gameConfig.isOnline = true;
         gameConfig.key = true;
         pushHistoryAndGoTo("/Game");

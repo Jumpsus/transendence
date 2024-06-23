@@ -103,22 +103,6 @@ def register(req):
 
     return HttpResponse(json.dumps(response_data), content_type="application/json", status=200)
 
-#TODO: delete after test
-def loginlist(req):
-    u = UserManagement.objects.all()
-
-    user_list = []
-    for user in u:
-        d = {"username": user.username, "password": user.password}
-        user_list.append(d)
-
-    response_data = {
-        "code": "00",
-        "user_list": user_list,
-    }
-
-    return HttpResponse(json.dumps(response_data), content_type="application/json", status=200)
-
 @csrf_exempt
 def user_list(req):
     if req.method != 'POST' and req.method != 'GET' :

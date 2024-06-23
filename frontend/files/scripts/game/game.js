@@ -72,14 +72,12 @@ export function init() {
       updateScore();
     };
     gameConfig.ws.onclose = (event) => {
-      console.log(event.code);
       if (event.code == 4101) {
         updateScore();
         document.getElementById("game-over").classList.remove("d-none");
         document.getElementById("winner-name").innerText = playerOne.score > playerTwo.score ? gameConfig.names[0] : gameConfig.names[1];
       }
       if (event.code == 4102) {
-        console.log("Tournament match finished");
         let result = {
           [gameConfig.names[0]]: gameState.score[0],
           [gameConfig.names[1]]: gameState.score[1]

@@ -31,7 +31,7 @@ vault_secret = vault_handler.init_vault()
 API_KEY = vault_secret.get("api_key", "")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 

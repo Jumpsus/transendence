@@ -2,7 +2,6 @@ from django.http import JsonResponse, HttpResponse
 from django.core.cache import cache
 import uuid
 from django.views.decorators.csrf import csrf_exempt
-import json
 
 @csrf_exempt
 def generate_game_id(request):

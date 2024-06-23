@@ -112,7 +112,6 @@ function calculateDirection(ballPosition, ballDirection, paddle) {
   ballDirection.y = speed * Math.sin(reflectionAngle);
   ballDirection.x = -speed * Math.cos(reflectionAngle);
   if (paddle.id == 1) {
-    console.log("paddle 1");
     ballDirection.x *= -1;
   }
 }

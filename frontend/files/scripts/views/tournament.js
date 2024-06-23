@@ -9,7 +9,6 @@ export const cup = { ws: null, matches: [], currentMatch: 1 };
 
 export function closeCupWs() {
 	cup.ws.close();
-	console.log("closing cup ws");
 	cup.ws = null;
 	cup.matches = [];
 	cup.currentMatch = 1;
@@ -60,12 +59,10 @@ export class Tournament extends Component {
 
 	createMatch() {
 		const match = cup.matches[cup.currentMatch - 1];
-		console.log("trying to connect to match " + match);
 		gameConfig.ws = new WebSocket(
 			`wss://${host}/ws/game/${match}/${localStorage.getItem("jwt")}/1/`
 		);
 		gameConfig.ws.onopen = () => {
-			console.log("connected");
 			gameConfig.isOnline = true;
 			gameConfig.key = true;
 			pushHistoryAndGoTo("/Game");
@@ -99,11 +96,9 @@ export class Tournament extends Component {
 				return;
 			}
 			cup.ws.onopen = () => {
-				console.log("connected");
 				joinCupBtn.innerText = "Cancel";
 			};
 			cup.ws.onmessage = (event) => {
-				console.log(event.data);
 				const data = JSON.parse(event.data);
 				if (data.hasOwnProperty("waiting"))
 					playerN.innerText = data.waiting;
@@ -122,7 +117,6 @@ export class Tournament extends Component {
 					}, 5000);
 				}
 				else if (data.hasOwnProperty("results")) {
-					console.log(data.results);
 					const cupResults = document.getElementById("cup-results");
 					cupResults.innerText = "";
 					data.results.forEach((score, index) => {
@@ -150,7 +144,6 @@ export class Tournament extends Component {
 					}
 
 					if (gameConfig.ws) {
-						console.log("closing game ws");
 						gameConfig.ws.close();
 						gameConfig.ws = null;
 						alert(data.Error);

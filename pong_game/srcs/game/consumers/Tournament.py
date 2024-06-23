@@ -6,7 +6,6 @@ from asgiref.sync import sync_to_async
 from ..models import join_room, leave_room, TournamentData
 from ..func import fetch_player_name
 
-logger = logging.getLogger(__name__)
 
 class TournamentConsumer(AsyncWebsocketConsumer):
 	async def connect(self):
@@ -72,8 +71,7 @@ class TournamentConsumer(AsyncWebsocketConsumer):
 				await asyncio.sleep(1)
 			except asyncio.CancelledError:
 				break
-			except Exception as e:
-				logger.error(f"Error in check_players: {e}")
+			except Exception:
 				await self.close(code=4444)
 				break
 

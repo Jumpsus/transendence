@@ -61,7 +61,6 @@ export class MatchHistory extends Component {
 			return;
 		}
 		const data = await resp.json();
-		console.log(data);
 
 		if (data.length === 0) {
 			console.log("No match history");

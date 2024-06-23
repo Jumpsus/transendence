@@ -80,7 +80,6 @@ export class Friends extends Component {
           return response.json();
         })
         .then((data) => {
-          console.log(data);
           searchList.innerHTML = "";
           if (findFriend.value == "") {
             friendsList.classList.remove("d-none");

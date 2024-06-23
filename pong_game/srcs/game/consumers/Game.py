@@ -4,10 +4,8 @@ from django.core.cache import cache
 from django.core.cache.backends.base import DEFAULT_TIMEOUT
 from ..pong_game import PongGame
 import asyncio, requests
-import logging # for debug
 from ..func import store_game_result
 
-logger = logging.getLogger('game')
 
 async def set_cache(key, value, timeout=DEFAULT_TIMEOUT):
 	cache.set(key, value, timeout)
@@ -184,7 +182,6 @@ class GameConsumer(AsyncWebsocketConsumer):
 		if self.player_id == 2:
 			message = event['message']
 			await self.send(text_data=message)
-			# logger.info(f"Sent to player 2: {message}")
 
 	async def init_playername(self, event):
 		if self.player_id == 1:

@@ -71,7 +71,6 @@ export class Game extends Component {
 	setupEventListeners() {
 		const quitBtn = document.getElementById("quit-button");
 		quitBtn.addEventListener("click", () => {
-			console.log(gameConfig.animationID);
 			window.cancelAnimationFrame(gameConfig.animationID);
 		});
 	}
