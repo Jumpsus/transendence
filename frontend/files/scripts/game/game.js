@@ -106,7 +106,7 @@ export function init() {
         if (gameConfig.hasCPU) updateCPU(ball, playerOne, playerTwo);
         if (isLose()) {
           updateScore();
-          if (gameState.score[0] == 1100 || gameState.score[1] == 1100) {
+          if (gameState.score[0] == 11 || gameState.score[1] == 11) {
             ball.x = -100;
             ball.y = -100;
             gameState.isFinished = true;
@@ -153,8 +153,9 @@ export function init() {
     const down1 = gameState.isHorizontal ? "s" : "a";
     const up2 = gameState.isHorizontal ? "ArrowUp" : "ArrowRight";
     const down2 = gameState.isHorizontal ? "ArrowDown" : "ArrowLeft";
-    if (keys[up1]) playerOne.y -= gameParameters.playerSpeed * delta;
-    if (keys[down1]) playerOne.y += gameParameters.playerSpeed * delta;
+    const speed = gameConfig.hasCPU ? gameParameters.playerSpeed * 2 : gameParameters.playerSpeed;
+    if (keys[up1]) playerOne.y -= speed * delta;
+    if (keys[down1]) playerOne.y += speed * delta;
     if (keys[up2]) playerTwo.y -= gameParameters.playerSpeed * delta;
     if (keys[down2]) playerTwo.y += gameParameters.playerSpeed * delta;
   }

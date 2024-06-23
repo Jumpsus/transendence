@@ -25,10 +25,10 @@ export const gameConfig = {
 
 export const gameParameters = {
   paddleWidth: 2,
-  paddleHeight: 20,
+  paddleHeight: 15,
   ballWidth: 3,
-  bufferWidth: 2,
-  ballSpeed: 0.1,
+  bufferWidth: 4,
+  ballSpeed: 0.15,
   playerSpeed: 0.15,
   cpuUpdateTime: 1000,
 };
