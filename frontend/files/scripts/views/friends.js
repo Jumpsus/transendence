@@ -51,7 +51,8 @@ export class Friends extends Component {
             friend.username
           }.png?t=${new Date().getTime()}" class="position-absolute object-fit-cover  profile-img rounded-0"
 								alt="...">
-					</div><div class="online-light position-absolute ${isOnline}"></div></a>
+					<div class="online-light position-absolute ${isOnline}"></div>
+          </div></a>
 					<div class="d-flex justify-content-center">
 						<div>${friend.username}</div>
 					</div>
@@ -101,7 +102,8 @@ export class Friends extends Component {
                 friend.username
               }.png?t=${new Date().getTime()}" class="position-absolute object-fit-cover  profile-img rounded-0"
 						alt="...">
-			</div><div class="online-light position-absolute ${isOnline}"></div></a>
+            <div class="online-light position-absolute ${isOnline}"></div>
+			</div></a>
 				<div class="d-flex justify-content-center">
 					<div>${friend.username}</div>
 				</div>
