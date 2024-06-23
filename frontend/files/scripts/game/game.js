@@ -34,14 +34,28 @@ export function init() {
 
   if (gameConfig.isOnline) {
     let lastTime;
+    if (gameConfig.isTouch) {
+      const touchInstructions = document.querySelectorAll(".not-touch-instr");
+      for (let instr of touchInstructions) instr.classList.add("d-none");
+    }
+    const instructionLeft = document.getElementById("instructions-left");
+    const instructionRight = document.getElementById("instructions-right");
     gameConfig.ws.onmessage = (event) => {
       const data = JSON.parse(event.data);
       if (!online.myID) {
         online.myID = data.player_id;
         online.theirID = online.myID == 1 ? 2 : 1;
-        // const side = online.myID == 1 ? "left" : "right";
-        // const controls = online.myID == 1 ? "w/s" : "up/down";
-        // alert(`You are on ${side} side. Use ${controls} to move your paddle`);
+        if (online.myID == 1) {
+          instructionLeft.classList.remove("d-none");
+          setTimeout(() => {
+            instructionLeft.classList.add("remove");
+          }, 3000);
+        } else {
+          instructionRight.classList.remove("d-none");
+          setTimeout(() => {
+            instructionRight.classList.add("remove");
+          }, 3000);
+        }
       }
       ball.x = data.ball_pos[0];
       ball.y = data.ball_pos[1];
@@ -67,8 +81,8 @@ export function init() {
       if (event.code == 4102) {
         console.log("Tournament match finished");
         let result = {
-          [ gameConfig.names[0]]: gameState.score[0], 
-          [ gameConfig.names[1]]: gameState.score[1] 
+          [gameConfig.names[0]]: gameState.score[0],
+          [gameConfig.names[1]]: gameState.score[1]
         };
         cup.ws.send(JSON.stringify({
           type: 'game' + cup.currentMatch,
@@ -76,7 +90,7 @@ export function init() {
           result: result
         }));
         cup.currentMatch++;
-      cancelAnimationFrame(gameConfig.animationID);
+        cancelAnimationFrame(gameConfig.animationID);
         replaceHistoryAndGoTo("/Tournament");
       }
       game.field.classList.add("paused");

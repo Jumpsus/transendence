@@ -95,11 +95,11 @@ export class Register extends Component {
           body: JSON.stringify(requestBody),
         }
       );
-      const data = await resp.json();
       if (!resp.ok) {
-        console.log(data);
         errMsg.textContent = data.message;
+        return;
       } else {
+        const data = await resp.json();
         localStorage.setItem("jwt", data.token);
         const loginSuccess = setMyUsername();
         isLoggedIn.status = loginSuccess;
