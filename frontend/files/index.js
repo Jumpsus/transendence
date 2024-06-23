@@ -5,7 +5,7 @@ import {
   goTo,
 } from "./scripts/utils/router.js";
 import { gameConfig } from "./scripts/game/setup.js";
-import { cup } from "./scripts/views/tournament.js";
+import { cup, closeCupWs } from "./scripts/views/tournament.js";
 
 export let isLoggedIn = { status: false };
 
@@ -39,13 +39,12 @@ window.addEventListener("popstate", () => {
   if (gameConfig.animationID) {
     cancelAnimationFrame(gameConfig.animationID);
   }
-  if (gameConfig.ws){
+  if (gameConfig.ws) {
     gameConfig.ws.close();
     gameConfig.ws = null;
   }
   if (cup.ws) {
-    cup.ws.close();
-    cup.ws = null;
+    closeCupWs();
   }
   const url = window.location.pathname;
   if (isLoggedIn.status && (url === "/Login" || url === "/Register")) {
@@ -77,12 +76,7 @@ export async function setMyUsername() {
 document.addEventListener("DOMContentLoaded", async () => {
   const port = location.port ? `:${location.port}` : "";
   host = `${location.hostname}${port}`;
-  if (localStorage.getItem("jwt") !== null) {
-    isLoggedIn.status = await setMyUsername();
-  }
-  else {
-    isLoggedIn.status = false;
-  }
+  isLoggedIn.status = await setMyUsername();
   setupDarkMode();
   setupNavigation();
   replaceHistoryAndGoTo(window.location.pathname);

@@ -28,6 +28,7 @@ export function init() {
     const message = JSON.stringify({
       paddle_pos: pos,
     });
+    if (!gameConfig.ws || gameConfig.ws.readyState != WebSocket.OPEN) return;
     gameConfig.ws.send(message);
   }
 
@@ -35,13 +36,12 @@ export function init() {
     let lastTime;
     gameConfig.ws.onmessage = (event) => {
       const data = JSON.parse(event.data);
-      console.log(data.player_names);
-      if (data.player_names) {
-        console.log(data.player_names);
-      }
       if (!online.myID) {
         online.myID = data.player_id;
         online.theirID = online.myID == 1 ? 2 : 1;
+        // const side = online.myID == 1 ? "left" : "right";
+        // const controls = online.myID == 1 ? "w/s" : "up/down";
+        // alert(`You are on ${side} side. Use ${controls} to move your paddle`);
       }
       ball.x = data.ball_pos[0];
       ball.y = data.ball_pos[1];
@@ -66,23 +66,30 @@ export function init() {
       }
       if (event.code == 4102) {
         console.log("Tournament match finished");
+        let result = {
+          [ gameConfig.names[0]]: gameState.score[0], 
+          [ gameConfig.names[1]]: gameState.score[1] 
+        };
         cup.ws.send(JSON.stringify({
           type: 'game' + cup.currentMatch,
           match: cup.matches[cup.currentMatch - 1],
-          result: { player1_name: gameState.score[0], player2_name: gameState.score[1] }
+          result: result
         }));
         cup.currentMatch++;
+      cancelAnimationFrame(gameConfig.animationID);
         replaceHistoryAndGoTo("/Tournament");
-      }
-      if (event.code == 4441) {
-        console.log("Player disconnected");
-      }
-      if (event.code == 4442) {
-        console.log("Room expired");
       }
       game.field.classList.add("paused");
       cancelAnimationFrame(gameConfig.animationID);
       gameState.isFinished = true;
+      if (event.code == 4441) {
+        alert("Player disconnected");
+        replaceHistoryAndGoTo("/Game");
+      }
+      if (event.code == 4442) {
+        alert("Room expired");
+        replaceHistoryAndGoTo("/Game");
+      }
       return;
     };
     function update(time) {
@@ -106,7 +113,7 @@ export function init() {
         if (gameConfig.hasCPU) updateCPU(ball, playerOne, playerTwo);
         if (isLose()) {
           updateScore();
-          if (gameState.score[0] == 1100 || gameState.score[1] == 1100) {
+          if (gameState.score[0] == 11 || gameState.score[1] == 11) {
             ball.x = -100;
             ball.y = -100;
             gameState.isFinished = true;
@@ -153,8 +160,9 @@ export function init() {
     const down1 = gameState.isHorizontal ? "s" : "a";
     const up2 = gameState.isHorizontal ? "ArrowUp" : "ArrowRight";
     const down2 = gameState.isHorizontal ? "ArrowDown" : "ArrowLeft";
-    if (keys[up1]) playerOne.y -= gameParameters.playerSpeed * delta;
-    if (keys[down1]) playerOne.y += gameParameters.playerSpeed * delta;
+    const speed = gameConfig.hasCPU ? gameParameters.playerSpeed * 2 : gameParameters.playerSpeed;
+    if (keys[up1]) playerOne.y -= speed * delta;
+    if (keys[down1]) playerOne.y += speed * delta;
     if (keys[up2]) playerTwo.y -= gameParameters.playerSpeed * delta;
     if (keys[down2]) playerTwo.y += gameParameters.playerSpeed * delta;
   }

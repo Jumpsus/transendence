@@ -22,11 +22,7 @@ export class Profile extends Component {
 			<div class="d-flex justify-content-between align-items-center align-items-sm-end flex-grow-1 ms-2">
 				<div class="d-flex flex-column">
 					<div class="d-flex gap-2">
-						<div>lvl</div>
-						<div>0</div>
-					</div>
-					<div class="d-flex gap-2">
-						<div>Stats</div>
+						<div>w/l</div>
 						<div><span id="wonNumber">35</span>/<span id="lostNumber">12</span></div>
 					</div>
 					<div>${username.username}</div>

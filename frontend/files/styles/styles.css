@@ -197,7 +197,8 @@ a {
 
 @media (width >= 576px) {
   #profile-window {
-    width: 750px;
+    max-width: 750px;
+    width: 80%;
     height: 550px;
     box-sizing: content-box;
   }
@@ -212,6 +213,11 @@ a {
 
 #profileMenu a {
   padding: 4px 4px 0 4px;
+}
+
+#fof-home-btn:hover {
+  text-decoration: underline;
+  text-underline-offset: 2cqw;
 }
 
 #profileMenu a:not(.active) {
@@ -311,18 +317,19 @@ button {
 
 /* history */
 
-#match-history-table > div > div {
+#match-history-table > div > * {
   overflow: hidden;
 }
 
-#match-history-table > div > div {
+#match-history-table > div > * {
   width: 100%;
   text-align: center;
   overflow: auto;
   flex-grow: 1;
+  display: block;
 }
 
-#match-history-table > div > div:nth-child(even) {
+#match-history-table > div > *:nth-child(even) {
   background-color: var(--table-odd-color);
 }
 
