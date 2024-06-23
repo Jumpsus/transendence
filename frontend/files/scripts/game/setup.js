@@ -163,11 +163,20 @@ function setFieldBorders() {
 
 function setEventListeners() {
   if (!eventListenersSet) {
-    window.addEventListener("resize", () => {
-      if (!game.field) return;
-      setFieldBorders();
-      gameState.isHorizontal = game.field.clientWidth > game.field.clientHeight;
-    });
+	function debounce(func, wait) {
+		let timeout;
+		return function() {
+			const context = this, args = arguments;
+			clearTimeout(timeout);
+			timeout = setTimeout(() => func.apply(context, args), wait);
+		};
+	}
+	
+	window.addEventListener('resize', debounce(() => {
+		if (!game.field) return;
+		gameState.isHorizontal = game.field.clientWidth > game.field.clientHeight;
+		setFieldBorders();
+	}, 200));
     document.addEventListener("keydown", (event) => {
       if (event.key === " " && !gameConfig.isOnline) {
         pauseGame();
