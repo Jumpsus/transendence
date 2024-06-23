@@ -112,6 +112,11 @@ export class Tournament extends Component {
 				else if (data.hasOwnProperty("matches")) {
 					cup.matches = data.matches;
 					setTimeout(() => {
+						if (!cup.ws) {
+							resetCup();
+							alert("Someone disconnected");
+							return;
+						}
 						this.createMatch();
 					}, 5000);
 				}
@@ -145,14 +150,14 @@ export class Tournament extends Component {
 						cancelAnimationFrame(gameConfig.animationID);
 					}
 
-					replaceHistoryAndGoTo("/Tournament");
 					if (gameConfig.ws) {
 						console.log("closing game ws");
 						gameConfig.ws.close();
 						gameConfig.ws = null;
+						alert(data.Error);
 					}
-					cupLog.innerText = "Tournament cancelled";
 					resetCup();
+					replaceHistoryAndGoTo("/Tournament");
 				}
 			};
 		});
