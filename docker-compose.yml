@@ -58,7 +58,7 @@ volumes:
     driver: local
     driver_opts:
       type: none
-      device: ./goinfre/ssl/cert
+      device: ~/goinfre/ssl/cert
       o: bind
 
   frontend_data:
@@ -74,7 +74,7 @@ volumes:
     driver: local
     driver_opts:
       type: none
-      device: ./goinfre/vault/data
+      device: ~/goinfre/vault/data
       o: bind
       
   user_pg:
@@ -82,14 +82,14 @@ volumes:
     driver: local
     driver_opts:
       type: none
-      device: ./goinfre/user_management/pgdata
+      device: ~/goinfre/user_management/pgdata
       o: bind
   common:
       name: common
       driver: local
       driver_opts:
         type: none
-        device: ./goinfre/common
+        device: ~/goinfre/common
         o: bind
 networks:
   user-network:
