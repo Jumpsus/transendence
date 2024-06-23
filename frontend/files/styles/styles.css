@@ -311,18 +311,19 @@ button {
 
 /* history */
 
-#match-history-table > div > div {
+#match-history-table > div > * {
   overflow: hidden;
 }
 
-#match-history-table > div > div {
+#match-history-table > div > * {
   width: 100%;
   text-align: center;
   overflow: auto;
   flex-grow: 1;
+  display: block;
 }
 
-#match-history-table > div > div:nth-child(even) {
+#match-history-table > div > *:nth-child(even) {
   background-color: var(--table-odd-color);
 }
 
