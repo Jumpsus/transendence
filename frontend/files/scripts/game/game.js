@@ -68,17 +68,20 @@ export function init() {
           result: { player1_name: gameState.score[0], player2_name: gameState.score[1] }
         }));
         cup.currentMatch++;
+      cancelAnimationFrame(gameConfig.animationID);
         replaceHistoryAndGoTo("/Tournament");
-      }
-      if (event.code == 4441) {
-        console.log("Player disconnected");
-      }
-      if (event.code == 4442) {
-        console.log("Room expired");
       }
       game.field.classList.add("paused");
       cancelAnimationFrame(gameConfig.animationID);
       gameState.isFinished = true;
+      if (event.code == 4441) {
+        alert("Player disconnected");
+        replaceHistoryAndGoTo("/Game");
+      }
+      if (event.code == 4442) {
+        alert("Room expired");
+        replaceHistoryAndGoTo("/Game");
+      }
       return;
     };
     function update(time) {
@@ -89,6 +92,7 @@ export function init() {
       }
       lastTime = time;
       gameConfig.animationID = window.requestAnimationFrame(update);
+      console.log("update");
     }
     gameConfig.animationID = window.requestAnimationFrame(update);
   }
