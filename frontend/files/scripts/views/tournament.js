@@ -95,6 +95,7 @@ export class Tournament extends Component {
 			} else {
 				closeCupWs();
 				joinCupBtn.innerText = "Join";
+				playerN.innerText = "0";
 				return;
 			}
 			cup.ws.onopen = () => {
