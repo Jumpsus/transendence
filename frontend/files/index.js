@@ -39,7 +39,7 @@ window.addEventListener("popstate", () => {
   if (gameConfig.animationID) {
     cancelAnimationFrame(gameConfig.animationID);
   }
-  if (gameConfig.ws){
+  if (gameConfig.ws) {
     gameConfig.ws.close();
     gameConfig.ws = null;
   }
@@ -76,12 +76,7 @@ export async function setMyUsername() {
 document.addEventListener("DOMContentLoaded", async () => {
   const port = location.port ? `:${location.port}` : "";
   host = `${location.hostname}${port}`;
-  if (localStorage.getItem("jwt") !== null) {
-    isLoggedIn.status = await setMyUsername();
-  }
-  else {
-    isLoggedIn.status = false;
-  }
+  isLoggedIn.status = await setMyUsername();
   setupDarkMode();
   setupNavigation();
   replaceHistoryAndGoTo(window.location.pathname);

@@ -2,13 +2,20 @@ import { Component } from "../library/component.js";
 import { Home } from "./home.js";
 import { myUsername } from "../../index.js";
 import { host } from "../../index.js";
-import { pushHistoryAndGoTo } from "../utils/router.js";
+import { pushHistoryAndGoTo, replaceHistoryAndGoTo } from "../utils/router.js";
 import { gameConfig, gameState } from "../game/setup.js";
 
 export const cup = { ws: null, matches: [], currentMatch: 1 };
 
 export function closeCupWs() {
 	cup.ws.close();
+	console.log("closing cup ws");
+	cup.ws = null;
+	cup.matches = [];
+	cup.currentMatch = 1;
+}
+
+function resetCup() {
 	cup.ws = null;
 	cup.matches = [];
 	cup.currentMatch = 1;
@@ -82,9 +89,9 @@ export class Tournament extends Component {
 		});
 		joinCupBtn.addEventListener("click", async () => {
 			if (!cup.ws) {
-			cup.ws = new WebSocket(
-				`wss://${host}/ws/game/${localStorage.getItem("jwt")}/`
-			);
+				cup.ws = new WebSocket(
+					`wss://${host}/ws/game/${localStorage.getItem("jwt")}/`
+				);
 			} else {
 				closeCupWs();
 				joinCupBtn.innerText = "Join";
@@ -95,6 +102,7 @@ export class Tournament extends Component {
 				joinCupBtn.innerText = "Cancel";
 			};
 			cup.ws.onmessage = (event) => {
+				console.log(event.data);
 				const data = JSON.parse(event.data);
 				if (data.hasOwnProperty("waiting"))
 					playerN.innerText = data.waiting;
@@ -129,14 +137,23 @@ export class Tournament extends Component {
 						cupResults.innerText = "";
 						cupResults.appendChild(matchDiv);
 
-						cup.ws = null;
-						cup.matches = [];
-						cup.currentMatch = 1;
+						resetCup();
 					});
 				}
-			};
-			cup.ws.onerror = (error) => {
-				console.error("WebSocket error:", error);
+				else if (data.hasOwnProperty("Error")) {
+					if (gameConfig.animationID) {
+						cancelAnimationFrame(gameConfig.animationID);
+					}
+
+					replaceHistoryAndGoTo("/Tournament");
+					if (gameConfig.ws) {
+						console.log("closing game ws");
+						gameConfig.ws.close();
+						gameConfig.ws = null;
+					}
+					cupLog.innerText = "Tournament cancelled";
+					resetCup();
+				}
 			};
 		});
 	}
