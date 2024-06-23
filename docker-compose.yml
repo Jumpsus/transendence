@@ -5,6 +5,8 @@ services:
     extends:
       file: frontend/docker/docker-compose.yml
       service: front-nginx
+    environment:
+      - PARANOIA=2
     depends_on:
       - user-management
       - pong-game
