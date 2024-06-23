@@ -215,6 +215,11 @@ a {
   padding: 4px 4px 0 4px;
 }
 
+#fof-home-btn:hover {
+  text-decoration: underline;
+  text-underline-offset: 2cqw;
+}
+
 #profileMenu a:not(.active) {
   border: 2px solid transparent;
 }

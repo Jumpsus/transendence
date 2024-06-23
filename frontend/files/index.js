@@ -5,7 +5,7 @@ import {
   goTo,
 } from "./scripts/utils/router.js";
 import { gameConfig } from "./scripts/game/setup.js";
-import { cup } from "./scripts/views/tournament.js";
+import { cup, closeCupWs } from "./scripts/views/tournament.js";
 
 export let isLoggedIn = { status: false };
 
@@ -44,8 +44,7 @@ window.addEventListener("popstate", () => {
     gameConfig.ws = null;
   }
   if (cup.ws) {
-    cup.ws.close();
-    cup.ws = null;
+    closeCupWs();
   }
   const url = window.location.pathname;
   if (isLoggedIn.status && (url === "/Login" || url === "/Register")) {

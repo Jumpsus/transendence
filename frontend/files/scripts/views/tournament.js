@@ -7,6 +7,13 @@ import { gameConfig, gameState } from "../game/setup.js";
 
 export const cup = { ws: null, matches: [], currentMatch: 1 };
 
+export function closeCupWs() {
+	cup.ws.close();
+	cup.ws = null;
+	cup.matches = [];
+	cup.currentMatch = 1;
+}
+
 export class Tournament extends Component {
 	constructor() {
 		const gameMenu = document.getElementById("game-menu");
@@ -70,8 +77,7 @@ export class Tournament extends Component {
 		const sockErrMsg = document.getElementById("sock-err-msg");
 		backBtn.addEventListener("click", () => {
 			if (cup.ws) {
-				cup.ws.close();
-				cup.ws = null;
+				closeCupWs();
 			}
 		});
 		joinCupBtn.addEventListener("click", async () => {
@@ -80,8 +86,7 @@ export class Tournament extends Component {
 				`wss://${host}/ws/game/${localStorage.getItem("jwt")}/`
 			);
 			} else {
-				cup.ws.close();
-				cup.ws = null;
+				closeCupWs();
 				joinCupBtn.innerText = "Join";
 				return;
 			}
@@ -123,6 +128,10 @@ export class Tournament extends Component {
 						matchDiv.appendChild(player2Score);
 						cupResults.innerText = "";
 						cupResults.appendChild(matchDiv);
+
+						cup.ws = null;
+						cup.matches = [];
+						cup.currentMatch = 1;
 					});
 				}
 			};

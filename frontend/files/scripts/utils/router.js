@@ -53,8 +53,8 @@ function getCorrectUrl(url) {
 }
 
 async function userExists(username) {
-  const resp = await fetch(`https://${host}/user-management/user/loginlist`, {
-    method: "GET",
+  const resp = await fetch(`https://${host}/user-management/user/userlist`, {
+    method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${localStorage.getItem("jwt")}`,
