@@ -20,7 +20,7 @@ def upload_image(req):
 
     found, user = validator.validate_user(req)
     if found != True:
-        return utils.responseJsonErrorMessage(400, "30", "Invalid Session")
+        return utils.responseJsonErrorMessage(401, "30", "Invalid Session")
 
     if len(user) == 0:
         return utils.responseJsonErrorMessage(400, "13", "User Not Found")

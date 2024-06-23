@@ -37,7 +37,7 @@ def make_relation(req):
     #get my_username
     found, action_u = validator.validate_user(req)
     if found != True:
-        return utils.responseJsonErrorMessage(400, "30", "Invalid Session")
+        return utils.responseJsonErrorMessage(401, "30", "Invalid Session")
 
     if len(action_u) == 0:
         return utils.responseJsonErrorMessage(400, "13", "User Not Found")
