@@ -196,6 +196,7 @@ export class Info extends Component {
         .then((data) => {
           if (data.code != "00") {
             tagErrorMsg.innerText = data.message;
+            toggleEditMode(fieldsArray, editButton, saveButton, cancelButton, false);
             return;
           }
         })
