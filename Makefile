@@ -1,7 +1,6 @@
-PG_DIR := ~/goinfre/user_management/pgdata
-VAULT_DIR := ~/goinfre/vault/data
-IMAGE_DIR := ~/goinfre/common/image
-GOINFRE := ~/goinfre
+PG_DIR := ~/goinfre/docker/volumes/user_management/pgdata
+VAULT_DIR := ~/goinfre/docker/volumes/vault/data
+IMAGE_DIR := ~/goinfre/docker/volumes/common/image
 
 all: create_dir
 	bash generate_cert.sh
@@ -43,13 +42,9 @@ re: down
 	docker compose up -d
 
 
-clean: down
+clean:
 	docker compose down --rmi all -v --remove-orphans
 	docker system prune -a -f --volumes
 
-# This requires root permission
-fclean: clean
-	rm -rf $(GOINFRE)
-
-.PHONY: all create_dir re up down clean fclean list_base_images clean_cache
+.PHONY: all create_dir re up down clean
 
