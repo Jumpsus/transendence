@@ -297,7 +297,7 @@ def update_info(req):
     phone_number = body.get("phone_number","")
     tag = body.get("tag","")
 
-    if tag != "":
+    if tag != "" and tag != u[0].tag:
         tags = database.find_user_by_tag(tag)
         if len(tags) > 0:
             return utils.responseJsonErrorMessage(400, "17", "Tag already exists")
