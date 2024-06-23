@@ -269,7 +269,7 @@ def get_other_info(req):
         "lose": lose,
         "level": 0,
         "relation": relation,
-        "status": "offline" if u[0].status == "" else u[0].status,
+        "status": "offline" if other_u[0].status == "" else other_u[0].status,
         "friends": friend_list,
     }
 
