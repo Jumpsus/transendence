@@ -92,7 +92,7 @@ class TournamentConsumer(AsyncWebsocketConsumer):
 						if result == 'Invalid result':
 							await self.send(text_data='"Error": "Tounament canceled because someone is sending invalid result."')
 							await self.close(code=4444)
-				await asyncio.sleep(5)
+				await asyncio.sleep(2)
 			except asyncio.CancelledError:
 				break
 			except Exception:
