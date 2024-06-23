@@ -1,7 +1,7 @@
-PG_DIR := ./goinfre/user_management/pgdata
-VAULT_DIR := ./goinfre/vault/data
-IMAGE_DIR := ./goinfre/common/image
-GOINFRE := ./goinfre
+PG_DIR := ~/goinfre/user_management/pgdata
+VAULT_DIR := ~/goinfre/vault/data
+IMAGE_DIR := ~/goinfre/common/image
+GOINFRE := ~/goinfre
 
 all: create_dir
 	bash generate_cert.sh

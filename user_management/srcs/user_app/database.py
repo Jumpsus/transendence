@@ -9,6 +9,9 @@ def find_user_by_username(username):
 def find_user_by_username_passwd(username, password):
     return UserManagement.objects.filter(username = username, password = password)
 
+def find_user_by_tag(tag):
+    return UserManagement.objects.filter(tag = tag)
+
 # return True if "success" False if "fail"
 def create_user(username, password, name = "", last_name = "", phone_number = "", tag = "", jti = ""):
     user = UserManagement(  username = username, 
