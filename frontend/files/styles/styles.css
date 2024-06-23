@@ -503,6 +503,7 @@ button {
   right: 8px;
   bottom: 8px;
   animation: shine 1s infinite;
+  z-index: 10000;
 }
 
 .check-box {
