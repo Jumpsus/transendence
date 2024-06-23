@@ -126,7 +126,7 @@ def user_list(req):
 
     found, u = validator.validate_user(req)
     if found != True:
-        return utils.responseJsonErrorMessage(400, "30", "Invalid Session")
+        return utils.responseJsonErrorMessage(401, "30", "Invalid Session")
 
     if len(u) == 0:
         return utils.responseJsonErrorMessage(400, "13", "User Not Found")
@@ -188,7 +188,7 @@ def get_info(req):
 
     found, u = validator.validate_user(req)
     if found != True:
-        return utils.responseJsonErrorMessage(400, "30", "Invalid Session")
+        return utils.responseJsonErrorMessage(401, "30", "Invalid Session")
 
     if len(u) == 0:
         return utils.responseJsonErrorMessage(400, "13", "User Not Found")
@@ -247,7 +247,7 @@ def get_other_info(req):
     # find relation with user
     found, u = validator.validate_user(req)
     if found != True:
-        return utils.responseJsonErrorMessage(400, "30", "Invalid Session")
+        return utils.responseJsonErrorMessage(401, "30", "Invalid Session")
 
     if len(u) == 0:
         return utils.responseJsonErrorMessage(400, "13", "User Not Found")
@@ -287,7 +287,7 @@ def update_info(req):
 
     found, u = validator.validate_user(req)
     if found != True:
-        return utils.responseJsonErrorMessage(400, "30", "Invalid Session")
+        return utils.responseJsonErrorMessage(401, "30", "Invalid Session")
 
     if len(u) == 0:
         return utils.responseJsonErrorMessage(400, "13", "User Not Found")
@@ -333,7 +333,7 @@ def get_relation(req):
 
     found, u = validator.validate_user(req)
     if found != True:
-        return utils.responseJsonErrorMessage(400, "30", "Invalid Session")
+        return utils.responseJsonErrorMessage(401, "30", "Invalid Session")
 
     if len(u) == 0:
         return utils.responseJsonErrorMessage(400, "13", "User Not Found")
@@ -377,7 +377,7 @@ def change_password(req):
 
     found, u = validator.validate_user(req)
     if found != True:
-        return utils.responseJsonErrorMessage(400, "30", "Invalid Session")
+        return utils.responseJsonErrorMessage(401, "30", "Invalid Session")
 
     if len(u) == 0:
         return utils.responseJsonErrorMessage(400, "13", "User Not Found")
@@ -398,7 +398,7 @@ def stamp_status(req):
 
     found, u = validator.validate_user(req)
     if found != True:
-        return utils.responseJsonErrorMessage(400, "30", "Invalid Session")
+        return utils.responseJsonErrorMessage(401, "30", "Invalid Session")
 
     if len(u) == 0:
         return utils.responseJsonErrorMessage(400, "13", "User Not Found")
@@ -437,7 +437,7 @@ def logout(req):
 
     found, u = validator.validate_user(req)
     if found != True:
-        return utils.responseJsonErrorMessage(400, "30", "Invalid Session")
+        return utils.responseJsonErrorMessage(401, "30", "Invalid Session")
 
     if len(u) == 0:
         return utils.responseJsonErrorMessage(400, "13", "User Not Found")

@@ -16,7 +16,7 @@ def save_game_result(req):
     verify = validator.validate_internal_key(req)
 
     if verify == False:
-        return utils.responseJsonErrorMessage(400, "30", "Invalid Session")
+        return utils.responseJsonErrorMessage(401, "30", "Invalid Session")
 
     try:
         body = utils.getJsonBody(req.body)
@@ -59,7 +59,7 @@ def get_match_history(req):
 
     found, u = validator.validate_user(req)
     if found != True:
-        return utils.responseJsonErrorMessage(400, "30", "Invalid Session")
+        return utils.responseJsonErrorMessage(401, "30", "Invalid Session")
 
     if len(u) == 0:
         return utils.responseJsonErrorMessage(400, "13", "User Not Found")
@@ -86,7 +86,7 @@ def get_other_match_history(req):
 
     found, u = validator.validate_user(req)
     if found != True:
-        return utils.responseJsonErrorMessage(400, "30", "Invalid Session")
+        return utils.responseJsonErrorMessage(401, "30", "Invalid Session")
 
     if len(u) == 0:
         return utils.responseJsonErrorMessage(400, "13", "User Not Found")
