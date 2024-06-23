@@ -416,7 +416,7 @@ def stamp_status(req):
 
 @csrf_exempt
 def logout(req):
-    if req.method != 'GET' :
+    if req.method != 'POST' :
         return utils.responseJsonErrorMessage(400, "10", "Invalid request (Method)")
 
     found, u = validator.validate_user(req)

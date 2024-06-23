@@ -18,6 +18,7 @@ export class Profile extends Component {
       username.username
     }.png?t=${new Date().getTime()}" class="position-absolute object-fit-cover profile-img"
 					id="profile-img" alt="">
+          <div class="online-light position-absolute d-none" id="profile-online"></div>
 			</div>
 			<div class="d-flex justify-content-between align-items-center align-items-sm-end flex-grow-1 ms-2">
 				<div class="d-flex flex-column">
@@ -62,6 +63,7 @@ export class Profile extends Component {
     const wonNumber = document.getElementById("wonNumber");
     const lostNumber = document.getElementById("lostNumber");
     makeLinkActive(document.getElementById("profileMenu"), false);
+    const onlineLight = document.getElementById("profile-online");
     const resp = await fetch(
       `https://${host}/user-management/user/getotherinfo`,
       {
@@ -85,6 +87,9 @@ export class Profile extends Component {
     wonNumber.textContent = data.win;
     lostNumber.textContent = data.lose;
     let status = data.relation;
+    if (username.username != myUsername.username) {
+      if (data.status == "online") onlineLight.classList.remove("d-none");
+    }
     const friendButton = document.getElementById("friend-button");
     const statusConfig = {
       pending: { text: "Pending", disabled: true },

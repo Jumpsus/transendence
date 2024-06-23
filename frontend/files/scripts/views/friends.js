@@ -42,6 +42,7 @@ export class Friends extends Component {
           "friend-count"
         ).textContent = `${data.user_list.length} Friends`;
         data.user_list.forEach((friend) => {
+          const isOnline = friend.status === "online" ? "" : "d-none";
           friendsList.innerHTML += `<div>
 					<a href="/${
             friend.username
@@ -50,7 +51,8 @@ export class Friends extends Component {
             friend.username
           }.png?t=${new Date().getTime()}" class="position-absolute object-fit-cover  profile-img rounded-0"
 								alt="...">
-					</div></a>
+					<div class="online-light position-absolute ${isOnline}"></div>
+          </div></a>
 					<div class="d-flex justify-content-center">
 						<div>${friend.username}</div>
 					</div>
@@ -91,6 +93,7 @@ export class Friends extends Component {
               friend.username.startsWith(findFriend.value.toLowerCase()) &&
               friend.username != myUsername.username
             ) {
+              const isOnline = friend.status === "online" ? "" : "d-none";
               searchList.innerHTML += `<div>
 				<a href="/${
           friend.username
@@ -99,6 +102,7 @@ export class Friends extends Component {
                 friend.username
               }.png?t=${new Date().getTime()}" class="position-absolute object-fit-cover  profile-img rounded-0"
 						alt="...">
+            <div class="online-light position-absolute ${isOnline}"></div>
 			</div></a>
 				<div class="d-flex justify-content-center">
 					<div>${friend.username}</div>
