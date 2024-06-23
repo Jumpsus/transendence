@@ -32,6 +32,7 @@ export class Info extends Component {
 									disabled>
 							</div>
 						</div>
+							<div class="text-danger" id="tag-error"></div>
 					</div>
 					<div class="d-flex justify-content-end gap-3">
 						<button type="button" class="my-button secondary-button" id="edit-button">Edit</button>
@@ -104,6 +105,7 @@ export class Info extends Component {
     let newPassDiv = document.getElementById("new-password-div");
     let newPass2Div = document.getElementById("new-password-2-div");
     const passwordErrorMsg = document.getElementById("password-error");
+    const tagErrorMsg = document.getElementById("tag-error");
 
     const fieldsArray = [nameField, lastNameField, phoneField, tagField];
 
@@ -192,7 +194,10 @@ export class Info extends Component {
           return response.json();
         })
         .then((data) => {
-          console.log("we have data: ", data);
+          if (data.code != "00") {
+            tagErrorMsg.innerText = data.message;
+            return;
+          }
         })
         .catch((error) => {
           console.log("we got an error: ", error);

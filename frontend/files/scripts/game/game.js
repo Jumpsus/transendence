@@ -39,6 +39,9 @@ export function init() {
       if (!online.myID) {
         online.myID = data.player_id;
         online.theirID = online.myID == 1 ? 2 : 1;
+        // const side = online.myID == 1 ? "left" : "right";
+        // const controls = online.myID == 1 ? "w/s" : "up/down";
+        // alert(`You are on ${side} side. Use ${controls} to move your paddle`);
       }
       ball.x = data.ball_pos[0];
       ball.y = data.ball_pos[1];
