@@ -197,7 +197,8 @@ a {
 
 @media (width >= 576px) {
   #profile-window {
-    width: 750px;
+    max-width: 750px;
+    width: 80%;
     height: 550px;
     box-sizing: content-box;
   }
