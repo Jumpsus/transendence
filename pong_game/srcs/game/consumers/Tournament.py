@@ -47,7 +47,7 @@ class TournamentConsumer(AsyncWebsocketConsumer):
 
 		if not await self.save_game_result(match, result):
 				await self.send(text_data='"Error": "Tounament canceled because the result is invalid."')
-				self.close()
+				self.close(code=4444)
 
 	async def check_players(self):
 		while True:
@@ -71,10 +71,11 @@ class TournamentConsumer(AsyncWebsocketConsumer):
 						break
 				await asyncio.sleep(1)
 			except asyncio.CancelledError:
-				await self.close()
+				break
 			except Exception as e:
 				logger.error(f"Error in check_players: {e}")
-				await self.close()
+				await self.close(code=4444)
+				break
 
 	async def check_results(self):
 		while True:
@@ -85,19 +86,19 @@ class TournamentConsumer(AsyncWebsocketConsumer):
 					break
 				elif len(tournament.player_names) != 4:
 					await self.send(text_data='"Error": "Tounament canceled because someone is disconnected."')
-					await self.close()
+					await self.close(code=4444)
 				else:
 					for result in tournament.results.values():
 						if result == 'Invalid result':
 							await self.send(text_data='"Error": "Tounament canceled because someone is sending invalid result."')
-							await self.close()
+							await self.close(code=4444)
 				await asyncio.sleep(5)
 			except asyncio.CancelledError:
-				await self.close()
 				break
 			except Exception:
-				await self.close()
+				await self.close(code=4444)
 				break
+
 	async def save_game_result(self, match, result):
 		tournament = TournamentData.load(self.room_id)
 		if not tournament:
@@ -115,4 +116,4 @@ class TournamentConsumer(AsyncWebsocketConsumer):
 				'type': 'final_results',
 				'results': result
 			}))
-		await self.close()
+		await self.close(code=4101)
