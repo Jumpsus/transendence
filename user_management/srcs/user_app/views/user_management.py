@@ -299,7 +299,7 @@ def update_info(req):
 
     if tag != "":
         tags = database.find_user_by_tag(tag)
-        if len(tag) > 0"
+        if len(tags) > 0:
             return utils.responseJsonErrorMessage(400, "17", "Tag already exists")
 
     if database.edit_user(u[0], name, last_name, phone_number, tag) != True:
