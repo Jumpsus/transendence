@@ -124,6 +124,7 @@ export class Tournament extends Component {
 				else if (data.hasOwnProperty("results")) {
 					console.log(data.results);
 					const cupResults = document.getElementById("cup-results");
+					cupResults.innerText = "";
 					data.results.forEach((score, index) => {
 						const matchDiv = document.createElement('div');
 						matchDiv.className = 'match';
@@ -140,11 +141,10 @@ export class Tournament extends Component {
 						matchDiv.appendChild(matchHeading);
 						matchDiv.appendChild(player1Score);
 						matchDiv.appendChild(player2Score);
-						cupResults.innerText = "";
 						cupResults.appendChild(matchDiv);
 
-						resetCup();
 					});
+					resetCup();
 				}
 				else if (data.hasOwnProperty("Error")) {
 					if (gameConfig.animationID) {
