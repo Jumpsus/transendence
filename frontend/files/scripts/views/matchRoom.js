@@ -1,8 +1,9 @@
 import { Component } from "../library/component.js";
 import { gameConfig } from "../game/setup.js";
 import { Home } from "./home.js";
-import { pushHistoryAndGoTo } from "../utils/router.js";
+import { pushHistoryAndGoTo, replaceHistoryAndGoTo } from "../utils/router.js";
 import { host } from "../../index.js";
+import { setMyUsername, isLoggedIn } from "../../index.js";
 
 export class MatchRoom extends Component {
   constructor() {
@@ -25,10 +26,17 @@ export class MatchRoom extends Component {
     this.addEventListeners();
   }
 
-  addEventListeners() {
+   addEventListeners() {
     const joinBtn = document.getElementById("join-btn");
     const sockErrMsg = document.getElementById("sock-err-msg");
-    joinBtn.addEventListener("click", () => {
+    joinBtn.addEventListener("click", async () => {
+		const is_valid = await setMyUsername()
+		if (!is_valid) {
+			localStorage.removeItem("jwt");
+			isLoggedIn.status = false;
+			replaceHistoryAndGoTo("/");
+			return;
+		}
       gameConfig.ws = new WebSocket(
         `wss://${host}/ws/game/${gameConfig.roomId}/${localStorage.getItem("jwt")}/0/`
       );

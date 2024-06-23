@@ -1,9 +1,9 @@
 import { Component } from "../library/component.js";
 import { Home } from "./home.js";
-import { myUsername } from "../../index.js";
 import { host } from "../../index.js";
 import { pushHistoryAndGoTo, replaceHistoryAndGoTo } from "../utils/router.js";
-import { gameConfig, gameState } from "../game/setup.js";
+import { gameConfig } from "../game/setup.js";
+import { setMyUsername, isLoggedIn } from "../../index.js";
 
 export const cup = { ws: null, matches: [], currentMatch: 1 };
 
@@ -57,8 +57,15 @@ export class Tournament extends Component {
 		}
 	}
 
-	createMatch() {
+	async createMatch() {
 		const match = cup.matches[cup.currentMatch - 1];
+		const is_valid = await setMyUsername()
+		if (!is_valid) {
+			localStorage.removeItem("jwt");
+			isLoggedIn.status = false;
+			replaceHistoryAndGoTo("/");
+			return;
+		}
 		gameConfig.ws = new WebSocket(
 			`wss://${host}/ws/game/${match}/${localStorage.getItem("jwt")}/1/`
 		);
@@ -85,6 +92,13 @@ export class Tournament extends Component {
 			}
 		});
 		joinCupBtn.addEventListener("click", async () => {
+			const is_valid = await setMyUsername()		
+			if (!is_valid) {
+				localStorage.removeItem("jwt");
+				isLoggedIn.status = false;
+				replaceHistoryAndGoTo("/");
+				return;
+			}
 			if (!cup.ws) {
 				cup.ws = new WebSocket(
 					`wss://${host}/ws/game/${localStorage.getItem("jwt")}/`

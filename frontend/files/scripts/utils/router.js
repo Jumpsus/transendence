@@ -13,7 +13,6 @@ import { Options } from "../views/options.js";
 import { ModeSelect } from "../views/modeSelect.js";
 import { MatchRoom } from "../views/matchRoom.js";
 import { gameConfig } from "../game/setup.js";
-
 export let username = { username: "" };
 let lastViewedUser = "";
 export let newUserView = false;
@@ -60,6 +59,14 @@ async function userExists(username) {
       Authorization: `Bearer ${localStorage.getItem("jwt")}`,
     },
   });
+  if (!resp.ok) {
+    if (resp.status == 401) {
+      localStorage.removeItem("jwt");
+		  isLoggedIn.status = false;
+		  replaceHistoryAndGoTo("/")
+    }
+	return false
+  }
   const data = await resp.json();
   const userExists = data.user_list.some((user) => user.username === username);
   return userExists;

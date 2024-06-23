@@ -55,7 +55,7 @@ export class Home extends Component {
         .then((data) => {
           localStorage.removeItem("jwt");
           isLoggedIn.status = false;
-          replaceHistoryAndGoTo("/Login");
+          replaceHistoryAndGoTo("/");
         })
         .catch((error) => {
           console.log("we got an error: ", error);

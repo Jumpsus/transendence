@@ -1,7 +1,7 @@
 import { Component } from "../library/component.js";
 import { makeLinkActive } from "../utils/other.js";
-import { username } from "../utils/router.js";
-import { myUsername } from "../../index.js";
+import { username, replaceHistoryAndGoTo } from "../utils/router.js";
+import { myUsername, isLoggedIn } from "../../index.js";
 import { Profile } from "./profile.js";
 import { host } from "../../index.js";
 
@@ -58,6 +58,11 @@ export class MatchHistory extends Component {
 		}
 		if (!resp.ok) {
 			console.log("Error fetching match history");
+			if (resp.status == 401) {
+				localStorage.removeItem("jwt");
+				isLoggedIn.status = false;
+				replaceHistoryAndGoTo("/")
+			}
 			return;
 		}
 		const data = await resp.json();

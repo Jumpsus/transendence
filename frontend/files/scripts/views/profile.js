@@ -1,7 +1,7 @@
 import { Component } from "../library/component.js";
 import { makeLinkActive } from "../utils/other.js";
-import { username, newUserView } from "../utils/router.js";
-import { myUsername, host } from "../../index.js";
+import { username, newUserView, replaceHistoryAndGoTo } from "../utils/router.js";
+import { myUsername, host, isLoggedIn } from "../../index.js";
 import { MatchHistory } from "./history.js";
 import { compressImage } from "../utils/compress.js";
 
@@ -73,6 +73,14 @@ export class Profile extends Component {
         body: JSON.stringify({ username: username.username }),
       }
     );
+	if (!resp.ok) {
+		if (resp.status == 401) {
+		  localStorage.removeItem("jwt");
+		  isLoggedIn.status = false;
+		  replaceHistoryAndGoTo("/");
+		}
+		return;
+	}
     const data = await resp.json();
     wonNumber.textContent = data.win;
     lostNumber.textContent = data.lose;
