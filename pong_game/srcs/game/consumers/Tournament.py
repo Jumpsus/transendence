@@ -46,7 +46,7 @@ class TournamentConsumer(AsyncWebsocketConsumer):
 			result = text_data_json['result']
 
 		if not await self.save_game_result(match, result):
-				await self.send(text_data='"Error": "Tounament canceled because the result is invalid."')
+				await self.send(text_data='{"Error": "Tounament canceled because the result is invalid."}')
 				self.close(code=4444)
 
 	async def check_players(self):
@@ -85,12 +85,12 @@ class TournamentConsumer(AsyncWebsocketConsumer):
 					await self.send_final_results()
 					break
 				elif len(tournament.player_names) != 4:
-					await self.send(text_data='"Error": "Tounament canceled because someone is disconnected."')
+					await self.send(text_data='{"Error": "Tounament canceled because someone is disconnected."}')
 					await self.close(code=4444)
 				else:
 					for result in tournament.results.values():
 						if result == 'Invalid result':
-							await self.send(text_data='"Error": "Tounament canceled because someone is sending invalid result."')
+							await self.send(text_data='{"Error": "Tounament canceled because someone is sending invalid result."}')
 							await self.close(code=4444)
 				await asyncio.sleep(2)
 			except asyncio.CancelledError:
