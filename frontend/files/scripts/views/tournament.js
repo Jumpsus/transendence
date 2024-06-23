@@ -34,7 +34,7 @@ export class Tournament extends Component {
 			 <button class="retro-btn mb-4" id="join-cup-btn">join</button>
 			 <div class="d-flex justify-content-center text-center" id="cup-log"><span id="player-number">0</span>/<span>4</span> connected</div>
      		 <div class="fs-5 text-danger d-none text-center" id="sock-err-msg"></div>
-			 <div class="d-flex justify-content-center text-center" id="cup-results"></div>
+			 <div class="d-flex flex-column justify-content-center text-center" id="cup-results"></div>
 	`;
 		this.render();
 		this.addEventListeners();
@@ -131,16 +131,14 @@ export class Tournament extends Component {
 
 						const matchHeading = document.createElement('h3');
 						matchHeading.textContent = `Match ${index + 1}`;
-
-						const player1Score = document.createElement('p');
-						player1Score.textContent = `Player 1: ${score.player1_name}`;
-
-						const player2Score = document.createElement('p');
-						player2Score.textContent = `Player 2: ${score.player2_name}`;
-
 						matchDiv.appendChild(matchHeading);
-						matchDiv.appendChild(player1Score);
-						matchDiv.appendChild(player2Score);
+
+						Object.entries(score).forEach(([playerName, playerScore]) => {
+							const playerScoreElement = document.createElement('p');
+							playerScoreElement.textContent = `${playerName}: ${playerScore}`;
+							matchDiv.appendChild(playerScoreElement);
+						});
+					
 						cupResults.appendChild(matchDiv);
 
 					});

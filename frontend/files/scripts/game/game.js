@@ -28,6 +28,7 @@ export function init() {
     const message = JSON.stringify({
       paddle_pos: pos,
     });
+    if (!gameConfig.ws || gameConfig.ws.readyState != WebSocket.OPEN) return;
     gameConfig.ws.send(message);
   }
 
@@ -62,10 +63,14 @@ export function init() {
       }
       if (event.code == 4102) {
         console.log("Tournament match finished");
+        let result = {
+          [ gameConfig.names[0]]: gameState.score[0], 
+          [ gameConfig.names[1]]: gameState.score[1] 
+        };
         cup.ws.send(JSON.stringify({
           type: 'game' + cup.currentMatch,
           match: cup.matches[cup.currentMatch - 1],
-          result: { player1_name: gameState.score[0], player2_name: gameState.score[1] }
+          result: result
         }));
         cup.currentMatch++;
       cancelAnimationFrame(gameConfig.animationID);
@@ -92,7 +97,6 @@ export function init() {
       }
       lastTime = time;
       gameConfig.animationID = window.requestAnimationFrame(update);
-      console.log("update");
     }
     gameConfig.animationID = window.requestAnimationFrame(update);
   }
