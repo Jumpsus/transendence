@@ -91,6 +91,22 @@
   cursor: pointer;
 }
 
+#instructions-left,
+#instructions-right {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  flex-direction: column;
+  opacity: 1;
+  transition: opacity 300ms ease-out;
+}
+
+#instructions-left.remove,
+#instructions-right.remove {
+  opacity: 0;
+}
+
 /* horizontal */
 @media (min-width: 1200px) {
   #game-field {
@@ -150,6 +166,19 @@
   #name-two {
     left: 100%;
     bottom: 0;
+  }
+  #instructions-left {
+    left: 0;
+    top: 0;
+    width: 50%;
+    height: 100%;
+  }
+  
+  #instructions-right {
+    right: 0;
+    top: 0;
+    width: 50%;
+    height: 100%;
   }
   @container resize-box (aspect-ratio > 4/3) {
     #game-field {
@@ -231,6 +260,19 @@
   }
   #debug-info {
     top: 10%;
+  }
+  #instructions-left {
+    top: 0;
+    left: 0;
+    height: 50%;
+    width: 100%;
+  }
+  
+  #instructions-right {
+    bottom: 0;
+    left: 0;
+    height: 50%;
+    width: 100%;
   }
   @container resize-box (aspect-ratio > 3/4) {
     #game-field {

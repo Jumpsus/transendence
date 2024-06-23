@@ -2,7 +2,7 @@ import json
 import random
 
 class PongGame:
-	def __init__(self, paddle_width=2, paddle_height=20, ball_size=4, buffer_size=2):
+	def __init__(self, paddle_width=2, paddle_height=15, ball_size=3, buffer_size=4):
 		self.PADDLE_WIDTH = paddle_width
 		self.PADDLE_HEIGHT = paddle_height
 		self.BALL_SIZE = ball_size
