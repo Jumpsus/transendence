@@ -1,5 +1,7 @@
 import { Component } from "../library/component.js";
 import { makeLinkActive } from "../utils/other.js";
+import { username } from "../utils/router.js";
+import { myUsername } from "../../index.js";
 import { Profile } from "./profile.js";
 import { host } from "../../index.js";
 
@@ -34,13 +36,26 @@ export class MatchHistory extends Component {
 		const resultColumn = document.getElementById("result-column");
 		const dateColumn = document.getElementById("date-column");
 		makeLinkActive(document.getElementById("profileMenu"));
-		const resp = await fetch(`https://${host}/user-management/user/getmatchhistory`, {
-			method: "GET",
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-			},
-		})
+		let resp;
+		if (myUsername.username != username.username) {
+			resp = await fetch(`https://${host}/user-management/user/getothermatchhistory`, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+				},
+				body: JSON.stringify({ username: username.username }),
+			});
+		}
+		else {
+			resp = await fetch(`https://${host}/user-management/user/getmatchhistory`, {
+				method: "GET",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+				},
+			});
+		}
 		if (!resp.ok) {
 			console.log("Error fetching match history");
 			return;
