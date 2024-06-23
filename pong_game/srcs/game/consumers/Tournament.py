@@ -11,14 +11,15 @@ logger = logging.getLogger(__name__)
 class TournamentConsumer(AsyncWebsocketConsumer):
 	async def connect(self):
 		self.user_token = str(self.scope['url_route']['kwargs']['user_token'])
+		self.player_name = fetch_player_name(self.user_token)
+		if not self.player_name:
+			return
 		self.room_id = await sync_to_async(join_room)(self.player_name)
 		self.room_group_name = f'room_{self.room_id}'
 		self.check_task1 = None
 		self.check_task2 = None
 
-		player_name = fetch_player_name(self.user_token)
-		if not player_name:
-			return
+
 		await self.accept()
 
 		# Start the periodic check task

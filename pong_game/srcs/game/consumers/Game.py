@@ -150,7 +150,8 @@ class GameConsumer(AsyncWebsocketConsumer):
 	async def receive(self, text_data):
 		if cache.get("game" + self.game_id, 0) == 0:
 			await self.close(code=4442)
-		if int(cache.get("game" + self.game_id)) < 3:
+			return
+		if cache.get("game" + self.game_id, 0) < 3:
 			return
 		# data sync
 		if self.player_id == 1:
