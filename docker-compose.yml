@@ -65,7 +65,6 @@ services:
 
 volumes:
   ssl_volume:
-  frontend_data:
   vault_data:
   user_pg:
   common:

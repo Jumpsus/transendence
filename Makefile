@@ -1,34 +1,6 @@
-PG_DIR := ~/goinfre/docker/volumes/user_management/pgdata
-VAULT_DIR := ~/goinfre/docker/volumes/vault/data
-IMAGE_DIR := ~/goinfre/docker/volumes/common/image
-
-all: create_dir
-	bash generate_cert.sh
+all:
 	@docker compose build; \
 	docker compose up -d;
-
-create_dir:
-	@if [ ! -d $(PG_DIR) ]; then \
-		echo "Directory $(PG_DIR) does not exist. Creating..."; \
-		mkdir -p $(PG_DIR); \
-	else \
-		echo "Directory $(PG_DIR) already exists."; \
-	fi
-	
-	@if [ ! -d $(VAULT_DIR) ]; then \
-		echo "Directory $(VAULT_DIR) does not exist. Creating..."; \
-		mkdir -p $(VAULT_DIR); \
-	else \
-		echo "Directory $(VAULT_DIR) already exists."; \
-	fi
-
-	@if [ ! -d $(IMAGE_DIR) ]; then \
-		echo "Directory $(IMAGE_DIR) does not exist. Creating..."; \
-		mkdir -p $(IMAGE_DIR); \
-		cp ./default.png $(IMAGE_DIR); \
-	else \
-		echo "Directory $(IMAGE_DIR) already exists."; \
-	fi
 
 up:
 	@docker compose up -d

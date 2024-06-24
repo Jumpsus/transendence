@@ -1,6 +1,7 @@
 #!/bin/sh
 
 /usr/bin/wait_for_it.sh user-db:5432
+/usr/bin/wait_for_it.sh vault-service:8201
 
 python3 manage.py makemigrations
 python3 manage.py migrate --noinput

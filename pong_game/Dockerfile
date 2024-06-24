@@ -9,7 +9,9 @@ RUN pip install --no-cache-dir --break-system-packages -r requirements.txt
 EXPOSE 8001
 
 COPY pong_game_script.sh /usr/bin/pong_game_script.sh
+COPY wait_for_it.sh /usr/bin/wait_for_it.sh
 RUN chmod 777 /usr/bin/pong_game_script.sh
+RUN chmod 777 /usr/bin/wait_for_it.sh
 # Install pip packages
 
 # Copy the Django project into the container

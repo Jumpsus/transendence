@@ -8,6 +8,5 @@ services:
         ports:
             - "8443:443"
         volumes:
-            - frontend_data:/frontend/
             - ssl_volume:/etc/nginx/ssl
             - common:/share-resource
