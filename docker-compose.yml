@@ -1,5 +1,12 @@
 
 services:
+  ssl:
+    build:
+      context: ssl
+      dockerfile: Dockerfile
+    volumes:
+      - ssl_volume:/app/ssl
+
   frontend:
     restart: always
     extends:
@@ -8,6 +15,7 @@ services:
     environment:
       - PARANOIA=2
     depends_on:
+      - ssl
       - user-management
       - pong-game
 
@@ -23,6 +31,7 @@ services:
       file: vault/docker/docker-compose.yml
       service: vault-setting
     depends_on:
+      - ssl
       - vault-service
 
   user-db:
@@ -45,7 +54,9 @@ services:
     extends:
       file: pong_game/docker-compose.yml
       service: pong-game
-
+    depends_on:
+      - vault-service
+      - user-db
   redis:
     restart: always
     extends:
@@ -54,43 +65,10 @@ services:
 
 volumes:
   ssl_volume:
-    name: ssl_volume
-    driver: local
-    driver_opts:
-      type: none
-      device: ./goinfre/ssl/cert
-      o: bind
-
   frontend_data:
-    name: frontend_data
-    driver: local
-    driver_opts:
-      type: none
-      device: ./frontend/files
-      o: bind
-
   vault_data:
-    name: vault_data
-    driver: local
-    driver_opts:
-      type: none
-      device: ~/goinfre/vault/data
-      o: bind
-      
   user_pg:
-    name: user_pg
-    driver: local
-    driver_opts:
-      type: none
-      device: ~/goinfre/user_management/pgdata
-      o: bind
   common:
-      name: common
-      driver: local
-      driver_opts:
-        type: none
-        device: ~/goinfre/common
-        o: bind
 networks:
   user-network:
     driver: bridge
