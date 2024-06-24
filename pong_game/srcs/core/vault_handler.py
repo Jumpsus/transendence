@@ -14,10 +14,13 @@ def read_secret():
 
 def init_vault():
 
-    for i in range (0, 10):
-        if check_seal() != True:
-            break
-        time.sleep(1)
+    try:
+        for i in range (0, 10):
+            if check_seal() != True:
+                break
+            time.sleep(1)
+    except:
+        exit(1)
 
     if check_seal() == True:
         print("Exit with unexpected result: Vault is Sealed!")

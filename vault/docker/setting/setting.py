@@ -38,18 +38,6 @@ def create_token(token_id):
     token = client.auth.token.create(id=token_id)
     return token
 
-# return True if Success
-def unseal():
-    for x in range (1, 6):
-        pattern = "Key " + str(x)
-        unseal_key = get_unseal_key(pattern)
-
-        client.sys.submit_unseal_key(key=unseal_key)
-
-        if check_seal() != True:
-            return True
-    return False
-
 def check_seal():
     return client.sys.read_seal_status()['sealed']
 
@@ -69,7 +57,10 @@ for x in range (1, 6):
     pattern = "Key " + str(x)
     unseal_key = get_unseal_key(pattern)
     
-    client.sys.submit_unseal_key(key=unseal_key)
+    try:
+        client.sys.submit_unseal_key(key=unseal_key)
+    except:
+        exit(1)
     
     if check_seal() != True:
         break

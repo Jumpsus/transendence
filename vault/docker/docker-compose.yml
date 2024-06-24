@@ -10,8 +10,6 @@ services:
         volumes:
             - vault_data:/vault/file/
             - ssl_volume:/vault/cert
-        healthcheck:
-            retries: 5
         cap_add:
             - IPC_LOCK
         env_file:
