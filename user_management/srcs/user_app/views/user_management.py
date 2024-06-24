@@ -81,6 +81,10 @@ def register(req):
         validate(instance=body, schema=schema)
         user = body.get("username")
         pure_passwd = body.get("password")
+
+        if len(user) < 5 or len(pure_passwd) < 5:
+            return utils.responseJsonErrorMessage(400, "18", "Username or Password must be at least 5 characters")
+        
         passwd = str(hash(pure_passwd + settings.SECRET_KEY))
     except:
         return utils.responseJsonErrorMessage(400, "10", "Invalid request")
