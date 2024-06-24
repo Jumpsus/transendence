@@ -75,7 +75,7 @@ export function init() {
       if (event.code == 4101) {
         updateScore();
         document.getElementById("game-over").classList.remove("d-none");
-        document.getElementById("winner-name").innerText = playerOne.score > playerTwo.score ? gameConfig.names[0] : gameConfig.names[1];
+        document.getElementById("winner-name").innerText = gameState.score[0] > gameState.score[1] ? gameConfig.names[0] : gameConfig.names[1];
       }
       if (event.code == 4102) {
         let result = {
