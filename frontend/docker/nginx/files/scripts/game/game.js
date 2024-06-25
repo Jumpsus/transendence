@@ -73,9 +73,16 @@ export function init() {
     };
     gameConfig.ws.onclose = (event) => {
       if (event.code == 4101) {
+        gameState.score[0] = 11;
         updateScore();
         document.getElementById("game-over").classList.remove("d-none");
-        document.getElementById("winner-name").innerText = gameState.score[0] > gameState.score[1] ? gameConfig.names[0] : gameConfig.names[1];
+        document.getElementById("winner-name").innerText = gameConfig.names[0];
+      }
+      if (event.code == 4111) {
+        gameState.score[1] = 11;
+        updateScore()
+        document.getElementById("game-over").classList.remove("d-none");
+        document.getElementById("winner-name").innerText = gameConfig.names[1];
       }
       if (event.code == 4102) {
         let result = {
