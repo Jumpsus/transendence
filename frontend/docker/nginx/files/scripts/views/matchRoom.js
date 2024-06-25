@@ -48,7 +48,6 @@ export class MatchRoom extends Component {
         sockErrMsg.innerText = "";
       };
       gameConfig.ws.onerror = (error) => {
-        console.error("WebSocket error:", error);
         sockErrMsg.classList.remove("d-none");
         sockErrMsg.innerText = "Room not found";
       };

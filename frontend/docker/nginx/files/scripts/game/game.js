@@ -84,23 +84,29 @@ export function init() {
         document.getElementById("game-over").classList.remove("d-none");
         document.getElementById("winner-name").innerText = gameConfig.names[1];
       }
-      if (event.code == 4102) {
-        let result = {
-          [gameConfig.names[0]]: gameState.score[0],
-          [gameConfig.names[1]]: gameState.score[1]
-        };
-        cup.ws.send(JSON.stringify({
-          type: 'game' + cup.currentMatch,
-          match: cup.matches[cup.currentMatch - 1],
-          result: result
-        }));
-        cup.currentMatch++;
-        cancelAnimationFrame(gameConfig.animationID);
-        replaceHistoryAndGoTo("/Tournament");
-      }
       game.field.classList.add("paused");
       cancelAnimationFrame(gameConfig.animationID);
       gameState.isFinished = true;
+      if (event.code == 4102 || event.code == 4112) {
+        let result;
+        if (event.code == 4102) {
+           result = {
+            [gameConfig.names[0]]: 11,
+            [gameConfig.names[1]]: gameState.score[1]
+          }}
+          else if (event.code == 4112) {
+            result = {
+              [gameConfig.names[0]]: gameState.score[0],
+              [gameConfig.names[1]]: 11 
+          }}
+          cup.ws.send(JSON.stringify({
+            type: 'game' + cup.currentMatch,
+            match: cup.matches[cup.currentMatch - 1],
+            result: result
+          }));
+          cup.currentMatch++;
+          replaceHistoryAndGoTo("/Tournament");
+        }
       if (event.code == 4441) {
         alert("Player disconnected");
         replaceHistoryAndGoTo("/Game");
