@@ -202,10 +202,13 @@ class GameConsumer(AsyncWebsocketConsumer):
 
 
 	async def succ_tournament(self, event):
+		data = json.loads(event['message'])
 		if self.player_id == 1:
-			data = json.loads(event['message'])
 			store_game_result(self.user_name, data['score'])
-		await self.close(code=4102)
+		if data['score'][0] >= 11:
+			await self.close(code=4102)
+		else:
+			await self.close(code=4112)
 
 	# Used to get user's tag and username:
 	async def fetch_user(self):
