@@ -58,23 +58,13 @@ export class Register extends Component {
       const passwordConfirm = passwordConfirmElm.value;
       let formIsValid = true;
 
-      if (username === "") {
-        usernameElm.classList.add("is-invalid");
-        formIsValid = false;
-      } else {
-        usernameElm.classList.remove("is-invalid");
-      }
-      if (password.length < 5) {
-        passwordElm.classList.add("is-invalid");
-        formIsValid = false;
-      } else {
-        passwordElm.classList.remove("is-invalid");
-      }
       if (password !== passwordConfirm) {
         passwordConfirmElm.classList.add("is-invalid");
         formIsValid = false;
+        errMsg.textContent = "";
       } else {
         passwordConfirmElm.classList.remove("is-invalid");
+        formIsValid = true;
       }
       if (!formIsValid) {
         return;
@@ -96,6 +86,7 @@ export class Register extends Component {
         }
       );
       if (!resp.ok) {
+        const data = await resp.json();
         errMsg.textContent = data.message;
         return;
       } else {
