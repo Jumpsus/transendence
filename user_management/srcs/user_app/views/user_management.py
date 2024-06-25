@@ -85,6 +85,8 @@ def register(req):
         user = body.get("username")
         pure_passwd = body.get("password")
 
+        if len(pure_passwd) < 5:
+            return utils.responseJsonErrorMessage(400, "18", "Password must be at least 5 characters")
         if len(user) == 0 or len(pure_passwd) == 0:
             return utils.responseJsonErrorMessage(400, "19", "Username or Password cannot be empty")
         
