@@ -96,6 +96,7 @@ export class Register extends Component {
         }
       );
       if (!resp.ok) {
+        const data = await resp.json();
         errMsg.textContent = data.message;
         return;
       } else {
