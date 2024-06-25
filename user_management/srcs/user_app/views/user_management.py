@@ -87,8 +87,6 @@ def register(req):
 
         if len(user) == 0 or len(pure_passwd) == 0:
             return utils.responseJsonErrorMessage(400, "19", "Username or Password cannot be empty")
-        if len(user) < 5 or len(pure_passwd) < 5:
-            return utils.responseJsonErrorMessage(400, "18", "Username or Password must be at least 5 characters")
         
         passwd = str(hash(pure_passwd + settings.SECRET_KEY))
     except:
