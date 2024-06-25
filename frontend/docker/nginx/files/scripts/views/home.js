@@ -1,6 +1,6 @@
 import { Component } from "../library/component.js";
 import { replaceHistoryAndGoTo } from "../utils/router.js";
-import { myUsername, isLoggedIn, host } from "../../index.js";
+import { myUsername, isLoggedIn, host, setMyUsername } from "../../index.js";
 
 export class Home extends Component {
   constructor() {
@@ -22,7 +22,7 @@ export class Home extends Component {
 				<span>Options</span>
 				<div class="mini-paddle p1"></div>
 			</a>
-			<a href="/${myUsername.username}" class="menu-btn" data-link>
+			<a href="/${myUsername.username}" class="menu-btn" id="profile-link" data-link>
 				<div class="mini-paddle p1"></div>
 				<span>Profile</span>
 				<div class="mini-paddle p2"></div>
@@ -38,6 +38,13 @@ export class Home extends Component {
     this.render();
     this.addEventListeners();
   }
+
+  async render() {
+    super.render();
+    await setMyUsername();
+    document.getElementById("profile-link").href = `/${myUsername.username}`;
+  }
+
 
   addEventListeners() {
     const logoutButton = document.getElementById("logout-button");
