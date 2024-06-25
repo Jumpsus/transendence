@@ -127,10 +127,13 @@ class GameConsumer(AsyncWebsocketConsumer):
 
 	async def disconnect(self, close_code):
 		active_connections = cache.get("game" + self.game_id, 0)
+
+		if active_connections >= 3:
+			return
 		if close_code != 4101 and close_code != 4102:
 			await self.channel_layer.group_send(
 				self.game_id,
-				{
+				{	
 					'type': 'opponent_disconnect',
 				}
 			)
