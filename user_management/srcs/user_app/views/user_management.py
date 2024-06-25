@@ -33,9 +33,12 @@ def login(req):
         validate(instance=body, schema=schema)
         user = body.get("username")
         pure_passwd = body.get("password")
+
+        if len(user) == 0 or len(pure_passwd) == 0:
+            return utils.responseJsonErrorMessage(400, "19", "Username or Password cannot be empty")
+
         passwd = str(hash(pure_passwd + settings.SECRET_KEY))
-    except Exception as e:
-        print(str(e))
+    except:
         return utils.responseJsonErrorMessage(400, "10", "Invalid request")
 
     u = database.find_user_by_username_passwd(user, passwd)
@@ -81,6 +84,12 @@ def register(req):
         validate(instance=body, schema=schema)
         user = body.get("username")
         pure_passwd = body.get("password")
+
+        if len(user) == 0 or len(pure_passwd) == 0:
+            return utils.responseJsonErrorMessage(400, "19", "Username or Password cannot be empty")
+        if len(user) < 5 or len(pure_passwd) < 5:
+            return utils.responseJsonErrorMessage(400, "18", "Username or Password must be at least 5 characters")
+        
         passwd = str(hash(pure_passwd + settings.SECRET_KEY))
     except:
         return utils.responseJsonErrorMessage(400, "10", "Invalid request")
