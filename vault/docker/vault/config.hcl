@@ -13,4 +13,4 @@ storage "file" {
 
 api_addr = "https://vault-service:8201"
 
-disable_mlock = "true"
+log_level = "warn"
