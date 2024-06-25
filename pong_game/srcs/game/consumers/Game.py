@@ -192,10 +192,14 @@ class GameConsumer(AsyncWebsocketConsumer):
 		await self.close(code=4441)
 
 	async def succ_normal(self, event):
+		data = json.loads(event['message'])
 		if self.player_id == 1:
-			data = json.loads(event['message'])
 			store_game_result(self.user_name, data['score'])
-		await self.close(code=4101)
+		if data['score'][0] >= 11:
+			await self.close(code=4101)
+		else:
+			await self.close(code=4111)
+
 
 	async def succ_tournament(self, event):
 		if self.player_id == 1:
