@@ -22,7 +22,7 @@ export class Home extends Component {
 				<span>Options</span>
 				<div class="mini-paddle p1"></div>
 			</a>
-			<a href="/${myUsername.username}" class="menu-btn" data-link>
+			<a href="/${myUsername.username}" class="menu-btn" id="profile-link" data-link>
 				<div class="mini-paddle p1"></div>
 				<span>Profile</span>
 				<div class="mini-paddle p2"></div>
@@ -38,6 +38,7 @@ export class Home extends Component {
     this.render();
     this.addEventListeners();
   }
+
 
   addEventListeners() {
     const logoutButton = document.getElementById("logout-button");

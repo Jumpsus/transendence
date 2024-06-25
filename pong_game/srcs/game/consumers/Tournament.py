@@ -68,7 +68,7 @@ class TournamentConsumer(AsyncWebsocketConsumer):
 						}))
 						self.check_task2 = asyncio.create_task(self.check_results())
 						break
-				await asyncio.sleep(1)
+				await asyncio.sleep(0.5)
 			except asyncio.CancelledError:
 				break
 			except Exception:

@@ -121,14 +121,7 @@ export class Tournament extends Component {
 				}
 				else if (data.hasOwnProperty("matches")) {
 					cup.matches = data.matches;
-					setTimeout(() => {
-						if (!cup.ws) {
-							resetCup();
-							alert("Someone disconnected");
-							return;
-						}
 						this.createMatch();
-					}, 5000);
 				}
 				else if (data.hasOwnProperty("results")) {
 					const cupResults = document.getElementById("cup-results");

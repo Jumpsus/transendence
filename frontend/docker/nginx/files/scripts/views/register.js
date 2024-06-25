@@ -92,7 +92,7 @@ export class Register extends Component {
       } else {
         const data = await resp.json();
         localStorage.setItem("jwt", data.token);
-        const loginSuccess = setMyUsername();
+        const loginSuccess = await setMyUsername();
         isLoggedIn.status = loginSuccess;
         if (isLoggedIn.status) replaceHistoryAndGoTo("/");
         else errMsg.textContent = "Register failed";
