@@ -187,13 +187,19 @@ export class Info extends Component {
           name: nameField.value,
           last_name: lastNameField.value,
           phone_number: phoneField.value,
-          tag: tagField.value,
+          tag: tagField.value.toLowerCase(),
         }),
       })
         .then((response) => {
+			if (!response.ok) return;
           return response.json();
         })
         .then((data) => {
+			if (!data) {
+				tagErrorMsg.innerText = "Forbidden";
+				toggleEditMode(fieldsArray, editButton, saveButton, cancelButton, false);
+           		return;
+			}
           if (data.code != "00") {
             tagErrorMsg.innerText = data.message;
             toggleEditMode(fieldsArray, editButton, saveButton, cancelButton, false);

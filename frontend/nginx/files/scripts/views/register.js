@@ -86,6 +86,10 @@ export class Register extends Component {
         }
       );
       if (!resp.ok) {
+		if (resp.status === 403) {
+			errMsg.textContent = "Forbidden"
+			return;
+		}
         const data = await resp.json();
         errMsg.textContent = data.message;
         return;

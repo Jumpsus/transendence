@@ -33,17 +33,10 @@ def create_user(username, password, name = "", last_name = "", phone_number = ""
 # return True if "success" False if "fail"
 def edit_user(user, name = "", last_name = "", phone_number = "", tag = ""):
 
-    if name != "":
-        user.name = name
-    
-    if last_name != "":
-        user.last_name = last_name
-
-    if phone_number != "":
-        user.phone_number = phone_number
-    
-    if tag != "":
-        user.tag = tag
+    user.name = name
+    user.last_name = last_name
+    user.phone_number = phone_number
+    user.tag = tag
 
     try: 
         user.save()
